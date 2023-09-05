@@ -66,7 +66,12 @@ class Game:
 
             if command == "quit":
                 print("YOU ARE QUITTING THE GAME TO THE TITLE SCREEN. WRITE MORE CODE HERE")
-                break
+                print("Do you want to exit to the title screen? \nYes\nNo")
+                exit_command = input("> ").lower().strip()
+                if exit_command in ['yes', 'exit', 'quit']:
+                    break
+                elif exit_command in ['no']:
+                    continue
                 #sys.exit()
             else:
                 print("Invalid command. Try 'go', 'look', 'take', 'inventory', or 'quit'.")
@@ -75,12 +80,20 @@ class Game:
 def clear_screen():
     os.system('cls' if os.name == 'n' else 'clear')
 
-game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. Today's your first day in the office but you're not used to commute in the city!\n\nLet's see if you can make it to work on time, or be late on your very first day!"""
-
+game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. \nToday's your first day in the office but you're not familiar with commute in the city!\n\nCan make it to work on time, or will you be late on your very first day?"""
+game_title = """
+                                                                                             ,---.,---.,---. 
+ ,----.   ,------.,--------.    ,--------. ,-----.     ,--.   ,--. ,-----. ,------. ,--. ,--.|   ||   ||   | 
+'  .-./   |  .---''--.  .--'    '--.  .--''  .-.  '    |  |   |  |'  .-.  '|  .--. '|  .'   /|  .'|  .'|  .' 
+|  | .---.|  `--,    |  |          |  |   |  | |  |    |  |.'.|  ||  | |  ||  '--'.'|  .   ' |  | |  | |  |  
+'  '--'  ||  `---.   |  |          |  |   '  '-'  '    |   ,'.   |'  '-'  '|  |\  \ |  |\   \`--' `--' `--'  
+ `------' `------'   `--'          `--'    `-----'     '--'   '--' `-----' `--' '--'`--' '--'.--. .--. .--.  
+                                                                                             '--' '--' '--'  
+"""
 if __name__ == "__main__":
     clear_screen()
     while True:
-        print("GET TO WORK")
+        print(game_title)
         print(game_intro)
         choice = input("\nStart New Game\nQuit\n>> ").strip()
         
@@ -88,7 +101,7 @@ if __name__ == "__main__":
             game = Game()
             game.start_game()
         elif choice in ["quit", "exit"]:
-            print("Goodbye!")
+            print("Thanks for playing!")
             break
         else:
             print("Invalid choice. Please enter one of the the commands below to progress.")
