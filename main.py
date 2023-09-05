@@ -1,4 +1,5 @@
 #Classes for the Game (still in progress)
+import os
 class Item:
     def __init__(self, name, description):
         self.name = name
@@ -55,6 +56,12 @@ class Player:
 #Setup code
 
 #Title screen code - Demetra Ticket
+def clear_screen():
+    os.system('cls' if os.name == 'n' else 'clear')
+def show_game_title():   
+    clear_screen()
+    print("GET TO WORK")
+show_game_title()   
 
 #Game information code - Cayla ticket
 game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. Today's your first day in the office but you're not used to commute in the city!
