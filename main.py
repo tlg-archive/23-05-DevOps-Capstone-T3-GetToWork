@@ -1,5 +1,6 @@
-#Classes for the Game (still in progress)
 import os
+
+#Classes for the Game (still in progress)
 class Item:
     def __init__(self, name, description):
         self.name = name
@@ -47,29 +48,47 @@ class Player:
             for item in self.inventory:
                 print(item.name)
 
+class Game:
+    def __init__(self):
+        self.locations = {}
+        self.items = []
+        self.player = None
+        #self.load_game_data(locations_file, items_file)
 
-## Create items, grabbing information from the JSON file
-## Create rooms
-## Add exits to rooms
+
+    def start_game(self):
+        while True:
+            print("GAME START")
+            command = input(">> ").strip().lower()
+
+            if not command:
+                continue
+
+            if command == "quit":
+                print("YOU ARE QUITTING THE GAME TO THE TITLE SCREEN. WRITE MORE CODE HERE")
+                break
+                #sys.exit()
+            else:
+                print("Invalid command. Try 'go', 'look', 'take', 'inventory', or 'quit'.")
 
 
-#Setup code
-
-#Title screen code - Demetra Ticket
 def clear_screen():
     os.system('cls' if os.name == 'n' else 'clear')
-def show_game_title():   
-    clear_screen()
-    print("GET TO WORK")
-show_game_title()   
 
-#Game information code - Cayla ticket
-game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. Today's your first day in the office but you're not used to commute in the city!
-
-Let's see if you can make it to work on time, or be late on your very first day!"""
-
-def main():
-    print(game_intro)
+game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. Today's your first day in the office but you're not used to commute in the city!\n\nLet's see if you can make it to work on time, or be late on your very first day!"""
 
 if __name__ == "__main__":
-    main()
+    clear_screen()
+    while True:
+        print("GET TO WORK")
+        print(game_intro)
+        choice = input("\nStart New Game\nQuit\n>> ").strip()
+        
+        if choice in ["start", "new game", "start new game"]:
+            game = Game()
+            game.start_game()
+        elif choice in ["quit", "exit"]:
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please enter one of the the commands below to progress.")
