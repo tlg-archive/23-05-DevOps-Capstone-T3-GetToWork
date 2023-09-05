@@ -1,0 +1,38 @@
+{
+    "Location": {
+      "name": "Home",
+      "directions": {
+        "west": "front door"
+      },
+      "description": "Player starts off in the living room standing, fully dressed for the workday",
+      "items": ["keys", "wallet", "phone"]
+    },
+    "BusStop1": {
+      "name": "Bus stop one",
+      "action": "pull bell cord",
+      "stayOnBus": true,
+      "description": "Riding the bus to avoid the hassle of driving."
+    },
+    "BusStop2": {
+      "name": "Bus stop two",
+      "action": "pull bell cord",
+      "stayOnBus": true,
+      "description": "Riding the bus to avoid the hassle of driving."
+    },
+    "BusStop3": {
+      "name": "Bus stop three",
+      "action": "pull bell cord",
+      "stayOnBus": true,
+      "description": "Riding the bus to avoid the hassle of driving."
+    },
+    "Downtown": {
+      "name": "Downtown",
+      "description": "Downtown area with various shops and businesses."
+    },
+    "CozyCoffeeShop": {
+      "name": "Cozy coffee shop",
+      "description": "The aroma of fresh coffee takes over you as you step inside, offering a brief respite from the morning stress. You order a latte, setting a positive tone for the day."
+    }
+  }
+  
+  
