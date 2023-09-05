@@ -57,3 +57,12 @@ class Player:
 #Title screen code - Demetra Ticket
 
 #Game information code - Cayla ticket
+game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. Today's your first day in the office but you're not used to commute in the city!
+
+Let's see if you can make it to work on time, or be late on your very first day!"""
+
+def main():
+    print(game_intro)
+
+if __name__ == "__main__":
+    main()
