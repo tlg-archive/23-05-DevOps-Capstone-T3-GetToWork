@@ -1,6 +1,6 @@
 import os
 
-#Classes for the Game (still in progress)
+# Classes for the Game (still in progress)
 class Item:
     def __init__(self, name, description):
         self.name = name
@@ -53,8 +53,64 @@ class Game:
         self.locations = {}
         self.items = []
         self.player = None
-        #self.load_game_data(locations_file, items_file)
 
+    def parse_command(self, command):
+        command_words = command.split(' ')
+        verb = command_words[0]
+        noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
+        
+        synonyms = {
+            'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
+            'use': ['use'],
+            'drive': ['drive', 'ride'],
+            'board': ['board', 'catch'],
+            'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
+            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
+            'pull': ['pull', 'yank', 'tug', 'grab'],
+            'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
+        }
+        
+        for key, values in synonyms.items():
+            if verb in values:
+                method_name = f"handle_{key}"
+                method = getattr(self, method_name, None)
+                
+                if method and callable(method):
+                    method(noun)
+                    return
+        print("Invalid command.")
+
+    def handle_take(self, noun):
+        print(f"Handling TAKE command for {noun}")
+        # Implement 'TAKE' logic here
+
+    def handle_use(self, noun):
+        print(f"Handling USE command for {noun}")
+        # Implement 'USE' logic here
+
+    def handle_drive(self, noun):
+        print(f"Handling DRIVE command for {noun}")
+        # Implement 'DRIVE' logic here
+
+    def handle_board(self, noun):
+        print(f"Handling BOARD command for {noun}")
+        # Implement 'BOARD' logic here
+
+    def handle_look(self, noun):
+        print(f"Handling LOOK command for {noun}")
+        # Implement 'LOOK' logic here
+
+    def handle_talk(self, noun):
+        print(f"Handling TALK command for {noun}")
+        # Implement 'TALK' logic here
+
+    def handle_pull(self, noun):
+        print(f"Handling PULL command for {noun}")
+        # Implement 'PULL' logic here
+
+    def handle_buy(self, noun):
+        print(f"Handling BUY command for {noun}")
+        # Implement 'BUY' logic here
 
     def start_game(self):
         while True:
@@ -65,21 +121,20 @@ class Game:
                 continue
 
             if command == "quit":
-                print("YOU ARE QUITTING THE GAME TO THE TITLE SCREEN. WRITE MORE CODE HERE")
-                print("Do you want to exit to the title screen? \nYes\nNo")
-                exit_command = input("> ").lower().strip()
+                print("YOU ARE QUITTING THE GAME TO THE TITLE SCREEN.")
+                exit_command = input("Do you want to exit to the title screen? \nYes\nNo\n> ").lower().strip()
                 if exit_command in ['yes', 'exit', 'quit']:
                     break
                 elif exit_command in ['no']:
                     continue
-                #sys.exit()
             else:
-                print("Invalid command. Try 'go', 'look', 'take', 'inventory', or 'quit'.")
+                self.parse_command(command)
 
-
+# Clear screen function
 def clear_screen():
     os.system('cls' if os.name == 'n' else 'clear')
 
+# Game intro and title
 game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. \nToday's your first day in the office but you're not familiar with commute in the city!\n\nCan make it to work on time, or will you be late on your very first day?"""
 game_title = """
                                                                                              ,---.,---.,---. 
@@ -104,4 +159,5 @@ if __name__ == "__main__":
             print("Thanks for playing!")
             break
         else:
-            print("Invalid choice. Please enter one of the the commands below to progress.")
+            print("Invalid choice. Please enter one of the commands below to progress.")
+
