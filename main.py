@@ -1,4 +1,5 @@
 import os
+import json
 
 #Classes for the Game (still in progress)
 class Item:
@@ -65,8 +66,7 @@ class Game:
                 continue
 
             if command == "quit":
-                print("YOU ARE QUITTING THE GAME TO THE TITLE SCREEN. WRITE MORE CODE HERE")
-                print("Do you want to exit to the title screen? \nYes\nNo")
+                print(game_text['quit'])
                 exit_command = input("> ").lower().strip()
                 if exit_command in ['yes', 'exit', 'quit']:
                     break
@@ -80,22 +80,23 @@ class Game:
 def clear_screen():
     os.system('cls' if os.name == 'n' else 'clear')
 
-game_intro = """Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. \nToday's your first day in the office but you're not familiar with commute in the city!\n\nCan make it to work on time, or will you be late on your very first day?"""
-game_title = """
-                                                                                             ,---.,---.,---. 
- ,----.   ,------.,--------.    ,--------. ,-----.     ,--.   ,--. ,-----. ,------. ,--. ,--.|   ||   ||   | 
-'  .-./   |  .---''--.  .--'    '--.  .--''  .-.  '    |  |   |  |'  .-.  '|  .--. '|  .'   /|  .'|  .'|  .' 
-|  | .---.|  `--,    |  |          |  |   |  | |  |    |  |.'.|  ||  | |  ||  '--'.'|  .   ' |  | |  | |  |  
-'  '--'  ||  `---.   |  |          |  |   '  '-'  '    |   ,'.   |'  '-'  '|  |\  \ |  |\   \`--' `--' `--'  
- `------' `------'   `--'          `--'    `-----'     '--'   '--' `-----' `--' '--'`--' '--'.--. .--. .--.  
-                                                                                             '--' '--' '--'  
-"""
+def print_ascii(fn):
+    f= open(fn,'r')
+    print(''.join([line for line in f]))
+
+def convert_json():
+    #get general game text and convert to a Python Dict
+    with open("json/game-text.json") as json_file:
+	    game_text = json.load(json_file)
+    return game_text
+
 if __name__ == "__main__":
     clear_screen()
     while True:
-        print(game_title)
-        print(game_intro)
-        choice = input("\nStart New Game\nQuit\n>> ").strip()
+        print_ascii('json/title.txt')
+        game_text = convert_json()
+        print(game_text['intro'])
+        choice = input(">> ").strip()
         
         if choice in ["start", "new game", "start new game"]:
             game = Game()
@@ -104,4 +105,4 @@ if __name__ == "__main__":
             print("Thanks for playing!")
             break
         else:
-            print("Invalid choice. Please enter one of the the commands below to progress.")
+            print(game_text['error'])

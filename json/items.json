@@ -1,0 +1,33 @@
+{
+    "items": [
+      {
+        "name": "keys",
+        "description": "keys to your car",
+        "location": [
+          "Home",
+          "Car"
+        ]
+      },
+      {
+        "name": "wallet",
+        "description": "wallet with {X} dollars inside it",
+        "location": [
+          "Home"
+        ]
+      },
+      {
+        "name": "phone",
+        "description": "your phone, its dead",
+        "location": [
+          "Home"
+        ]
+      },
+      {
+        "name": "coffee",
+        "description": "coffee you bought from the Dunkin Donuts Downtown",
+        "location": [
+          "Coffee Shop"
+        ]
+      }
+    ]
+}
