@@ -1,0 +1,6 @@
+{
+    "intro": "Good morning! You just moved to Chicago to start your new career as a DevOps Specialist with DRW. \nToday's your first day in the office but you're not familiar with commute in the city!\n\nCan make it to work ON TIME, or will you be LATE on your very first day?\n\nStart New Game\nQuit",
+    "error": "Invalid choice. Please enter one of the the commands below to progress.",
+    "quit": "NOTICE: YOU ARE QUITTING THE GAME TO THE TITLE SCREEN.\nAre you sure you want to quit? \nYes\nNo",
+    "help":"Below is a list of available commands for this game:\n\nGO ----> Move to a different location. USAGE: GO [Place]\nGRAB --> Take an item and add to your inventory. USAGE: TAKE [Item]\nTALK --> Initiate converation with an NPC. USAGE: TALK [Person]\nPULL --> In the Bus Route, use PULL to stop the bus. USAGE: PULL Bellcord\nBUY ---> In the Bus Route, use BUY to buy an item. USAGE: BUY [Item]\nHELP --> Display this help text.\nQUIT --> Exit the game."
+}

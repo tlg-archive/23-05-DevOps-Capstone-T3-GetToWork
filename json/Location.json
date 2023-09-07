@@ -1,0 +1,171 @@
+{ 
+  "locations": [ 
+    { 
+      "name": "Home", 
+      "options": { 
+        "car": "Car", 
+        "bus": "Bus" 
+      }, 
+      "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, wallet, and phone.", 
+      "items": ["keys", "wallet", "phone"] 
+    }, 
+    { 
+      "name": "Bus", 
+      "options": { 
+        "TALK": "Bus Driver", 
+        "SIT": "Seat", 
+        "Bus Driver Conversation": "Bus Driver Conversation" 
+      }, 
+      "description": "(TAKEN FROM DEREKS FILE)", 
+      "items": ["none"] 
+    },
+    { 
+      "name": "Bus Driver Conversation", 
+      "options": { 
+        "GOOD": "Bus Driver knows where DRW is and is helpful", 
+        "BAD": "Bus Driver does not know where DRW is, is not helpful"
+      }, 
+      "description": "(TAKE FROM DEREK FILE)", 
+      "items": ["none"] 
+    },
+    { 
+      "name": "Bus Stop One", 
+      "description": "Your journey begins at a quiet bus stop", 
+      "items": ["keys", "wallet", "phone"], 
+      "options": { 
+        "pull cord exit": "Bus Stop 2", 
+        "stay on bus": "Downtown"
+      }
+    },
+    { 
+      "name": "Bus Stop 2", 
+      "description": "Your journey begins at a quiet bus stop", 
+      "items": ["keys", "wallet", "phone"], 
+      "options": { 
+        "pull cord exit": "Bus Stop 3", 
+        "stay on bus": "Downtown"
+      }
+    },
+    { 
+      "name": "Bus Stop 3", 
+      "description": "Your journey begins at a quiet bus stop", 
+      "items": ["keys", "wallet", "phone"], 
+      "options": { 
+        "pull cord exit": "Downtown", 
+        "stay on bus": "Downtown"
+      }
+    },
+    { 
+      "name": "Downtown", 
+      "description": "A bustling Chicago skyline with the Willis Tower, as you rush through busy streets on your first day, hoping to arrive on time", 
+      "items": ["keys", "wallet", "phone"], 
+      "options": {}
+    },
+    { 
+      "name": "Speak with Person", 
+      "description": "Talk with person or ignore", 
+      "items": ["keys", "wallet", "phone"], 
+      "options": { 
+        "GOOD": "The Person is helpful, you can head straight to DRW building", 
+        "BAD": "The Person is not helpful, you are lost for X minutes, delaying your time to get to work"
+      }
+    },
+    { 
+      "name": "Cozy Coffee Shop", 
+      "description": "At a cozy coffee shop, a latte sets a positive tone for your first day", 
+      "items": ["Wallet", "Coffee"], 
+      "options": { 
+        "BUY": "Coffee"
+      }
+    },
+    { 
+      "name": "Coffee Event, a boost", 
+      "description": "Coffee sipping, setting a positive tone for the day", 
+      "items": ["Wallet", "Coffee"], 
+      "options": { 
+        "GOOD": "You get a caffeine high, you get to work earlier"
+      }
+    },
+    { 
+      "name": "Coffee Event, no boost", 
+      "description": "Coffee sipping, ok start", 
+      "items": ["Wallet", "Coffee"], 
+      "options": { 
+        "BAD": "The coffee was nasty, you are delayed on your way to work"
+      }
+    },
+    { 
+      "name": "Car", 
+      "description": "Inside car", 
+      "items": ["Keys", "Wallet", "Phone"], 
+      "options": { 
+        "TAKE": "Highway"
+      }
+    },
+    { 
+      "name": "Construction Event", 
+      "description": "Construction on the highway delays your commute by 20 minutes on your first day.", 
+      "items": ["Wallet", "Keys", "Phone"], 
+      "options": { 
+        "CONTINUE": "Driving"
+      }
+    },
+    { 
+      "name": "Traffic Event", 
+      "description": "Highway gridlock adds a 15-minute delay to your first day at work", 
+      "items": ["Wallet", "Keys", "Phone"], 
+      "options": { 
+        "CONTINUE": "Driving"
+      }
+    },
+    { 
+      "name": "Accident Event", 
+      "description": "Accident ahead. Expect a 10-minute delay, likely to make you late", 
+      "items": ["Wallet", "Keys", "Phone"], 
+      "options": { 
+        "GO": "Parking"
+      }
+    },
+    { 
+      "name": "Parking Option", 
+      "description": "Park close pay, Park far walk", 
+      "items": ["money"], 
+      "options": { 
+        "CHOOSE": "Close Parking", 
+        "CHOOSE": "Far Parking"
+      }
+    },
+    { 
+      "name": "Parking Close", 
+      "description": "Parked nearby, but pricey. Walk to first day, hoping it's worth it", 
+      "items": ["money"], 
+      "options": { 
+        "GO": "DRW"
+      }
+    },
+    { 
+      "name": "Parking Far", 
+      "description": "Affordable parking far away. Rushing to the office, first-day urgency", 
+      "items": ["money"], 
+      "options": { 
+        "GO": "DRW"
+      }
+    },
+    { 
+      "name": "On time", 
+      "description": "Arriving on time at DRW building, relief washes over you. Ready for a promising first day", 
+      "items": ["Wallet", "Keys", "Phone"], 
+      "options": { 
+        "Coffee Hand": "DRW WIN"
+      }
+    },
+    { 
+      "name": "Late", 
+      "description": "Late at DRW building, dread replaces relief on your first day", 
+      "items": ["Wallet", "Keys", "Phone"], 
+      "options": { 
+        "Coffee": "DRW Lose"
+      }
+    }
+  ] 
+}
