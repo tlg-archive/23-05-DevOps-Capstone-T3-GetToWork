@@ -79,7 +79,7 @@ class Game:
                 if method and callable(method):
                     method(noun)
                     return
-        print("Invalid command.")
+        print("Invalid command. Type 'Help' for more information.")
 
     def handle_take(self, noun):
         print(f"Handling TAKE command for {noun}")
@@ -128,12 +128,14 @@ class Game:
                     break
                 elif exit_command in ['no']:
                     continue
+            elif command in ["help", "info", "commands", "hint", "assist"]:
+                print(game_text['help'])
             else:
                 self.parse_command(command)
 
 # Clear screen function
 def clear_screen():
-    os.system('cls' if os.name == 'n' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def print_ascii(fn):
     f= open(fn,'r')
@@ -144,6 +146,7 @@ def convert_json():
     with open("json/game-text.json") as json_file:
 	    game_text = json.load(json_file)
     return game_text
+
 if __name__ == "__main__":
     clear_screen()
     while True:
@@ -160,3 +163,4 @@ if __name__ == "__main__":
             break
         else:
             print(game_text['error'])
+
