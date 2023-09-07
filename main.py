@@ -143,7 +143,7 @@ class Game:
                 if method and callable(method):
                     method(noun)
                     return
-        print("Invalid command.")
+        print("Invalid command. Type 'Help' for more information.")
 
     def handle_take(self, noun):
         print(f"Handling TAKE command for {noun}")
@@ -222,3 +222,4 @@ if __name__ == "__main__":
             break
         else:
             print(game_text['error'])
+
