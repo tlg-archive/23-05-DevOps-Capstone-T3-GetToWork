@@ -128,6 +128,8 @@ class Game:
                     break
                 elif exit_command in ['no']:
                     continue
+            elif command in ["help", "info", "commands", "hint", "assist"]:
+                print(game_text['help'])
             else:
                 self.parse_command(command)
 
