@@ -45,13 +45,15 @@ class Player:
         self.inventory = []
         self.current_room = None
 
-    def move(self, action):
+    def move(self, noun):
         #these print statements show the current room and exit options
         #print("current room",self.current_room)
-        print("current exits",self.current_room.options)
+        #print("current exits",self.current_room.options)
+        #print(noun, "noun") 
+        #print(game.locations[noun])
         
-        if action in self.current_room.options:
-            self.current_room = self.current_room.options[action]
+        if noun.lower() in self.current_room.options:
+            self.current_room = game.locations[noun]
         else:
             print("You can't go that way.")
 
@@ -152,7 +154,7 @@ class Game:
     def handle_use(self, noun):
         print(f"Handling USE command for {noun}")
         # Implement 'USE' logic here
-        self.player.move(noun)
+        self.player.move(noun.capitalize())
 
     def handle_drive(self, noun):
         print(f"Handling DRIVE command for {noun}")
