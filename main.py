@@ -65,7 +65,6 @@ class Player:
     def move(self, noun):
         #these print statements show the current room and exit options
         #print("current room",self.current_room)
-        #print("current exits",self.current_room.options)
         #print(noun, "noun") 
         #print(game.locations[noun])
 
@@ -170,6 +169,7 @@ class Game:
 
 
     def handle_look(self, noun):
+        print(f"Handling LOOK command for {noun}")
         if noun:
             display_description(noun)
         else:
@@ -192,24 +192,10 @@ class Game:
                     break
                 elif exit_command in ['no']:
                     continue
-            elif command in ["help", "options"]:
+            elif command in ["help", "info", "commands", "hint", "assist"]:
                 print(game_text['help'])
             else:
-                command_parts = command.split()
-                if len(command_parts) == 1:
-                    verb = command_parts[0]
-                    if verb == "inventory":
-                        self.player.inventory_list()
-                    elif verb == "look":
-                        self.handle_look(None)
-                    else:
-                        print(game_text['error'])
-                else:
-                    verb = command_parts[0]
-                    noun = " ".join(command_parts[1:])
-                    if verb == "look":
-                        self.handle_look(noun)
-                    # Add more command handlers like take, use, etc. as needed ...
+                self.parse_command(command)
 
 if __name__ == "__main__":
     clear_screen()
