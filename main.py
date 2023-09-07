@@ -61,11 +61,16 @@ class Player:
         self.inventory = []
         self.current_room = None
 
-    def move(self, action):
-        print("current exits",self.current_room.options)
-        
-        if action in self.current_room.options:
-            self.current_room = self.current_room.options[action]
+
+    def move(self, noun):
+        #these print statements show the current room and exit options
+        #print("current room",self.current_room)
+        #print("current exits",self.current_room.options)
+        #print(noun, "noun") 
+        #print(game.locations[noun])
+
+        if noun.lower() in self.current_room.options:
+            self.current_room = game.locations[noun]
         else:
             print("You can't go that way.")
 
@@ -119,8 +124,50 @@ class Game:
                         location.add_item(item_name)
                 self.locations[loc_info["name"]] = location
 
-    # Command handling functions
-    # ... all your command handlers like handle_take, handle_use, etc. ...
+
+    def parse_command(self, command):
+        command_words = command.split(' ')
+        verb = command_words[0]
+        noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
+        
+        synonyms = {
+            'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
+            'use': ['use'],
+            'drive': ['drive', 'ride'],
+            'board': ['board', 'catch'],
+            'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
+            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
+            'pull': ['pull', 'yank', 'tug', 'grab'],
+            'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
+        }
+        
+        for key, values in synonyms.items():
+            if verb in values:
+                method_name = f"handle_{key}"
+                method = getattr(self, method_name, None)
+                
+                if method and callable(method):
+                    method(noun)
+                    return
+        print("Invalid command. Type 'Help' for more information.")
+
+    def handle_take(self, noun):
+        print(f"Handling TAKE command for {noun}")
+        # Implement 'TAKE' logic here
+
+    def handle_use(self, noun):
+        print(f"Handling USE command for {noun}")
+        # Implement 'USE' logic here
+        self.player.move(noun.capitalize())
+
+    def handle_drive(self, noun):
+        print(f"Handling DRIVE command for {noun}")
+        # Implement 'DRIVE' logic here
+
+    def handle_board(self, noun):
+        print(f"Handling BOARD command for {noun}")
+        # Implement 'BOARD' logic here
+
 
     def handle_look(self, noun):
         if noun:

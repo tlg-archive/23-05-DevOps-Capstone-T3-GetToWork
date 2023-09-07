@@ -3,8 +3,8 @@
     { 
       "name": "Home", 
       "options": { 
-        "use": "Car", 
-        "take": "Bus" 
+        "car": "Car", 
+        "bus": "Bus" 
       }, 
       "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, wallet, and phone.", 
       "items": ["keys", "wallet", "phone"] 
