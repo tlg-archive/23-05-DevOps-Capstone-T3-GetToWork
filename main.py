@@ -162,10 +162,12 @@ class Game:
     def handle_drive(self, noun):
         print(f"Handling DRIVE command for {noun}")
         # Implement 'DRIVE' logic here
+        self.player.move(noun.capitalize())
 
     def handle_board(self, noun):
         print(f"Handling BOARD command for {noun}")
         # Implement 'BOARD' logic here
+        self.player.move(noun.capitalize())
 
 
     def handle_look(self, noun):

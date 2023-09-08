@@ -6,18 +6,18 @@
         "car": "Car", 
         "bus": "Bus" 
       }, 
-      "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, wallet, and phone.", 
+      "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, wallet, and phone.\nIts 7:30AM and you need to head to work now. Will you drive your car or take the bus?", 
       "items": ["keys", "wallet", "phone"] 
     }, 
     { 
       "name": "Bus", 
+      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.", 
+      "items": ["none"],
       "options": { 
-        "TALK": "Bus Driver", 
+        "Bus Driver": "Bus Driver", 
         "SIT": "Seat", 
         "Bus Driver Conversation": "Bus Driver Conversation" 
-      }, 
-      "description": "(TAKEN FROM DEREKS FILE)", 
-      "items": ["none"] 
+      }
     },
     { 
       "name": "Bus Driver Conversation", 
@@ -30,29 +30,38 @@
     },
     { 
       "name": "Bus Stop One", 
-      "description": "Your journey begins at a quiet bus stop", 
+      "description": "You are near the first stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
       "items": ["keys", "wallet", "phone"], 
       "options": { 
-        "pull cord exit": "Bus Stop 2", 
-        "stay on bus": "Downtown"
+        "pull cord exit": "Wrong Stop Delay", 
+        "stay on bus": "Bus Stop 2"
       }
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "Your journey begins at a quiet bus stop", 
+      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
       "items": ["keys", "wallet", "phone"], 
       "options": { 
-        "pull cord exit": "Bus Stop 3", 
-        "stay on bus": "Downtown"
+        "pull cord exit": "Downtown", 
+        "stay on bus": "Bus Stop 3"
       }
     },
     { 
       "name": "Bus Stop 3", 
-      "description": "Your journey begins at a quiet bus stop", 
+      "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
       "items": ["keys", "wallet", "phone"], 
       "options": { 
-        "pull cord exit": "Downtown", 
-        "stay on bus": "Downtown"
+        "pull cord exit": "Wrong Stop Delay", 
+        "stay on bus": "Wrong Stop Delay"
+      }
+    },
+    {
+      "name": "Wrong Stop Delay",
+      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: 30 minutes.\nHEAD DOWNTOWN", 
+      "items": [],
+      "options": { 
+        "___comment___": "THIS WILL ADD A DELAY, REGARDLESS OF WHAT OPTION YOU CHOOSE, BUT YOU STILL HEAD DOWNTOWN",
+        "Downtown": "Downtown"
       }
     },
     { 
