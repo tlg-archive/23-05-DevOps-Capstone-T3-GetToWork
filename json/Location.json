@@ -6,8 +6,8 @@
         "car": "Car", 
         "bus": "Bus" 
       }, 
-      "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, wallet, and phone.\nIts 7:30AM and you need to head to work now. Will you drive your car or take the bus?", 
-      "items": ["keys", "wallet", "phone"] 
+      "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, money, bus card, and phone.\nIts 7:30AM and you need to head to work now. Will you drive your car or take the bus?", 
+      "items": ["keys", "money", "bus card", "phone"] 
     }, 
     { 
       "name": "Bus", 

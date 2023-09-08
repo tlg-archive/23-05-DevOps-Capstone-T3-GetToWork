@@ -118,6 +118,22 @@ class Player:
                 return
         print(f"There's no {item_name} here.")
 
+    def use_item(self, noun):
+        #removes item from your inventory, adds it to the current location item list
+        print(f"use item {noun}")
+        #print(f"item list in room: {self.current_room.items}") #IS A CLASS/OBJECT LOOP THROUGH IT?
+        if len(self.inventory) > 0: 
+            for item in self.inventory:
+                print(item, "item")
+                print(self.inventory, "inventory") 
+                if item.name == noun:
+                    print("I WORK")
+                    self.inventory.remove(item)
+                    self.current_room.items.append(item)
+                    print(f"You take used the {item.name} in {self.current_room}.")
+        else:
+            print("You have no items to use!")
+
     def inventory_list(self):
         if not self.inventory:
             print("Your inventory is empty.")
@@ -181,7 +197,7 @@ class Game:
             npc_data = json.load(npc_file)
             #self.locations[npc_name] = npc_name
             for npc_name, npc_info in npc_data.items():
-                print(f"NPC NAME: {npc_name}")
+                #print(f"NPC NAME: {npc_name}")
                 #print(f"NPC message: {npc_info['message']}")
                 new_npc = NPC(npc_name, npc_info["message"])
                 new_npc.random_response = npc_info["random_response"]
@@ -190,7 +206,7 @@ class Game:
                     #print(f"NPC OPT ACT: {opt_act}")
                     #print(f"NPC OPT DEST: {opt_dest}")
                     new_npc.add_option(opt_act, opt_dest)
-                print("new_npc", new_npc)
+                #print("new_npc", new_npc)
                 self.locations[npc_name] = new_npc
 
     def parse_command(self, command):
@@ -226,7 +242,8 @@ class Game:
 
     def handle_use(self, noun):
         print(f"Handling USE command for {noun}")
-        self.player.move(noun.capitalize())
+        #self.player.move(noun.capitalize())
+        self.player.use_item(noun)
 
     def handle_drive(self, noun):
         print(f"Handling DRIVE command for {noun}")
@@ -254,8 +271,9 @@ class Game:
         self.player = Player("Player Name")
         self.player.current_room = self.locations[starting_location]
         test_loc = list(self.locations.keys())
-        print(f"List of locations {test_loc}")
-        #print(f"list of items in the current room {self.player.current_room.items}")
+        #print(f"List of locations {test_loc}")
+        print(f"current room {self.player.current_room}")
+        print(f"list of items in the current room {self.player.current_room.items}")
         while True:
             self.player.look_around()
             command = input(">> ").strip().lower()
