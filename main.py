@@ -119,6 +119,9 @@ class Game:
                         item = Item(item_name, item_info["description"])
                         location.add_item(item)
                 self.locations[loc_info["name"]] = location
+    
+    def handle_inventory(self):
+        self.player.inventory_list()
 
     def parse_command(self, command):
         command_words = command.split(' ')
@@ -135,16 +138,17 @@ class Game:
             'pull': ['pull', 'yank', 'tug', 'grab'],
             'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
         }
+        
 
         for key, values in synonyms.items():
             if verb in values:
-                method_name = f"handle_{key}"
+                method_name= f"handle_{key}"
                 method = getattr(self, method_name, None)
 
                 if method and callable(method):
                     method(noun)
                     return
-        print("Invalid command. Type 'Help' for more information.")
+        print("Invaild command. Type 'Help' for more information.")
 
     def handle_take(self, noun):
         print(f"Handling TAKE command for {noun}")
@@ -188,6 +192,8 @@ class Game:
                     continue
             elif command in ["help", "info", "commands", "hint", "assist"]:
                 print(game_text['help'])
+            elif command in ["inventory", "pocket"]:
+                self.handle_inventory()
             else:
                 self.parse_command(command)
 
