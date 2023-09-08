@@ -80,6 +80,7 @@ class Player:
         self.name = name
         self.inventory = []
         self.current_room = None
+        self.current_time= 450
 
     def move(self, noun):
         #these print statements show the current room and exit options
@@ -102,8 +103,11 @@ class Player:
         #print(hasattr(self.current_room, 'message'))
         if hasattr(self.current_room, 'description'):
             print(self.current_room.description,"\n")
+            self.display_status()
+
         else:
             print(self.current_room.message,"\n")
+            self.display_status()
             #random npc message code goes here, is currently hard codes
             print(self.current_room.random_response[0],"\n")
             
@@ -143,6 +147,17 @@ class Player:
                     print(items) """
         else:
             print(f"You can't talk with {noun} here.")
+
+    def advance_time(self, minutes=10):
+        self.current_time =+ minutes
+        if self.current_time >= 540:
+            print("It is now 9:00am, you are late to your first day of work.")
+            exit()
+
+    def display_status(self):
+        hours, minutes = divmod(self.current_time, 60)
+        print(f"Current Time: {hours:02d}:{minutes:02d}am")
+        self.inventory_list()
 
 class Game:
     def __init__(self, locations_file, items_file, npc_file):
@@ -272,8 +287,12 @@ class Game:
                 print(game_text['help'])
             elif command in ["inventory", "pocket"]:
                 self.handle_inventory()
+            elif command == "time":
+                self.player.display_status()
             else:
                 self.parse_command(command)
+            
+            self.player.advance_time()
 
 if __name__ == "__main__":
     clear_screen()
