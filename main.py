@@ -19,7 +19,6 @@ def convert_json():
     return game_text
 
 def display_description(object_to_look):
-    # Look in items
     with open("json/items.json") as items_file:
         items_data = json.load(items_file)
         for item, details in items_data.items():
@@ -27,13 +26,11 @@ def display_description(object_to_look):
                 print(details['description'])
                 return
 
-    # Look in locations
     for location, details in game.locations.items():
         if location.lower() == object_to_look.lower():
             print(details.description)
             return
 
-    # If the object_to_look isn't found
     print(f"Cannot find information about {object_to_look}.")
 
 class Item:
@@ -61,13 +58,7 @@ class Player:
         self.inventory = []
         self.current_room = None
 
-
     def move(self, noun):
-        #these print statements show the current room and exit options
-        #print("current room",self.current_room)
-        #print(noun, "noun") 
-        #print(game.locations[noun])
-
         if noun.lower() in self.current_room.options:
             self.current_room = game.locations[noun]
         else:
@@ -112,51 +103,28 @@ class Game:
     def load_game_data(self, locations_file, items_file):
         with open(locations_file, "r") as loc_file:
             locations_data = json.load(loc_file)
-            for index, loc_info in enumerate(locations_data["locations"]):
+        
+            for loc_info in locations_data["locations"]:
                 location = Location(loc_info["name"], loc_info["description"])
+            
                 for opt_act, opt_dest in loc_info["options"].items():
                     location.add_option(opt_act, opt_dest)
-                for item_name in loc_info["items"]:
+
+                for item_name in loc_info.get("items", []):
                     item_info = self.load_item_data(items_file, item_name)
                     if item_info:
-                        item = Item(item_name, item_info["description"])
-                        location.add_item(item_name)
+                        item = Item(item_name, item_info["description"])  # create an Item object
+                        location.add_item(item)  # pass the Item object instead of string
+
                 self.locations[loc_info["name"]] = location
 
-
-    def parse_command(self, command):
-        command_words = command.split(' ')
-        verb = command_words[0]
-        noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
-        
-        synonyms = {
-            'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
-            'use': ['use'],
-            'drive': ['drive', 'ride'],
-            'board': ['board', 'catch'],
-            'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
-            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
-            'pull': ['pull', 'yank', 'tug', 'grab'],
-            'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
-        }
-        
-        for key, values in synonyms.items():
-            if verb in values:
-                method_name = f"handle_{key}"
-                method = getattr(self, method_name, None)
-                
-                if method and callable(method):
-                    method(noun)
-                    return
-        print("Invalid command. Type 'Help' for more information.")
-
+ 
     def handle_take(self, noun):
         print(f"Handling TAKE command for {noun}")
-        # Implement 'TAKE' logic here
+        self.player.take_item(noun)
 
     def handle_use(self, noun):
         print(f"Handling USE command for {noun}")
-        # Implement 'USE' logic here
         self.player.move(noun.capitalize())
 
     def handle_drive(self, noun):
@@ -169,7 +137,6 @@ class Game:
         # Implement 'BOARD' logic here
         self.player.move(noun.capitalize())
 
-
     def handle_look(self, noun):
         print(f"Handling LOOK command for {noun}")
         if noun:
@@ -178,26 +145,30 @@ class Game:
             print("What do you want to look at?")
 
     def start_game(self):
-        starting_location = 'Home'
-        self.player = Player("Player Name")
-        self.player.current_room = self.locations[starting_location]
-        print(f"list of items in the current room {self.player.current_room.items}")
+        player_name = input("Enter your name: ")
+        self.player = Player(player_name)
+        self.player.current_room = self.locations["Home"]
+        
         while True:
             self.player.look_around()
-            command = input(">> ").strip().lower()
-            if not command:
-                continue
-            if command == "quit":
-                print(game_text['quit'])
-                exit_command = input("> ").lower().strip()
-                if exit_command in ['yes', 'exit', 'quit']:
-                    break
-                elif exit_command in ['no']:
-                    continue
-            elif command in ["help", "info", "commands", "hint", "assist"]:
-                print(game_text['help'])
+            command = input("> ").lower().split()
+            verb = command[0]
+            noun = ' '.join(command[1:]) if len(command) > 1 else None
+
+            if verb == "look":
+                self.handle_look(noun)
+            elif verb == "take" or verb == "get":
+                self.handle_take(noun)
+            elif verb == "use":
+                self.handle_use(noun)
+            elif verb == "drive":
+                self.handle_drive(noun)
+            elif verb == "board":
+                self.handle_board(noun)
+            elif verb == "quit":
+                break
             else:
-                self.parse_command(command)
+                print("I'm not sure what you're trying to do.")
 
 if __name__ == "__main__":
     clear_screen()
