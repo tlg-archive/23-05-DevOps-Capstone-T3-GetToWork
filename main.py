@@ -19,6 +19,7 @@ def convert_json():
     return game_text
 
 def display_description(object_to_look):
+    # Look in items
     with open("json/items.json") as items_file:
         items_data = json.load(items_file)
         for item, details in items_data.items():
@@ -26,11 +27,13 @@ def display_description(object_to_look):
                 print(details['description'])
                 return
 
+    # Look in locations
     for location, details in game.locations.items():
         if location.lower() == object_to_look.lower():
             print(details.description)
             return
 
+    # If the object_to_look isn't found
     print(f"Cannot find information about {object_to_look}.")
 
 class Item:
@@ -38,6 +41,9 @@ class Item:
         self.name = name
         self.description = description
         self.locations = []
+
+    def __str__(self):
+        return self.name
 
 class Location:
     def __init__(self, name, description):
@@ -103,22 +109,43 @@ class Game:
     def load_game_data(self, locations_file, items_file):
         with open(locations_file, "r") as loc_file:
             locations_data = json.load(loc_file)
-        
-            for loc_info in locations_data["locations"]:
+            for index, loc_info in enumerate(locations_data["locations"]):
                 location = Location(loc_info["name"], loc_info["description"])
-            
                 for opt_act, opt_dest in loc_info["options"].items():
                     location.add_option(opt_act, opt_dest)
-
-                for item_name in loc_info.get("items", []):
+                for item_name in loc_info["items"]:
                     item_info = self.load_item_data(items_file, item_name)
                     if item_info:
-                        item = Item(item_name, item_info["description"])  # create an Item object
-                        location.add_item(item)  # pass the Item object instead of string
-
+                        item = Item(item_name, item_info["description"])
+                        location.add_item(item)
                 self.locations[loc_info["name"]] = location
 
- 
+    def parse_command(self, command):
+        command_words = command.split(' ')
+        verb = command_words[0]
+        noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
+
+        synonyms = {
+            'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
+            'use': ['use'],
+            'drive': ['drive', 'ride'],
+            'board': ['board', 'catch'],
+            'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
+            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
+            'pull': ['pull', 'yank', 'tug', 'grab'],
+            'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
+        }
+
+        for key, values in synonyms.items():
+            if verb in values:
+                method_name = f"handle_{key}"
+                method = getattr(self, method_name, None)
+
+                if method and callable(method):
+                    method(noun)
+                    return
+        print("Invalid command. Type 'Help' for more information.")
+
     def handle_take(self, noun):
         print(f"Handling TAKE command for {noun}")
         self.player.take_item(noun)
@@ -129,12 +156,10 @@ class Game:
 
     def handle_drive(self, noun):
         print(f"Handling DRIVE command for {noun}")
-        # Implement 'DRIVE' logic here
         self.player.move(noun.capitalize())
 
     def handle_board(self, noun):
         print(f"Handling BOARD command for {noun}")
-        # Implement 'BOARD' logic here
         self.player.move(noun.capitalize())
 
     def handle_look(self, noun):
@@ -145,30 +170,26 @@ class Game:
             print("What do you want to look at?")
 
     def start_game(self):
-        player_name = input("Enter your name: ")
-        self.player = Player(player_name)
-        self.player.current_room = self.locations["Home"]
-        
+        starting_location = 'Home'
+        self.player = Player("Player Name")
+        self.player.current_room = self.locations[starting_location]
+        print("List of items in the current room:", [str(item) for item in self.player.current_room.items])
         while True:
             self.player.look_around()
-            command = input("> ").lower().split()
-            verb = command[0]
-            noun = ' '.join(command[1:]) if len(command) > 1 else None
-
-            if verb == "look":
-                self.handle_look(noun)
-            elif verb == "take" or verb == "get":
-                self.handle_take(noun)
-            elif verb == "use":
-                self.handle_use(noun)
-            elif verb == "drive":
-                self.handle_drive(noun)
-            elif verb == "board":
-                self.handle_board(noun)
-            elif verb == "quit":
-                break
+            command = input(">> ").strip().lower()
+            if not command:
+                continue
+            if command == "quit":
+                print(game_text['quit'])
+                exit_command = input("> ").lower().strip()
+                if exit_command in ['yes', 'exit', 'quit']:
+                    break
+                elif exit_command in ['no']:
+                    continue
+            elif command in ["help", "info", "commands", "hint", "assist"]:
+                print(game_text['help'])
             else:
-                print("I'm not sure what you're trying to do.")
+                self.parse_command(command)
 
 if __name__ == "__main__":
     clear_screen()
@@ -177,9 +198,9 @@ if __name__ == "__main__":
         game_text = convert_json()
         print(game_text['intro'])
         choice = input(">> ").strip().lower()
-        
+
         if choice in ["start", "new game", "start new game"]:
-            game = Game("json/Location.json","json/items.json")
+            game = Game("json/Location.json", "json/items.json")
             game.start_game()
         elif choice in ["quit", "exit"]:
             print("Thanks for playing!")
