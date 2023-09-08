@@ -43,6 +43,9 @@ class Item:
         self.description = description
         self.locations = []
 
+    def __str__(self):
+        return self.name
+
 class Location:
     def __init__(self, name, description):
         self.name = name
@@ -84,7 +87,6 @@ class Player:
         print(noun, "noun") 
         print(f"current room options: {self.current_room.options}")
         #print(game.locations[noun])
-
         if noun.lower() in self.current_room.options:
             self.current_room = game.locations[noun]
         else:
@@ -167,7 +169,7 @@ class Game:
                     item_info = self.load_item_data(items_file, item_name)
                     if item_info:
                         item = Item(item_name, item_info["description"])
-                        location.add_item(item_name)
+                        location.add_item(item)
                 self.locations[loc_info["name"]] = location
 
     def load_npc(self,npc_file):
@@ -192,7 +194,7 @@ class Game:
         command_words = command.split(' ')
         verb = command_words[0]
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
-        
+
         synonyms = {
             'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
             'use': ['use'],
@@ -203,12 +205,12 @@ class Game:
             'pull': ['pull', 'yank', 'tug', 'grab'],
             'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
         }
-        
+
         for key, values in synonyms.items():
             if verb in values:
                 method_name = f"handle_{key}"
                 method = getattr(self, method_name, None)
-                
+
                 if method and callable(method):
                     method(noun)
                     return
@@ -216,11 +218,10 @@ class Game:
 
     def handle_take(self, noun):
         print(f"Handling TAKE command for {noun}")
-        # Implement 'TAKE' logic here
+        self.player.take_item(noun)
 
     def handle_use(self, noun):
         print(f"Handling USE command for {noun}")
-        # Implement 'USE' logic here
         self.player.move(noun.capitalize())
 
     def handle_drive(self, noun):
@@ -230,7 +231,6 @@ class Game:
 
     def handle_board(self, noun):
         print(f"Handling BOARD command for {noun}")
-        # Implement 'BOARD' logic here
         self.player.move(noun.capitalize())
 
     def handle_look(self, noun):
@@ -249,7 +249,6 @@ class Game:
         starting_location = 'Home'
         self.player = Player("Player Name")
         self.player.current_room = self.locations[starting_location]
-
         test_loc = list(self.locations.keys())
         print(f"List of locations {test_loc}")
         #print(f"list of items in the current room {self.player.current_room.items}")
@@ -277,7 +276,7 @@ if __name__ == "__main__":
         game_text = convert_json()
         print(game_text['intro'])
         choice = input(">> ").strip().lower()
-        
+
         if choice in ["start", "new game", "start new game"]:
             game = Game("json/Location.json","json/items.json","json/dialouge.json")
             game.start_game()
