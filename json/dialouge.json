@@ -1,20 +1,29 @@
 {
-    "Bus Driver GOOD": {
-        "message": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.\nYou tell the Bus Driver \"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"",
+    "Bus Driver": {
+        "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"",
+        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\\n[You find a seat and start to worry as the bus starts moving.]",
+        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we et to [BUS STOP NAME]. Just take a seat, and I'll make sure you get there safely.\"\\n[You find a seat and relax as the bus starts moving.]"
+        ],
         "options": [
             {
-                "response": "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we et to [BUS STOP NAME]. Just take a seat, and I'll make sure you get there safely.\"\\n[You find a seat and relax as the bus starts moving.]",
-                "next_node": "SIT on Bus"
+                "___comment___": "/* needs to go to bus stop locations */",
+                "response": "SIT in seat and ride the bus",
+                "Bus Stop One": "Bus Stop One" 
             }
         ]
+
     },
-    "Bus Driver BAD": {
-        "message": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.\nYou tell the Bus Driver \"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"",
+    "Person": {
+        "message": "Spotting a passerby who looks like they might know the area, you muster the courage to ask the Person and ask:\"I'm trying to go to the DRW Building. Do you happen to know how get there?\"",
+        "random_response": ["You spot a passerby and muster the courage to ask for directions. \"Excuse me, do you know the way to DRW?\" The person glances up, shrugs, and mutters, \"Not really sure,\" before walking away, leaving you just as lost as before.",
+        "The person smiles and says, \"Absolutely! Just go two blocks down this street, take a left, and you'll see the DRW building right there. Can't miss it.\" Their concise directions lift your spirits. For the first time all morning, you feel a strong sense of relief and gratitude. With renewed optimism, you think you might just make it to your first day at work on time after all."],
         "options": [
             {
-                "response": "\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\\n[You find a seat and start to worry as the bus starts moving.]",
-                "next_node": "SIT on Bus"
+                "___comment___": "/* needs to go to bus stop locations */",
+                "response": "Head to work",
+                "DRW": "DRW" 
             }
         ]
+
     }
 }
