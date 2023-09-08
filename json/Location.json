@@ -14,7 +14,7 @@
       "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.", 
       "items": ["none"],
       "options": { 
-        "Bus Driver": "Bus Driver", 
+        "bus driver": "Bus Driver", 
         "SIT": "Seat", 
         "Bus Driver Conversation": "Bus Driver Conversation" 
       }
@@ -25,7 +25,7 @@
         "GOOD": "Bus Driver knows where DRW is and is helpful", 
         "BAD": "Bus Driver does not know where DRW is, is not helpful"
       }, 
-      "description": "(TAKE FROM DEREK FILE)", 
+      "description": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"", 
       "items": ["none"] 
     },
     { 
