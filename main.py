@@ -47,11 +47,12 @@ class Item:
         return self.name
 
 class Location:
-    def __init__(self, name, description):
+    def __init__(self, name, description,req_item):
         self.name = name
         self.description = description
         self.options = {}
         self.items = []
+        self.required_item = req_item
 
     def add_option(self, action, loc):
         self.options[action] = loc
@@ -59,21 +60,28 @@ class Location:
     def add_item(self, item):
         self.items.append(item)
 
+    def add_req_item(self, item):
+        self.required_item.append(item)
+
     def info(self):
         return f"name: {self.name}\ndescription: {self.description}\items:{self.items}\noptions:{self.options}"
 
 class NPC:
-    def __init__(self, name, message):
+    def __init__(self, name, message,req_item):
         self.name = name
         self.message = message
         self.random_response = []
         self.options = {}
+        self.required_item = req_item
 
     def add_option(self, action, loc):
         self.options[action] = loc
 
     def info(self):
         return f"name: {self.name}\nmessage: {self.message}\nresponse:{self.random_response}\noptions:{self.options}"
+
+    def add_req_item(self, item):
+        self.required_item.append(item)
 
 class Player:
     def __init__(self, name):
@@ -83,12 +91,28 @@ class Player:
 
     def move(self, noun):
         #these print statements show the current room and exit options
-        #print("current room",self.current_room)
-        print(noun, "noun") 
-        print(f"current room options: {self.current_room.options}")
+        #print(noun, "noun") 
+        #print(f"current room options: {self.current_room.options}")
         #print(game.locations[noun])
         if noun.lower() in self.current_room.options:
-            self.current_room = game.locations[noun]
+            if self.current_room.required_item:
+                #check your inventory to see if the required item exists, need to loop throught the inventory list
+                check_req = False
+                for item in self.inventory:
+                    check_req = item.name == self.current_room.required_item
+                    if check_req == True:
+                        print("Leave the loop")
+                        break
+
+                if check_req == True:
+                    new_loc = self.current_room.options.get(noun.lower())
+                    self.current_room = game.locations[new_loc]
+                else:
+                    print(f"Oh no! You left your {self.current_room.required_item} at home. Please quit and restart to get this item.")
+            else:
+                new_loc = self.current_room.options.get(noun.lower())
+                #print(f"Does this work? {self.current_room.options.get(noun.lower())}")
+                self.current_room = game.locations[new_loc]
         else:
             print("You can't go that way.")
 
@@ -96,15 +120,23 @@ class Player:
         create_window()
         print("\nCURRENT LOCATION: ", self.current_room.name)
         print("\n")
-        #print(self.current_room.info())
-        #print(f"type of current room: {type(self.current_room)}")
-        #print(hasattr(self.current_room, 'description'))
-        #print(hasattr(self.current_room, 'message'))
         if hasattr(self.current_room, 'description'):
             print(self.current_room.description,"\n")
+
+            #Dynamically print all items in a room
+            if len(self.current_room.items) > 0:
+                print(f"list of items in the current room:")
+                for item in self.current_room.items:
+                    print(item.name)
+
+            #check for required item
+            if self.current_room.required_item != "":
+                print(f"required item: {self.current_room.required_item}")
+            else:
+                print("No required item for this room")
         else:
             print(self.current_room.message,"\n")
-            #random npc message code goes here, is currently hard codes
+            #random npc message code goes here, is currently hard coded, need to use the random module to grab the length of the random response array, and select a range number between 0 and the array length (minus 1)
             print(self.current_room.random_response[0],"\n")
             
         create_window()
@@ -117,6 +149,22 @@ class Player:
                 print(f"You take the {item_name}.")
                 return
         print(f"There's no {item_name} here.")
+
+    def use_item(self, noun):
+        #removes item from your inventory, adds it to the current location item list
+        print(f"use item {noun}")
+        #print(f"item list in room: {self.current_room.items}") #IS A CLASS/OBJECT LOOP THROUGH IT?
+        if len(self.inventory) > 0: 
+            for item in self.inventory:
+                print(item, "item")
+                print(self.inventory, "inventory") 
+                if item.name == noun:
+                    print("I WORK")
+                    self.inventory.remove(item)
+                    self.current_room.items.append(item)
+                    print(f"You take used the {item.name} in {self.current_room}.")
+        else:
+            print("You have no items to use!")
 
     def inventory_list(self):
         if not self.inventory:
@@ -162,12 +210,17 @@ class Game:
         with open(locations_file, "r") as loc_file:
             locations_data = json.load(loc_file)
             for index, loc_info in enumerate(locations_data["locations"]):
-                location = Location(loc_info["name"], loc_info["description"])
+                location = Location(loc_info["name"], loc_info["description"],loc_info["required-item"])
+
+                #add required item for the room
+                #location.add_req_item(loc_info["required-item"])
                 for opt_act, opt_dest in loc_info["options"].items():
                     location.add_option(opt_act, opt_dest)
                 for item_name in loc_info["items"]:
+                    #print(f"item name: {item_name}")
                     item_info = self.load_item_data(items_file, item_name)
                     if item_info:
+                        #print(f"adding item to location - item name: {item_name}")
                         item = Item(item_name, item_info["description"])
                         location.add_item(item)
                 self.locations[loc_info["name"]] = location
@@ -176,21 +229,18 @@ class Game:
         self.player.inventory_list()
 
     def load_npc(self,npc_file):
-        print("loading npc data")
+       #print("loading npc data")
         with open("json/dialouge.json") as npc_file:
             npc_data = json.load(npc_file)
             #self.locations[npc_name] = npc_name
             for npc_name, npc_info in npc_data.items():
-                print(f"NPC NAME: {npc_name}")
-                #print(f"NPC message: {npc_info['message']}")
-                new_npc = NPC(npc_name, npc_info["message"])
+                #create new NPC object
+                new_npc = NPC(npc_name, npc_info["message"],npc_info["required-item"])
                 new_npc.random_response = npc_info["random_response"]
-                #print(f"NPC INFO: {npc_info}")
+
+                #add NPC dialogue exit options
                 for opt_act, opt_dest in npc_info["options"].items():
-                    #print(f"NPC OPT ACT: {opt_act}")
-                    #print(f"NPC OPT DEST: {opt_dest}")
                     new_npc.add_option(opt_act, opt_dest)
-                print("new_npc", new_npc)
                 self.locations[npc_name] = new_npc
 
     def parse_command(self, command):
@@ -200,9 +250,9 @@ class Game:
 
         synonyms = {
             'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
-            'use': ['use'],
+            'use': ['use','drop'],
             'drive': ['drive', 'ride', 'go'],
-            'board': ['board', 'catch'],
+            'board': ['board', 'catch','stay'],
             'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
             'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
             'pull': ['pull', 'yank', 'tug', 'grab'],
@@ -226,7 +276,8 @@ class Game:
 
     def handle_use(self, noun):
         print(f"Handling USE command for {noun}")
-        self.player.move(noun.capitalize())
+        #self.player.move(noun.capitalize())
+        self.player.use_item(noun)
 
     def handle_drive(self, noun):
         print(f"Handling DRIVE command for {noun}")
@@ -235,7 +286,11 @@ class Game:
 
     def handle_board(self, noun):
         print(f"Handling BOARD command for {noun}")
-        self.player.move(noun.capitalize())
+        self.player.move(noun.title())
+
+    def handle_pull(self, noun):
+        print(f"Handling PULL command for {noun}")
+        self.player.move(noun.title())
 
     def handle_look(self, noun):
         print(f"Handling LOOK command for {noun}")
@@ -249,14 +304,21 @@ class Game:
         # Implement 'TAKE' logic here
         self.player.talk_npc(noun)
 
+    def handle_buy(self, noun):
+        print(f"Handling BUY command for {noun}")
+        # Implement 'TAKE' logic here
+        self.player.talk_npc(noun)
+
     def start_game(self):
         starting_location = 'Home'
         self.player = Player("Player Name")
         self.player.current_room = self.locations[starting_location]
         test_loc = list(self.locations.keys())
         print(f"List of locations {test_loc}")
-        #print(f"list of items in the current room {self.player.current_room.items}")
+        
         while True:
+            print(f"current room options: {self.player.current_room.options}")
+            #actual code
             self.player.look_around()
             command = input(">> ").strip().lower()
             if not command:

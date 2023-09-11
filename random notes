@@ -1,0 +1,29 @@
+NOTE FOR CAYLA FOR MONDAT
+- I was able to get the remove itme from your inventory to worj
+- the item is also automatically removed from the room's list of items when you add it to your inventory
+TO D0:
+- if you use/drop an item, it needs to be added back to the current room's item list
+- dynamically display the current room's item list instead of hard coding it
+
+if len(self.inventory) > 0: 
+            for item in self.current_room.items:
+                print(item, "item")
+                print(self.inventory, "inventory") 
+                if item.name == noun:
+                    print("I WORK")
+                    self.inventory.remove(item)
+                    self.current_room.items.append(item)
+                    print(f"You take used the {item_name} in {self.current_room}.")
+
+You step onto the bus, and in front of you is the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.
+
+The bus itself isn't too crowded, thankfully. There's an open seat a few feet away
+
+
+You board the bus and find a seat, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. As the bus moves, your hand hovers near the cord, ready to pull when the moment feels right.
+
+You are near the first stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.
+    PULL CORD
+    STAY ON BUS
+      
+      
