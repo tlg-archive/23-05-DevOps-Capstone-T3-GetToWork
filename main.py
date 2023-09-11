@@ -90,6 +90,7 @@ class Player:
         #print(game.locations[noun])
         if noun.lower() in self.current_room.options:
             self.current_room = game.locations[noun]
+            self.advance_time()
         else:
             print("You can't go that way.")
 
@@ -97,6 +98,7 @@ class Player:
         create_window()
         print("\nCURRENT LOCATION: ", self.current_room.name)
         print("\n")
+        #print(f"Time: {game.game_time}")
         #print(self.current_room.info())
         #print(f"type of current room: {type(self.current_room)}")
         #print(hasattr(self.current_room, 'description'))
@@ -149,7 +151,7 @@ class Player:
             print(f"You can't talk with {noun} here.")
 
     def advance_time(self, minutes=10):
-        self.current_time =+ minutes
+        self.current_time +=  minutes
         if self.current_time >= 540:
             print("It is now 9:00am, you are late to your first day of work.")
             exit()
@@ -167,6 +169,7 @@ class Game:
         self.player = None
         self.load_game_data(locations_file, items_file)
         self.load_npc(npc_file)
+        #self.game_time= "7:30"
 
     def load_item_data(self, items_file, item_name):
         with open(items_file, "r") as items_file:
@@ -292,7 +295,19 @@ class Game:
             else:
                 self.parse_command(command)
             
-            self.player.advance_time()
+
+    def increment_time(self):
+        current_hour, current_minute = map(int, self.game_time.split(':'))
+        current_minute += 10
+        if current_minute >= 60:
+            current_hour += 1
+            current_minute -= 60
+
+        self.game_time = f"{current_hour:02}:{current_minute:02}"
+        if current_hour >= 24:
+            self.game_time = "00:" + self.game_time.split(':')[1]
+
+
 
 if __name__ == "__main__":
     clear_screen()
