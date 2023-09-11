@@ -88,6 +88,7 @@ class Player:
         self.name = name
         self.inventory = []
         self.current_room = None
+        self.current_time= 450
 
     def move(self, noun):
         #these print statements show the current room and exit options
@@ -106,11 +107,13 @@ class Player:
 
                 if check_req == True:
                     new_loc = self.current_room.options.get(noun.lower())
+                    self.advance_time()
                     self.current_room = game.locations[new_loc]
                 else:
                     print(f"Oh no! You left your {self.current_room.required_item} at home. Please quit and restart to get this item.")
             else:
                 new_loc = self.current_room.options.get(noun.lower())
+                self.advance_time()
                 #print(f"Does this work? {self.current_room.options.get(noun.lower())}")
                 self.current_room = game.locations[new_loc]
         else:
@@ -120,8 +123,11 @@ class Player:
         create_window()
         print("\nCURRENT LOCATION: ", self.current_room.name)
         print("\n")
+        #print(f"Time: {game.game_time}")
+        #print(self.current_room.info())
         if hasattr(self.current_room, 'description'):
             print(self.current_room.description,"\n")
+            self.display_status()
 
             #Dynamically print all items in a room
             if len(self.current_room.items) > 0:
@@ -136,6 +142,7 @@ class Player:
                 print("No required item for this room")
         else:
             print(self.current_room.message,"\n")
+            self.display_status()
             random_response = random.sample(self.current_room.random_response, 1)
             print(random_response[0], "\n")  
         create_window()
@@ -193,6 +200,17 @@ class Player:
         else:
             print(f"You can't talk with {noun} here.")
 
+    def advance_time(self, minutes=10):
+        self.current_time +=  minutes
+        if self.current_time >= 540:
+            print("It is now 9:00am, you are late to your first day of work.")
+            exit()
+
+    def display_status(self):
+        hours, minutes = divmod(self.current_time, 60)
+        print(f"Current Time: {hours:02d}:{minutes:02d}am")
+        self.inventory_list()
+
 class Game:
     def __init__(self, locations_file, items_file, npc_file):
         self.locations = {}
@@ -201,6 +219,7 @@ class Game:
         self.player = None
         self.load_game_data(locations_file, items_file)
         self.load_npc(npc_file)
+        #self.game_time= "7:30"
 
     def load_item_data(self, items_file, item_name):
         with open(items_file, "r") as items_file:
@@ -335,8 +354,24 @@ class Game:
                 print(game_text['help'])
             elif command in ["inventory", "pocket"]:
                 self.handle_inventory()
+            elif command == "time":
+                self.player.display_status()
             else:
                 self.parse_command(command)
+            
+
+    def increment_time(self):
+        current_hour, current_minute = map(int, self.game_time.split(':'))
+        current_minute += 10
+        if current_minute >= 60:
+            current_hour += 1
+            current_minute -= 60
+
+        self.game_time = f"{current_hour:02}:{current_minute:02}"
+        if current_hour >= 24:
+            self.game_time = "00:" + self.game_time.split(':')[1]
+
+
 
 if __name__ == "__main__":
     clear_screen()
