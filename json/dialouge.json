@@ -9,7 +9,7 @@
             {
                 "___comment___": "/* needs to go to bus stop locations */",
                 "response": "SIT in seat and ride the bus",
-                "sit": "Seat" 
+                "seat": "Seat" 
             }
     },
     "Person": {
@@ -25,9 +25,9 @@
             }
     },
     "Coffee Event": {
-        "message": "Spotting a passerby who looks like they might know the area, you muster the courage to ask the Person and ask:\"I'm trying to go to the DRW Building. Do you happen to know how get there?\"",
-        "random_response": ["Coffee sipping, setting a positive tone for the day",
-        "The coffee was nasty, you are delayed on your way to work"],
+        "message": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some instructions down on your receipt for you to follow, thankfully, you seem to be close by.",
+        "random_response": ["You sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way to the DRW building",
+        "The coffee was nasty, and you dropped the receipt the barista gave you with instruuctions to the DRW Building. Thankfully you sorta remembered the way to go, but it'll take a biiiiittt longer than expected to find the DRW building."],
         "required-item": "",
         "options": 
             {

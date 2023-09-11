@@ -182,8 +182,10 @@ class Player:
         #print('game locations',game.locations)
 
         #THIS CODE SHOULD ONLY DISPLAY THE NPC DIALOGUE
-        if noun in self.current_room.options:
-            self.current_room = game.locations[noun.title()]
+        if noun.lower() in self.current_room.options:
+            new_loc = self.current_room.options.get(noun.lower())
+            self.current_room = game.locations[new_loc]
+            #self.current_room = game.locations[noun.title()]
             #print(f"I WORK {noun}")
             """ with open("json/dialouge.json") as npc_file:
                 npc_data = json.load(npc_file)
@@ -251,8 +253,8 @@ class Game:
         synonyms = {
             'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
             'use': ['use','drop'],
-            'drive': ['drive', 'ride', 'go'],
-            'board': ['board', 'catch','stay'],
+            'drive': ['drive'],
+            'board': ['board', 'catch','stay','sit','ride', 'go','stay'],
             'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
             'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
             'pull': ['pull', 'yank', 'tug', 'grab'],

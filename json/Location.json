@@ -17,7 +17,7 @@
       "required-item": "bus card",
       "options": { 
         "bus driver": "Bus Driver", 
-        "sit": "Seat",
+        "seat": "Seat",
         "home": "Home"
       }
     },
@@ -28,7 +28,7 @@
       "required-item": "", 
       "options": { 
         "bellcord": "Wrong Stop", 
-        "bus stop 2": "Bus Stop 2"
+        "bus": "Bus Stop 2"
       }
     },
     { 
@@ -66,18 +66,8 @@
       "items": [],
       "required-item": "", 
       "options": {
-        "coffee": "Coffee Shop",
+        "coffee shop": "Coffee Shop",
         "person": "Person"
-      }
-    },
-    { 
-      "name": "Speak with Person", 
-      "description": "Talk with person or ignore", 
-      "items": [],
-      "required-item": "", 
-      "options": { 
-        "GOOD": "The Person is helpful, you can head straight to DRW building", 
-        "BAD": "The Person is not helpful, you are lost for X minutes, delaying your time to get to work"
       }
     },
     { 
@@ -90,30 +80,21 @@
       }
     },
     { 
-      "name": "Bought Coffee", 
-      "description": "Coffee sipping, setting a positive tone for the day", 
-      "items": [],
-      "required-item": "", 
-      "options": { 
-        "GOOD": "You get a caffeine high, you get to work earlier"
-      }
-    },
-    { 
-      "name": "Coffee Event, no boost", 
-      "description": "Coffee sipping, ok start", 
-      "items": [], 
-      "required-item": "",
-      "options": { 
-        "BAD": "The coffee was nasty, you are delayed on your way to work"
-      }
-    },
-    { 
       "name": "Car", 
-      "description": "Inside car", 
+      "description": "Inside car. You deicede to hop on the highway this time.", 
       "items": [], 
       "required-item": "keys",
       "options": { 
-        "TAKE": "Highway"
+        "highway": "Highway"
+      }
+    },
+    { 
+      "name": "Highway", 
+      "description": "Inside car. You deicede to hop on the highway this time.", 
+      "items": [], 
+      "required-item": "keys",
+      "options": { 
+        "highway": "Highway"
       }
     },
     { 
