@@ -7,9 +7,16 @@
       "Car"
     ]
   },
-  "wallet": {
-    "name": "wallet",
+  "money": {
+    "name": "money",
     "description": "wallet with {X} dollars inside it",
+    "location": [
+      "Home"
+    ]
+  },
+  "bus card": {
+    "name": "bus card",
+    "description": "Your CTA Ventra card, to use on your way to work",
     "location": [
       "Home"
     ]

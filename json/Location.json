@@ -7,90 +7,93 @@
         "bus": "Bus" 
       }, 
       "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, money, bus card, and phone.\nIts 7:30AM and you need to head to work now. Will you drive your car or take the bus?", 
-      "items": ["keys", "money", "bus card", "phone"] 
+      "items": ["keys", "money", "bus card", "phone"],
+      "required-item": ""
     }, 
     { 
       "name": "Bus", 
       "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.", 
-      "items": ["none"],
+      "items": [],
+      "required-item": "bus card",
       "options": { 
         "bus driver": "Bus Driver", 
-        "SIT": "Seat", 
-        "Bus Driver Conversation": "Bus Driver Conversation" 
+        "sit": "Seat",
+        "home": "Home"
       }
     },
     { 
-      "name": "Bus Driver Conversation", 
+      "name": "Seat", 
+      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the cord, ready to pull when the moment feels right. \nOr do you stay and keep riding towards Bus Stop 2?", 
+      "items": [],
+      "required-item": "", 
       "options": { 
-        "GOOD": "Bus Driver knows where DRW is and is helpful", 
-        "BAD": "Bus Driver does not know where DRW is, is not helpful"
-      }, 
-      "description": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"", 
-      "items": ["none"] 
-    },
-    { 
-      "name": "Bus Stop One", 
-      "description": "You are near the first stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
-      "items": ["keys", "wallet", "phone"], 
-      "options": { 
-        "pull cord exit": "Wrong Stop Delay", 
-        "stay on bus": "Bus Stop 2"
+        "bellcord": "Wrong Stop", 
+        "bus stop 2": "Bus Stop 2"
       }
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
-      "items": ["keys", "wallet", "phone"], 
+      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the cord, ready to pull when the moment feels right. \nOr do you stay and keep riding towards Bus Stop 2?", 
+      "items": [],
+      "required-item": "", 
       "options": { 
-        "pull cord exit": "Downtown", 
-        "stay on bus": "Bus Stop 3"
+        "bellcord": "Downtown", 
+        "bus": "Bus Stop 3"
       }
     },
     { 
       "name": "Bus Stop 3", 
       "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
-      "items": ["keys", "wallet", "phone"], 
+      "items": [],
+      "required-item": "", 
       "options": { 
-        "pull cord exit": "Wrong Stop Delay", 
-        "stay on bus": "Wrong Stop Delay"
+        "bellcord": "Wrong Stop", 
+        "bus": "Wrong Stop"
       }
     },
     {
-      "name": "Wrong Stop Delay",
+      "name": "Wrong Stop",
       "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: 30 minutes.\nHEAD DOWNTOWN", 
       "items": [],
+      "required-item": "",
       "options": { 
-        "___comment___": "THIS WILL ADD A DELAY, REGARDLESS OF WHAT OPTION YOU CHOOSE, BUT YOU STILL HEAD DOWNTOWN",
-        "Downtown": "Downtown"
+        "downtown": "Downtown"
       }
     },
     { 
       "name": "Downtown", 
       "description": "A bustling Chicago skyline with the Willis Tower, as you rush through busy streets on your first day, hoping to arrive on time", 
-      "items": ["keys", "wallet", "phone"], 
-      "options": {}
+      "items": [],
+      "required-item": "", 
+      "options": {
+        "coffee": "Coffee Shop",
+        "person": "Person"
+      }
     },
     { 
       "name": "Speak with Person", 
       "description": "Talk with person or ignore", 
-      "items": ["keys", "wallet", "phone"], 
+      "items": [],
+      "required-item": "", 
       "options": { 
         "GOOD": "The Person is helpful, you can head straight to DRW building", 
         "BAD": "The Person is not helpful, you are lost for X minutes, delaying your time to get to work"
       }
     },
     { 
-      "name": "Cozy Coffee Shop", 
+      "name": "Coffee Shop", 
       "description": "At a cozy coffee shop, a latte sets a positive tone for your first day", 
-      "items": ["Wallet", "Coffee"], 
+      "items": ["coffee"],
+      "required-item": "money", 
       "options": { 
-        "BUY": "Coffee"
+        "coffee": "Coffee Event"
       }
     },
     { 
-      "name": "Coffee Event, a boost", 
+      "name": "Bought Coffee", 
       "description": "Coffee sipping, setting a positive tone for the day", 
-      "items": ["Wallet", "Coffee"], 
+      "items": [],
+      "required-item": "", 
       "options": { 
         "GOOD": "You get a caffeine high, you get to work earlier"
       }
@@ -98,7 +101,8 @@
     { 
       "name": "Coffee Event, no boost", 
       "description": "Coffee sipping, ok start", 
-      "items": ["Wallet", "Coffee"], 
+      "items": [], 
+      "required-item": "",
       "options": { 
         "BAD": "The coffee was nasty, you are delayed on your way to work"
       }
@@ -106,7 +110,8 @@
     { 
       "name": "Car", 
       "description": "Inside car", 
-      "items": ["Keys", "Wallet", "Phone"], 
+      "items": [], 
+      "required-item": "keys",
       "options": { 
         "TAKE": "Highway"
       }
@@ -114,7 +119,8 @@
     { 
       "name": "Construction Event", 
       "description": "Construction on the highway delays your commute by 20 minutes on your first day.", 
-      "items": ["Wallet", "Keys", "Phone"], 
+      "items": [],
+      "required-item": "", 
       "options": { 
         "CONTINUE": "Driving"
       }
@@ -122,7 +128,8 @@
     { 
       "name": "Traffic Event", 
       "description": "Highway gridlock adds a 15-minute delay to your first day at work", 
-      "items": ["Wallet", "Keys", "Phone"], 
+      "items": [], 
+      "required-item": "",
       "options": { 
         "CONTINUE": "Driving"
       }
@@ -130,7 +137,8 @@
     { 
       "name": "Accident Event", 
       "description": "Accident ahead. Expect a 10-minute delay, likely to make you late", 
-      "items": ["Wallet", "Keys", "Phone"], 
+      "items": [], 
+      "required-item": "",
       "options": { 
         "GO": "Parking"
       }
@@ -138,16 +146,18 @@
     { 
       "name": "Parking Option", 
       "description": "Park close pay, Park far walk", 
-      "items": ["money"], 
+      "items": [],
+      "required-item": "", 
       "options": { 
-        "CHOOSE": "Close Parking", 
-        "CHOOSE": "Far Parking"
+        "close": "Close Parking", 
+        "far": "Far Parking"
       }
     },
     { 
       "name": "Parking Close", 
       "description": "Parked nearby, but pricey. Walk to first day, hoping it's worth it", 
-      "items": ["money"], 
+      "items": [], 
+      "required-item": "money",
       "options": { 
         "GO": "DRW"
       }
@@ -155,7 +165,8 @@
     { 
       "name": "Parking Far", 
       "description": "Affordable parking far away. Rushing to the office, first-day urgency", 
-      "items": ["money"], 
+      "items": [], 
+      "required-item": "money",
       "options": { 
         "GO": "DRW"
       }
@@ -163,7 +174,8 @@
     { 
       "name": "On time", 
       "description": "Arriving on time at DRW building, relief washes over you. Ready for a promising first day", 
-      "items": ["Wallet", "Keys", "Phone"], 
+      "items": [], 
+      "required-item": "",
       "options": { 
         "Coffee Hand": "DRW WIN"
       }
@@ -171,7 +183,8 @@
     { 
       "name": "Late", 
       "description": "Late at DRW building, dread replaces relief on your first day", 
-      "items": ["Wallet", "Keys", "Phone"], 
+      "items": [], 
+      "required-item": "",
       "options": { 
         "Coffee": "DRW Lose"
       }
