@@ -136,9 +136,8 @@ class Player:
                 print("No required item for this room")
         else:
             print(self.current_room.message,"\n")
-            #random npc message code goes here, is currently hard coded, need to use the random module to grab the length of the random response array, and select a range number between 0 and the array length (minus 1)
-            print(self.current_room.random_response[0],"\n")
-            
+            random_response = random.sample(self.current_room.random_response, 1)
+            print(random_response[0], "\n")  
         create_window()
 
     def take_item(self, item_name):
