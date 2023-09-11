@@ -3,10 +3,11 @@
     { 
       "name": "Home", 
       "options": { 
-        "car": "Car", 
-        "bus": "Bus" 
+        "car": ["Car"], 
+        "bus": ["Bus"] 
       }, 
-      "description": "Player starts off in the living room standing, fully dressed for the workday. On your dresser are your: keys, money, bus card, and phone.\nIts 7:30AM and you need to head to work now. Will you drive your car or take the bus?", 
+      "delay":0,
+      "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your car or take the bus?", 
       "items": ["keys", "money", "bus card", "phone"],
       "required-item": ""
     }, 
@@ -14,96 +15,140 @@
       "name": "Bus", 
       "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.", 
       "items": [],
+      "delay":0,
       "required-item": "bus card",
       "options": { 
-        "bus driver": "Bus Driver", 
-        "seat": "Seat",
-        "home": "Home"
+        "bus driver": ["Bus Driver"], 
+        "seat": ["Seat"]
       }
     },
     { 
       "name": "Seat", 
       "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the cord, ready to pull when the moment feels right. \nOr do you stay and keep riding towards Bus Stop 2?", 
       "items": [],
+      "delay":0,
       "required-item": "", 
       "options": { 
-        "bellcord": "Wrong Stop", 
-        "bus": "Bus Stop 2"
+        "bellcord": ["Wrong Stop"], 
+        "bus": ["Bus Stop 2"]
       }
     },
     { 
       "name": "Bus Stop 2", 
       "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the cord, ready to pull when the moment feels right. \nOr do you stay and keep riding towards Bus Stop 2?", 
       "items": [],
+      "delay":0,
       "required-item": "", 
       "options": { 
-        "bellcord": "Downtown", 
-        "bus": "Bus Stop 3"
+        "bellcord": ["Downtown"], 
+        "bus": ["Bus Stop 3"]
       }
     },
     { 
       "name": "Bus Stop 3", 
       "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
       "items": [],
+      "delay":0,
       "required-item": "", 
       "options": { 
-        "bellcord": "Wrong Stop", 
-        "bus": "Wrong Stop"
+        "bellcord": ["Wrong Stop"], 
+        "bus": ["Wrong Stop"]
       }
     },
     {
       "name": "Wrong Stop",
-      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: 30 minutes.\nHEAD DOWNTOWN", 
+      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: 15 minutes.\nHEAD DOWNTOWN", 
       "items": [],
+      "delay":25,
       "required-item": "",
       "options": { 
-        "downtown": "Downtown"
+        "downtown": ["Downtown"]
       }
     },
     { 
       "name": "Downtown", 
       "description": "A bustling Chicago skyline with the Willis Tower, as you rush through busy streets on your first day, hoping to arrive on time", 
       "items": [],
+      "delay":0,
       "required-item": "", 
       "options": {
-        "coffee shop": "Coffee Shop",
-        "person": "Person"
+        "coffee shop": ["Coffee Shop"],
+        "person": ["Person"]
       }
     },
     { 
       "name": "Coffee Shop", 
       "description": "At a cozy coffee shop, a latte sets a positive tone for your first day", 
       "items": ["coffee"],
+      "delay":0,
       "required-item": "money", 
       "options": { 
-        "coffee": "Coffee Event"
+        "coffee": ["Coffee Event"]
       }
     },
     { 
       "name": "Car", 
-      "description": "Inside car. You deicede to hop on the highway this time.", 
+      "description": "Inside car. You deicede to hop on the HIGHWAY this time to try to get to work quickly", 
       "items": [], 
+      "delay":0,
       "required-item": "keys",
       "options": { 
-        "highway": "Highway"
+        "highway": ["Highway"]
       }
     },
     { 
       "name": "Highway", 
-      "description": "Inside car. You deicede to hop on the highway this time.", 
+      "description": "On the highway. Traffic doesnt seem too bad, but the lane to your right seems to be going a bit faster.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [], 
-      "required-item": "keys",
+      "delay":0,
+      "required-item": "",
       "options": { 
-        "highway": "Highway"
+        "current lane": ["Normal Drive", "Construction Event"],
+        "right lane": ["Normal Drive", "Construction Event"]
+      }
+    },
+    { 
+      "name": "Normal Drive", 
+      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "items": [],
+      "delay":0,
+      "required-item": "", 
+      "options": { 
+        "current lane": ["Normal Drive 2", "Traffic Event"],
+        "right lane": ["Normal Drive 2", "Traffic Event"]
+      }
+    },
+    { 
+      "name": "Normal Drive 2", 
+      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "items": [],
+      "delay":0,
+      "required-item": "", 
+      "options": { 
+        "current lane": ["Normal Drive 3", "Accident Event"],
+        "right lane": ["Normal Drive 3", "Accident Event"]
+      }
+    },
+    { 
+      "name": "Normal Drive 3", 
+      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nTime to head into Downtown to find PARKING", 
+      "items": [],
+      "delay":0,
+      "required-item": "", 
+      "options": { 
+        "parking": ["Find Parking"],
+        "downtown": ["Find Parking"]
       }
     },
     { 
       "name": "Construction Event", 
       "description": "Construction on the highway delays your commute by 20 minutes on your first day.", 
       "items": [],
-      "required-item": "", 
+      "required-item": "",
+      "delay":20, 
       "options": { 
-        "CONTINUE": "Driving"
+        "current lane": ["Normal Drive 2", "Traffic Event"],
+        "right lane": ["Normal Drive 2", "Traffic Event"]
       }
     },
     { 
@@ -111,63 +156,82 @@
       "description": "Highway gridlock adds a 15-minute delay to your first day at work", 
       "items": [], 
       "required-item": "",
+      "delay":20,
       "options": { 
-        "CONTINUE": "Driving"
+        "current lane": ["Normal Drive 3", "Accident Event"],
+        "right lane": ["Normal Drive 3", "Accident Event"]
       }
     },
     { 
       "name": "Accident Event", 
-      "description": "Accident ahead. Expect a 10-minute delay, likely to make you late", 
+      "description": "Accident ahead. Expect a 15-minute delay, likely to make you late. But at least you're close to DOWNTOWN and can start to find PARKING soon.", 
       "items": [], 
       "required-item": "",
+      "delay":30,
       "options": { 
-        "GO": "Parking"
+        "parking": ["Find Parking"],
+        "downtown": ["Find Parking"]
       }
     },
     { 
-      "name": "Parking Option", 
-      "description": "Park close pay, Park far walk", 
+      "name": "Find Parking", 
+      "description": "Park close pay, Park far walk. There are many options for parking downtown. You can park CLOSE for more, and get to work faster, or park FAR for cheap, but spend more time walking to the DRW building", 
       "items": [],
+      "delay":0,
       "required-item": "", 
       "options": { 
-        "close": "Close Parking", 
-        "far": "Far Parking"
+        "close": ["Parking Close"], 
+        "far": ["Parking Far"]
       }
     },
     { 
       "name": "Parking Close", 
       "description": "Parked nearby, but pricey. Walk to first day, hoping it's worth it", 
       "items": [], 
+      "delay":0,
       "required-item": "money",
       "options": { 
-        "GO": "DRW"
+        "go": ["DRW"]
       }
     },
     { 
       "name": "Parking Far", 
       "description": "Affordable parking far away. Rushing to the office, first-day urgency", 
       "items": [], 
+      "delay":15,
       "required-item": "money",
       "options": { 
-        "GO": "DRW"
+        "go": ["DRW"]
+      }
+    },
+    { 
+      "name": "DRW", 
+      "description": "You made it to work on time. Hooray!", 
+      "items": [], 
+      "delay":0,
+      "required-item": "",
+      "options": { 
+        "Coffee": ["DRW Lose"]
       }
     },
     { 
       "name": "On time", 
       "description": "Arriving on time at DRW building, relief washes over you. Ready for a promising first day", 
       "items": [], 
+      "delay":0,
       "required-item": "",
       "options": { 
-        "Coffee Hand": "DRW WIN"
+        "Coffee Hand": ["DRW WIN"]
       }
     },
     { 
       "name": "Late", 
       "description": "Late at DRW building, dread replaces relief on your first day", 
       "items": [], 
+      "delay":0,
       "required-item": "",
       "options": { 
-        "Coffee": "DRW Lose"
+        "Coffee": ["DRW Lose"]
       }
     }
   ] 

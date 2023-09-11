@@ -1,6 +1,7 @@
 import os
 import json
 import random
+import sys
 
 # Helper functions
 def create_window():
@@ -47,15 +48,19 @@ class Item:
         return self.name
 
 class Location:
-    def __init__(self, name, description,req_item):
+    def __init__(self, name, description,req_item,loc_delay):
         self.name = name
         self.description = description
         self.options = {}
         self.items = []
         self.required_item = req_item
+        self.delay = loc_delay
 
     def add_option(self, action, loc):
         self.options[action] = loc
+
+    """ def add_delay(self, action, loc):
+        self.delay = loc_delay """
 
     def add_item(self, item):
         self.items.append(item)
@@ -92,7 +97,8 @@ class Player:
 
     def move(self, noun):
         #these print statements show the current room and exit options
-        #print(noun, "noun") 
+        #print(noun, "noun")
+        #print(f"current room: {self.current_room.name}") 
         #print(f"current room options: {self.current_room.options}")
         #print(game.locations[noun])
         if noun.lower() in self.current_room.options:
@@ -107,15 +113,21 @@ class Player:
 
                 if check_req == True:
                     new_loc = self.current_room.options.get(noun.lower())
+                    #self.advance_time()
+                    random_room = random.sample(new_loc, 1)
+                    self.current_room = game.locations[random_room[0]]
                     self.advance_time()
-                    self.current_room = game.locations[new_loc]
                 else:
                     print(f"Oh no! You left your {self.current_room.required_item} at home. Please quit and restart to get this item.")
             else:
                 new_loc = self.current_room.options.get(noun.lower())
+                #grab a random location from the room options sub-array
+                random_room = random.sample(new_loc, 1)
+
+                #ACTUAL CODE TO UNCOMMENT BELOW WHEN THE ABOVE WORKS
+                #self.advance_time()
+                self.current_room = game.locations[random_room[0]]
                 self.advance_time()
-                #print(f"Does this work? {self.current_room.options.get(noun.lower())}")
-                self.current_room = game.locations[new_loc]
         else:
             print("You can't go that way.")
 
@@ -174,37 +186,37 @@ class Player:
 
     def inventory_list(self):
         if not self.inventory:
-            print("Your inventory is empty.")
+            print(game_text["empty"])
         else:
             print("Inventory:")
             for item in self.inventory:
                 print(item.name)
 
     def talk_npc(self, noun):
-        #print(noun)
-        #print("current room",self.current_room)
-        #print(noun.title(), "noun") 
-        #print("current room options", self.current_room.options)
-        #print('game locations',game.locations)
-
         #THIS CODE SHOULD ONLY DISPLAY THE NPC DIALOGUE
         if noun.lower() in self.current_room.options:
             new_loc = self.current_room.options.get(noun.lower())
-            self.current_room = game.locations[new_loc]
-            #self.current_room = game.locations[noun.title()]
-            #print(f"I WORK {noun}")
-            """ with open("json/dialouge.json") as npc_file:
-                npc_data = json.load(npc_file)
-                for items in npc_data.items():
-                    print(items) """
+            #self.current_room = game.locations[new_loc]
+
+            random_room = random.sample(new_loc, 1)
+            #DELETE LATER
+            #print(f"new loc = {new_loc}")
+            #print(f"random room = {random_room}")
+            self.current_room = game.locations[random_room[0]]
         else:
             print(f"You can't talk with {noun} here.")
 
     def advance_time(self, minutes=10):
-        self.current_time +=  minutes
+        #print(f"current room for advance time troubleshooting: {self.current_room.name}")
+        #print(f"current room delay: {self.current_room.delay}")
+        if self.current_room.delay == 0:
+            self.current_time +=  minutes
+        else:
+            self.current_time +=  self.current_room.delay
+            print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
         if self.current_time >= 540:
-            print("It is now 9:00am, you are late to your first day of work.")
-            exit()
+            print(game_text['late'])
+            sys.exit()
 
     def display_status(self):
         hours, minutes = divmod(self.current_time, 60)
@@ -230,17 +242,16 @@ class Game:
         with open(locations_file, "r") as loc_file:
             locations_data = json.load(loc_file)
             for index, loc_info in enumerate(locations_data["locations"]):
-                location = Location(loc_info["name"], loc_info["description"],loc_info["required-item"])
 
-                #add required item for the room
-                #location.add_req_item(loc_info["required-item"])
+                #create the location object
+                location = Location(loc_info["name"], loc_info["description"],loc_info["required-item"],loc_info["delay"])
                 for opt_act, opt_dest in loc_info["options"].items():
                     location.add_option(opt_act, opt_dest)
+
+                #adding items to the location items list
                 for item_name in loc_info["items"]:
-                    #print(f"item name: {item_name}")
                     item_info = self.load_item_data(items_file, item_name)
                     if item_info:
-                        #print(f"adding item to location - item name: {item_name}")
                         item = Item(item_name, item_info["description"])
                         location.add_item(item)
                 self.locations[loc_info["name"]] = location
@@ -249,10 +260,8 @@ class Game:
         self.player.inventory_list()
 
     def load_npc(self,npc_file):
-       #print("loading npc data")
         with open("json/dialouge.json") as npc_file:
             npc_data = json.load(npc_file)
-            #self.locations[npc_name] = npc_name
             for npc_name, npc_info in npc_data.items():
                 #create new NPC object
                 new_npc = NPC(npc_name, npc_info["message"],npc_info["required-item"])
@@ -271,7 +280,7 @@ class Game:
         synonyms = {
             'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
             'use': ['use','drop'],
-            'drive': ['drive'],
+            'drive': ['drive','find'],
             'board': ['board', 'catch','stay','sit','ride', 'go','stay'],
             'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
             'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
@@ -288,7 +297,7 @@ class Game:
                 if method and callable(method):
                     method(noun)
                     return
-        print("Invaild command. Type 'Help' for more information.")
+        print(game_text["invalid"])
 
     def handle_take(self, noun):
         print(f"Handling TAKE command for {noun}")
@@ -296,7 +305,6 @@ class Game:
 
     def handle_use(self, noun):
         print(f"Handling USE command for {noun}")
-        #self.player.move(noun.capitalize())
         self.player.use_item(noun)
 
     def handle_drive(self, noun):
@@ -329,15 +337,31 @@ class Game:
         # Implement 'TAKE' logic here
         self.player.talk_npc(noun)
 
+
+
+    #IS THIS FUNCTION USED? ASK DEREK
+    def increment_time(self):
+        current_hour, current_minute = map(int, self.game_time.split(':'))
+        current_minute += 10
+        if current_minute >= 60:
+            current_hour += 1
+            current_minute -= 60
+
+        self.game_time = f"{current_hour:02}:{current_minute:02}"
+        if current_hour >= 24:
+            self.game_time = "00:" + self.game_time.split(':')[1]
+
     def start_game(self):
         starting_location = 'Home'
         self.player = Player("Player Name")
         self.player.current_room = self.locations[starting_location]
-        test_loc = list(self.locations.keys())
-        print(f"List of locations {test_loc}")
+        #test_loc = list(self.locations.keys())
+        #print(f"List of locations {test_loc}")
         
         while True:
-            print(f"current room options: {self.player.current_room.options}")
+            #FOR TROUBLESHOOTING, REMOVE LATER
+            #print(f"current room options: {self.player.current_room.options}")
+
             #actual code
             self.player.look_around()
             command = input(">> ").strip().lower()
@@ -358,19 +382,6 @@ class Game:
                 self.player.display_status()
             else:
                 self.parse_command(command)
-            
-
-    def increment_time(self):
-        current_hour, current_minute = map(int, self.game_time.split(':'))
-        current_minute += 10
-        if current_minute >= 60:
-            current_hour += 1
-            current_minute -= 60
-
-        self.game_time = f"{current_hour:02}:{current_minute:02}"
-        if current_hour >= 24:
-            self.game_time = "00:" + self.game_time.split(':')[1]
-
 
 
 if __name__ == "__main__":

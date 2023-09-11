@@ -9,7 +9,7 @@
             {
                 "___comment___": "/* needs to go to bus stop locations */",
                 "response": "SIT in seat and ride the bus",
-                "seat": "Seat" 
+                "seat": ["Seat" ]
             }
     },
     "Person": {
@@ -21,7 +21,7 @@
             {
                 "___comment___": "/* needs to go to bus stop locations */",
                 "response": "Head to work",
-                "drw": "DRW" 
+                "drw": ["DRW"] 
             }
     },
     "Coffee Event": {
@@ -32,7 +32,7 @@
         "options": 
             {
                 "response": "Head to work",
-                "drw": "DRW" 
+                "drw": ["DRW"] 
             }
     }
 }
