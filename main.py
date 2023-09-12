@@ -285,7 +285,7 @@ class Game:
             'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
             'use': ['use','drop'],
             'drive': ['drive','find'],
-            'board': ['board', 'catch','stay','sit','ride', 'go','stay'],
+            'board': ['board', 'catch','stay','sit','ride', 'go','stay','head'],
             'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
             'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
             'pull': ['pull', 'yank', 'tug', 'grab'],
