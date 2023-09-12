@@ -1,8 +1,8 @@
 {
     "Bus Driver": {
         "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"",
-        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\n[You decide to go find a seat and and start to worry as the bus starts moving.]",
-        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we get to Bus Stop 2. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to go find a seat and relax as the bus starts moving."
+        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\n[You decide to go find a SEAT and and start to worry as the bus starts moving.]",
+        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we get to Bus Stop 2. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to go find a SEAT and relax as the bus starts moving."
         ],
         "required-item": "bus card",
         "options": 
@@ -27,7 +27,7 @@
     "Coffee Event": {
         "message": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some instructions down on your receipt for you to follow, thankfully, you seem to be close by.",
         "random_response": ["You sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way to the DRW building",
-        "The coffee was nasty, and you dropped the receipt the barista gave you with instruuctions to the DRW Building. Thankfully you sorta remembered the way to go, but it'll take a biiiiittt longer than expected to find the DRW building."],
+        "The coffee was nasty, and you dropped the receipt the barista gave you with instructions to the DRW Building. Thankfully you sorta remembered the way to go, but it'll take a biiiiittt longer than expected to find the DRW building."],
         "required-item": "",
         "options": 
             {
