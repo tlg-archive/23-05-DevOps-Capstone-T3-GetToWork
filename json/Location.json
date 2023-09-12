@@ -7,13 +7,13 @@
         "bus": ["Bus"] 
       }, 
       "delay":0,
-      "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your car or take the bus?", 
+      "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your CAR or take the BUS?", 
       "items": ["keys", "money", "bus card", "phone"],
       "required-item": ""
     }, 
     { 
       "name": "Bus", 
-      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you.", 
+      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. \nDo you want to ask the BUS DRIVER for directions to DRW or head to your SEAT?", 
       "items": [],
       "delay":0,
       "required-item": "bus card",
@@ -24,7 +24,7 @@
     },
     { 
       "name": "Seat", 
-      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the cord, ready to pull when the moment feels right. \nOr do you stay and keep riding towards Bus Stop 2?", 
+      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right. \nOr do you stay and keep riding towards BUS STOP 2?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -35,7 +35,7 @@
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the cord, ready to pull when the moment feels right. \nOr do you stay and keep riding towards Bus Stop 2?", 
+      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right. \nOr do you stay and keep riding towards BUS STOP 3?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -46,7 +46,7 @@
     },
     { 
       "name": "Bus Stop 3", 
-      "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. Your hand hovers near the cord, ready to pull when the moment feels right.", 
+      "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right.\nOr will you keep riding the BUS?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -67,7 +67,7 @@
     },
     { 
       "name": "Downtown", 
-      "description": "A bustling Chicago skyline with the Willis Tower, as you rush through busy streets on your first day, hoping to arrive on time", 
+      "description": "A bustling Chicago skyline with the Willis Tower, as you rush through busy streets on your first day, hoping to arrive on time. \n You can ask the PERSON across the street for directions to DRW or stop at a COFFEE SHOP and grab something quick to drink?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -78,7 +78,7 @@
     },
     { 
       "name": "Coffee Shop", 
-      "description": "At a cozy coffee shop, a latte sets a positive tone for your first day", 
+      "description": "At a cozy coffee shop, a latte sets a positive tone for your first day. \nYou decide BUY some COFFEE before stopping into work.", 
       "items": ["coffee"],
       "delay":0,
       "required-item": "money", 
@@ -88,7 +88,7 @@
     },
     { 
       "name": "Car", 
-      "description": "Inside car. You deicede to hop on the HIGHWAY this time to try to get to work quickly", 
+      "description": "Inside car. You deciede to hop on the HIGHWAY this time to try to get to work quickly", 
       "items": [], 
       "delay":0,
       "required-item": "keys",
@@ -142,7 +142,7 @@
     },
     { 
       "name": "Construction Event", 
-      "description": "Construction on the highway delays your commute by 20 minutes on your first day.", 
+      "description": "Construction on the highway delays your commute by 20 minutes on your first day.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [],
       "required-item": "",
       "delay":20, 
@@ -153,7 +153,7 @@
     },
     { 
       "name": "Traffic Event", 
-      "description": "Highway gridlock adds a 15-minute delay to your first day at work", 
+      "description": "Highway gridlock adds a 15-minute delay to your first day at work.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [], 
       "required-item": "",
       "delay":20,
@@ -164,7 +164,7 @@
     },
     { 
       "name": "Accident Event", 
-      "description": "Accident ahead. Expect a 15-minute delay, likely to make you late. But at least you're close to DOWNTOWN and can start to find PARKING soon.", 
+      "description": "Accident ahead. Expect a 15-minute delay, likely to make you late. \nBut at least you're close to DOWNTOWN and can start to find PARKING soon.", 
       "items": [], 
       "required-item": "",
       "delay":30,
@@ -175,7 +175,7 @@
     },
     { 
       "name": "Find Parking", 
-      "description": "Park close pay, Park far walk. There are many options for parking downtown. You can park CLOSE for more, and get to work faster, or park FAR for cheap, but spend more time walking to the DRW building", 
+      "description": "Park close pay, Park far walk. There are many options for parking downtown. You can park CLOSE for more, and get to work faster, or park FAR for cheap, but spend more time walking to the DRW building. \nWill you find CLOSE parking or FAR parking?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -186,12 +186,13 @@
     },
     { 
       "name": "Parking Close", 
-      "description": "Parked nearby, but pricey. Walk to first day, hoping it's worth it", 
+      "description": "Parked nearby, but pricey. Walk to first day, hoping it's worth it. HEAD TO DRW", 
       "items": [], 
       "delay":0,
       "required-item": "money",
       "options": { 
-        "go": ["DRW"]
+        "drw": ["DRW"],
+        "work": ["DRW"]
       }
     },
     { 
@@ -201,7 +202,8 @@
       "delay":15,
       "required-item": "money",
       "options": { 
-        "go": ["DRW"]
+        "drw": ["DRW"],
+        "work": ["DRW"]
       }
     },
     { 
