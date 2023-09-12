@@ -375,6 +375,7 @@ class Game:
                 print(game_text['quit'])
                 exit_command = input("> ").lower().strip()
                 if exit_command in ['yes', 'exit', 'quit']:
+                    clear_screen()
                     break
                 elif exit_command in ['no']:
                     continue
