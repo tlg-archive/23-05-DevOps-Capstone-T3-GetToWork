@@ -2,7 +2,7 @@
     "Bus Driver": {
         "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"",
         "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\n[You decide to go find a seat and and start to worry as the bus starts moving.]",
-        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we et to [BUS STOP NAME]. Just take a seat, and I'll make sure you get there safely.\"\n\n[You decide to go find a seat and relax as the bus starts moving.]"
+        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we et to [BUS STOP NAME]. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to go find a seat and relax as the bus starts moving."
         ],
         "required-item": "bus card",
         "options": 

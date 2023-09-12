@@ -133,30 +133,33 @@ class Player:
 
     def look_around(self):
         create_window()
-        print("\nCURRENT LOCATION: ", self.current_room.name)
-        print("\n")
+        print(f"\n-----CURRENT LOCATION: {self.current_room.name}-----")
+        #print("\n")
         #print(f"Time: {game.game_time}")
         #print(self.current_room.info())
         if hasattr(self.current_room, 'description'):
+            print("\n")
             print(self.current_room.description,"\n")
-            self.display_status()
+           #self.display_status() 
 
             #Dynamically print all items in a room
             if len(self.current_room.items) > 0:
-                print(f"list of items in the current room:")
+                print(f"-----ITEMS IN THIS ROOM-----")
                 for item in self.current_room.items:
                     print(item.name)
 
+            print("\n")
+            self.display_status()
             #check for required item
-            if self.current_room.required_item != "":
+            """ if self.current_room.required_item != "":
                 print(f"required item: {self.current_room.required_item}")
             else:
-                print("No required item for this room")
+                print("No required item for this room") """
         else:
             print(self.current_room.message,"\n")
-            self.display_status()
             random_response = random.sample(self.current_room.random_response, 1)
             print(random_response[0], "\n")  
+            self.display_status()
         create_window()
 
     def take_item(self, item_name):
@@ -220,7 +223,8 @@ class Player:
 
     def display_status(self):
         hours, minutes = divmod(self.current_time, 60)
-        print(f"Current Time: {hours:02d}:{minutes:02d}am")
+        print("-----PLAYER STATUS-----")
+        print(f'CURRENT TIME: {hours:02d}:{minutes:02d}am')
         self.inventory_list()
 
 class Game:

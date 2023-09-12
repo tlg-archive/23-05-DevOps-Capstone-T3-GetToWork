@@ -5,5 +5,6 @@
     "help":"Below is a list of available commands for this game:\n\nGO ----> Move to a different location. USAGE: GO [Place]\nGRAB --> Take an item and add to your inventory. USAGE: TAKE [Item]\nTALK --> Initiate converation with an NPC. USAGE: TALK [Person]\nPULL --> In the Bus Route, use PULL to stop the bus. USAGE: PULL Bellcord\nBUY ---> In the Bus Route, use BUY to buy an item. USAGE: BUY [Item]\nHELP --> Display this help text.\nQUIT --> Exit the game.",
     "late": "OH NO! Its 9:00AM! Unfortanely, you're late for work. Start over and see if you can make it to work on time.",
     "invalid":"INVALID COMMAND. Type 'Help' for more information.",
-    "empty": "Your inventory is EMPTY."
+    "empty": "Your inventory is EMPTY.",
+    "current_time": "CURRENT TIME: {hours:02d}:{minutes:02d}am"
 }
