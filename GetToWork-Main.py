@@ -3,6 +3,14 @@ import json
 import random
 import sys
 
+#paths for file dependencies
+title_file = os.path.abspath('json/title.txt')
+npc_file = os.path.abspath('json/dialouge.json')
+text_file = os.path.abspath('json/game-text.json')
+item_file = os.path.abspath('json/items.json')
+location_file = os.path.abspath('json/Location.json')
+
+
 # Helper functions
 def create_window():
     width = os.get_terminal_size().columns 
@@ -16,13 +24,13 @@ def print_ascii(fn):
         print(''.join([line for line in f]))
 
 def convert_json():
-    with open("json/game-text.json") as json_file:
+    with open(text_file) as json_file:
         game_text = json.load(json_file)
     return game_text
 
 def display_description(object_to_look):
     # Look in items
-    with open("json/items.json") as items_file:
+    with open(item_file) as items_file:
         items_data = json.load(items_file)
         for item, details in items_data.items():
             if item == object_to_look.lower():
@@ -264,7 +272,7 @@ class Game:
         self.player.inventory_list()
 
     def load_npc(self,npc_file):
-        with open("json/dialouge.json") as npc_file:
+        with open(npc_file) as npc_file:
             npc_data = json.load(npc_file)
             for npc_name, npc_info in npc_data.items():
                 #create new NPC object
@@ -392,13 +400,13 @@ class Game:
 if __name__ == "__main__":
     clear_screen()
     while True:
-        print_ascii('json/title.txt')
+        print_ascii(title_file)
         game_text = convert_json()
         print(game_text['intro'])
         choice = input(">> ").strip().lower()
 
         if choice in ["start", "new game", "start new game"]:
-            game = Game("json/Location.json","json/items.json","json/dialouge.json")
+            game = Game(location_file,item_file,npc_file)
             game.start_game()
         elif choice in ["quit", "exit"]:
             print("Thanks for playing!")
