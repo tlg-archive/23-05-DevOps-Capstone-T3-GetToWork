@@ -4,11 +4,13 @@ import random
 import sys
 
 #paths for file dependencies
-title_file = os.path.abspath('json/title.txt')
-npc_file = os.path.abspath('json/dialouge.json')
-text_file = os.path.abspath('json/game-text.json')
-item_file = os.path.abspath('json/items.json')
-location_file = os.path.abspath('json/Location.json')
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
+title_file = os.path.join(script_dir, 'json', 'title.txt')
+npc_file = os.path.join(script_dir, 'json', 'dialouge.json')
+text_file = os.path.join(script_dir, 'json', 'game-text.json')
+item_file = os.path.join(script_dir, 'json', 'items.json')
+location_file = os.path.join(script_dir, 'json', 'Location.json')
 
 
 # Helper functions
