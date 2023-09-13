@@ -444,30 +444,24 @@ class Game:
             'inventory': [item.name for item in self.inventory],
             'current_room': self.current_room.name,
             'current_time': self.current_time
-         }
+        }
         with open(filename, 'w') as f:
             json.dump(data, f)
- 
-     @classmethod
-     def load_game(cls, game, filename):
-         with open(filename, 'r') as f:
-             data = json.load(f)
- 
-         player = cls(data['name'])
-         player.current_time = data['current_time']
-         player.current_room = game.locations[data['current_room']]
-         for item_name in data['inventory']:       
-      item_info = game.load_item_data(game.items_file, item_name)
-             if item_info:
-                 item = Item(item_name, item_info["description"])
-                 player.inventory.append(item)
-         return player
 
+    @classmethod    
+    def load_game(cls, game, filename):
+        with open(filename, 'r') as f:
+            data = json.load(f)
 
-
-
-
-
+        player = cls(data['name'])
+        player.current_time = data['current_time']
+        player.current_room = game.locations[data['current_room']]
+        for item_name in data['inventory']:
+            item_info = game.load_item_data(game.items_file, item_name)
+            if item_info:
+                item = Item(item_name, item_info["description"])
+                player.inventory.append(item)
+        return player
 
    # def save_game(self):
    #     self.player.save_game()
