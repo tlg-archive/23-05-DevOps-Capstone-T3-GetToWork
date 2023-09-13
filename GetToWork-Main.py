@@ -2,6 +2,7 @@ import os
 import json
 import random
 import sys
+import pygame 
 
 #paths for file dependencies
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -397,11 +398,23 @@ class Game:
                 self.player.display_status()
             else:
                 self.parse_command(command)
+def sound():                
+   sound_file_path = "json/soundtest.mp3"
+   pygame.mixer.init()
+   pygame.mixer.music.load(sound_file_path)
+   pygame.mixer.music.play() 
 
+def toggle_sound():
+    global sound_enabled
+    sound_enabled = not sound_enabled
 
+         
 if __name__ == "__main__":
-    clear_screen()
-    while True:
+        clear_screen()
+        pygame.mixer.init()
+        sound()
+    
+while True:
         print_ascii(title_file)
         game_text = convert_json()
         print(game_text['intro'])
