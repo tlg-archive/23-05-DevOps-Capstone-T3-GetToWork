@@ -98,6 +98,15 @@ class NPC:
     def add_req_item(self, item):
         self.required_item.append(item)
 
+class Map:
+    @staticmethod
+    def show_map():
+        with open("json/map.txt", "r") as file:
+            map_list = file.readlines()
+        print("Map:")
+        for line in map_list:
+            print(line)
+
 class Player:
     def __init__(self, name):
         self.name = name
@@ -369,6 +378,7 @@ class Game:
         starting_location = 'Home'
         self.player = Player("Player Name")
         self.player.current_room = self.locations[starting_location]
+        game_map = Map()
         #test_loc = list(self.locations.keys())
         #print(f"List of locations {test_loc}")
         
@@ -395,6 +405,8 @@ class Game:
                 self.handle_inventory()
             elif command == "time":
                 self.player.display_status()
+            elif command in ["map", "show map"]:
+                game_map.show_map()
             else:
                 self.parse_command(command)
 
