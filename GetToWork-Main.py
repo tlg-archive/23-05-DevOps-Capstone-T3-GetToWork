@@ -488,7 +488,13 @@ class Game:
                 self.game_map.show_map()
             elif command in ["toggle sound"]:
                 toggle_sound() #toggle sound on/off
-                print("sound is", "on" if sound_enabled else "off") 
+                print("sound is", "on" if sound_enabled else "off")
+            elif command == "volume up":
+                volume_up()
+                print(f"Volume increased to {round(current_volume * 100)}%")
+            elif command == "volume down":
+                volume_down()
+                print(f"Volume decreased to {round(current_volume * 100)}%") 
             else:
                 self.parse_command(command)
 
@@ -510,6 +516,7 @@ class Game:
         print(data)
         
 #SOUND FUNCTIONALITY BELOW
+current_volume = 0.5
 def sound():                
    sound_file_path = "json/soundtest.mp3"
    pygame.mixer.init()
@@ -523,7 +530,23 @@ def toggle_sound():
     if sound_enabled:
         pygame.mixer.music.unpause()
     else:
-        pygame.mixer.music.pause()    
+        pygame.mixer.music.pause() 
+   
+VOLUME_INCREMENT = 0.1
+
+def volume_up():
+    global current_volume
+    current_volume += VOLUME_INCREMENT
+    if current_volume > 1:
+        current_volume = 1
+    pygame.mixer.music.set_volume(current_volume)
+
+def volume_down():
+    global current_volume
+    current_volume -= VOLUME_INCREMENT
+    if current_volume < 0:
+        current_volume = 0
+    pygame.mixer.music.set_volume(current_volume)
 
 if __name__ == "__main__":
         clear_screen()
