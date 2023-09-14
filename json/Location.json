@@ -7,63 +7,69 @@
         "bus": ["Bus"] 
       }, 
       "delay":0,
-      "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your CAR or take the BUS?", 
+      "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your CAR or GO on the BUS?", 
       "items": ["keys", "money", "bus card", "phone"],
-      "required-item": ""
+      "required-item": "",
+      "map-key" : "[H]"
     }, 
     { 
       "name": "Bus", 
-      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. \nDo you want to ask the BUS DRIVER for directions to DRW or head to your SEAT?", 
+      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. \nDo you want to ask the BUS DRIVER for directions to DRW or GO to your SEAT?", 
       "items": [],
-      "delay":0,
+      "delay":5,
       "required-item": "bus card",
       "options": { 
         "bus driver": ["Bus Driver"], 
         "seat": ["Seat"]
-      }
+      },
+      "map-key" : "[B]"
     },
     { 
       "name": "Seat", 
-      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right. \nOr do you stay and keep riding towards BUS STOP 2?", 
+      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to PULL when the moment feels right. \nOr do you stay on the BUS and keep riding towards the next stop?", 
       "items": [],
-      "delay":0,
+      "delay":10,
       "required-item": "", 
       "options": { 
         "bellcord": ["Wrong Stop"], 
         "bus": ["Bus Stop 2"]
-      }
+      },
+      "map-key" : "[S]"
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right. \nOr do you stay and keep riding towards BUS STOP 3?", 
+      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to PULL when the moment feels right. \nOr do you stay on the BUS and keep riding towards the next stop?", 
       "items": [],
-      "delay":0,
+      "delay":5,
       "required-item": "", 
       "options": { 
         "bellcord": ["Downtown"], 
         "bus": ["Bus Stop 3"]
-      }
+      },
+      "map-key" : "[BE]"
     },
     { 
       "name": "Bus Stop 3", 
-      "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right.\nOr will you keep riding the BUS?", 
+      "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to PULL when the moment feels right. \nOr do you stay on the BUS and keep riding towards the next stop?", 
       "items": [],
-      "delay":0,
+      "delay":5,
       "required-item": "", 
       "options": { 
         "bellcord": ["Wrong Stop"], 
         "bus": ["Wrong Stop"]
-      }
+      },
+      "map-key" : "[BE]"
     },
     {
       "name": "Wrong Stop",
-      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: 15 minutes.\nHEAD DOWNTOWN", 
+      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: by an extra 25 minutes.\nHEAD DOWNTOWN", 
       "items": [],
-      "delay":25,
+      "delay":35,
       "required-item": "",
       "options": { 
         "downtown": ["Downtown"]
-      }
+      },
+      "map-key" : "[BE]"
     },
     { 
       "name": "Downtown", 
@@ -74,7 +80,8 @@
       "options": {
         "coffee shop": ["Coffee Shop"],
         "person": ["Person"]
-      }
+      },
+      "map-key" : "[D]"
     },
     { 
       "name": "Coffee Shop", 
@@ -83,8 +90,33 @@
       "delay":0,
       "required-item": "money", 
       "options": { 
-        "coffee": ["Coffee Event"]
-      }
+        "coffee": ["Coffee Event Good", "Coffee Event Bad"]
+      },
+      "map-key" : "[CS]"
+    },
+    { 
+      "name": "Coffee Event Good", 
+      "description": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some instructions down on your receipt for you to follow, thankfully, you seem to be close by. \nYou sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way to the DRW building", 
+      "items": [],
+      "delay":0,
+      "required-item": "", 
+      "options": { 
+        "drw": ["DRW"],
+        "work": ["DRW"]
+      },
+      "map-key" : "[CS]"
+    },
+    { 
+      "name": "Coffee Event Bad", 
+      "description": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some instructions down on your receipt for you to follow, thankfully, you seem to be close by. \nThe coffee was nasty, and you dropped the receipt the barista gave you with instructions to the DRW Building. Thankfully you sorta remembered the way to go, but it'll take a biiiiittt longer than expected to find the DRW building.\nDelay by 10 minutes", 
+      "items": [],
+      "delay":10,
+      "required-item": "", 
+      "options": { 
+        "drw": ["DRW"],
+        "work": ["DRW"]
+      },
+      "map-key" : "[CS]"
     },
     { 
       "name": "Car", 
@@ -94,7 +126,8 @@
       "required-item": "keys",
       "options": { 
         "highway": ["Highway"]
-      }
+      },
+      "map-key" : "[C]"
     },
     { 
       "name": "Highway", 
@@ -105,7 +138,8 @@
       "options": { 
         "current lane": ["Normal Drive", "Construction Event"],
         "right lane": ["Normal Drive", "Construction Event"]
-      }
+      },
+      "map-key" : "[HW]"
     },
     { 
       "name": "Normal Drive", 
@@ -116,7 +150,8 @@
       "options": { 
         "current lane": ["Normal Drive 2", "Traffic Event"],
         "right lane": ["Normal Drive 2", "Traffic Event"]
-      }
+      },
+      "map-key" : "[CE]"
     },
     { 
       "name": "Normal Drive 2", 
@@ -127,7 +162,8 @@
       "options": { 
         "current lane": ["Normal Drive 3", "Accident Event"],
         "right lane": ["Normal Drive 3", "Accident Event"]
-      }
+      },
+      "map-key" : "[CE]"
     },
     { 
       "name": "Normal Drive 3", 
@@ -138,7 +174,8 @@
       "options": { 
         "parking": ["Find Parking"],
         "downtown": ["Find Parking"]
-      }
+      },
+      "map-key" : "[CE]"
     },
     { 
       "name": "Construction Event", 
@@ -149,62 +186,68 @@
       "options": { 
         "current lane": ["Normal Drive 2", "Traffic Event"],
         "right lane": ["Normal Drive 2", "Traffic Event"]
-      }
+      },
+      "map-key" : "[CE]"
     },
     { 
       "name": "Traffic Event", 
-      "description": "Highway gridlock adds a 15-minute delay to your first day at work.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Highway gridlock adds a 10-minute delay to your first day at work.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "items": [], 
+      "required-item": "",
+      "delay":10,
+      "options": { 
+        "current lane": ["Normal Drive 3", "Accident Event"],
+        "right lane": ["Normal Drive 3", "Accident Event"]
+      },
+      "map-key" : "[CE]"
+    },
+    { 
+      "name": "Accident Event", 
+      "description": "Accident ahead. Expect a 20-minute delay, likely to make you late. \nBut at least you're close to DOWNTOWN and can start to find PARKING soon.", 
       "items": [], 
       "required-item": "",
       "delay":20,
       "options": { 
-        "current lane": ["Normal Drive 3", "Accident Event"],
-        "right lane": ["Normal Drive 3", "Accident Event"]
-      }
-    },
-    { 
-      "name": "Accident Event", 
-      "description": "Accident ahead. Expect a 15-minute delay, likely to make you late. \nBut at least you're close to DOWNTOWN and can start to find PARKING soon.", 
-      "items": [], 
-      "required-item": "",
-      "delay":30,
-      "options": { 
         "parking": ["Find Parking"],
         "downtown": ["Find Parking"]
-      }
+      },
+      "map-key" : "[CE]"
     },
     { 
       "name": "Find Parking", 
-      "description": "Park close pay, Park far walk. There are many options for parking downtown. You can park CLOSE for more, and get to work faster, or park FAR for cheap, but spend more time walking to the DRW building. \nWill you find CLOSE parking or FAR parking?", 
+      "description": " There are many options for parking downtown. \nYou can park CLOSE by the DRW Building if you have some money. \nThere is also free parking FAR away from DRW, and you have to spend around 10 minutes walking back to the building. \nWill you go to the CLOSE parking or FAR parking?", 
       "items": [],
       "delay":0,
       "required-item": "", 
       "options": { 
-        "close": ["Parking Close"], 
-        "far": ["Parking Far"]
-      }
+        "close": ["Close"], 
+        "far": ["Far"]
+      },
+      "map-key" : "[FP]"
     },
     { 
-      "name": "Parking Close", 
-      "description": "Parked nearby, but pricey. Walk to first day, hoping it's worth it. HEAD TO DRW", 
+      "name": "Close", 
+      "description": "Parked nearby, but pricey, took all the pocket money you had on you. Walk to first day, hoping it's worth it. HEAD TO DRW", 
       "items": [], 
       "delay":0,
       "required-item": "money",
       "options": { 
         "drw": ["DRW"],
         "work": ["DRW"]
-      }
+      },
+      "map-key" : "[CL]"
     },
     { 
-      "name": "Parking Far", 
-      "description": "Affordable parking far away. Rushing to the office, first-day urgency", 
+      "name": "Far", 
+      "description": "Free parking far away. Rushing to the office, first-day urgency. HEAD TO DRW", 
       "items": [], 
-      "delay":15,
-      "required-item": "money",
+      "delay":10,
+      "required-item": "",
       "options": { 
         "drw": ["DRW"],
         "work": ["DRW"]
-      }
+      },
+      "map-key" : "[F]"
     },
     { 
       "name": "DRW", 
@@ -214,7 +257,8 @@
       "required-item": "",
       "options": { 
         "Coffee": ["DRW Lose"]
-      }
+      },
+      "map-key" : "[DRW]"
     },
     { 
       "name": "On time", 
@@ -224,7 +268,8 @@
       "required-item": "",
       "options": { 
         "Coffee Hand": ["DRW WIN"]
-      }
+      },
+      "map-key" : "[DRW]"
     },
     { 
       "name": "Late", 
@@ -234,7 +279,8 @@
       "required-item": "",
       "options": { 
         "Coffee": ["DRW Lose"]
-      }
+      },
+      "map-key" : "[DRW]"
     }
   ] 
 }
