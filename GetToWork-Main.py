@@ -458,6 +458,9 @@ class Game:
                 self.player.display_status()
             elif command in ["map", "show map"]:
                 game_map.show_map()
+            elif command in ["toggle sound"]:
+                toggle_sound() #toggle sound on/off
+                print("sound is", "on" if sound_enabled else "off") 
             else:
                 self.parse_command(command)
 
@@ -489,10 +492,10 @@ def sound():
 def toggle_sound():
     global sound_enabled
     sound_enabled = not sound_enabled
-if sound_enabled:
-    pygame.mixer.music.unpause()
-else:
-    pygame.mixer.music.pause()    
+    if sound_enabled:
+        pygame.mixer.music.unpause()
+    else:
+        pygame.mixer.music.pause()    
 
 if __name__ == "__main__":
         clear_screen()
@@ -518,11 +521,7 @@ while True:
                 print("Game loaded!")
                 game.start_game()
             except FileNotFoundError:
-                print("No saved game found. Please start a new game.")
-
-        elif choice in ["toggle sound"]:
-            toggle_sound() #toggle sound on/off
-            print("sound is", "on" if sound_enabled else "off")        
+                print("No saved game found. Please start a new game.")       
 
         elif choice in ["quit", "exit"]:
             print("Thanks for playing!")
