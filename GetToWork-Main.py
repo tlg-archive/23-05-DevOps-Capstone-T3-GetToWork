@@ -3,6 +3,9 @@ import json
 import random
 import sys
 import pygame 
+sound_enabled = True
+sound_enabled = False
+pygame.mixer.init()
 
 #paths for file dependencies
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -462,6 +465,9 @@ class Game:
                 self.player.display_status()
             elif command in ["map", "show map"]:
                 game_map.show_map()
+            elif command in ["toggle sound"]:
+                toggle_sound() #toggle sound on/off
+                print("sound is", "on" if sound_enabled else "off") 
             else:
                 self.parse_command(command)
 
@@ -487,16 +493,22 @@ def sound():
    sound_file_path = "json/soundtest.mp3"
    pygame.mixer.init()
    pygame.mixer.music.load(sound_file_path)
-   pygame.mixer.music.play() 
+   pygame.mixer.music.set_volume(0.5)
+   pygame.mixer.music.play(-1)
 
 def toggle_sound():
     global sound_enabled
     sound_enabled = not sound_enabled
+    if sound_enabled:
+        pygame.mixer.music.unpause()
+    else:
+        pygame.mixer.music.pause()    
 
 if __name__ == "__main__":
         clear_screen()
         pygame.mixer.init()
         sound()
+        sound_enabled = True
     
 while True:
         print_ascii(title_file)
@@ -516,7 +528,7 @@ while True:
                 print("Game loaded!")
                 game.start_game()
             except FileNotFoundError:
-                print("No saved game found. Please start a new game.")
+                print("No saved game found. Please start a new game.")       
 
         elif choice in ["quit", "exit"]:
             print("Thanks for playing!")
