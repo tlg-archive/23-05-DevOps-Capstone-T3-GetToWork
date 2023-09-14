@@ -58,13 +58,14 @@ class Item:
         return self.name
 
 class Location:
-    def __init__(self, name, description,req_item,loc_delay):
+    def __init__(self, name, description,req_item,loc_delay,map_key):
         self.name = name
         self.description = description
         self.options = {}
         self.items = []
         self.required_item = req_item
         self.delay = loc_delay
+        self.map_key = map_key
 
     def add_option(self, action, loc):
         self.options[action] = loc
@@ -82,12 +83,13 @@ class Location:
         return f"name: {self.name}\ndescription: {self.description}\items:{self.items}\noptions:{self.options}"
 
 class NPC:
-    def __init__(self, name, message,req_item):
+    def __init__(self, name, message,req_item,map_key):
         self.name = name
         self.message = message
         self.random_response = []
         self.options = {}
         self.required_item = req_item
+        self.map_key = map_key
 
     def add_option(self, action, loc):
         self.options[action] = loc
@@ -99,13 +101,41 @@ class NPC:
         self.required_item.append(item)
 
 class Map:
-    @staticmethod
-    def show_map():
+    def __init__(self):
+        self.gen_map()
+        self.map_list = self.gen_map()
+
+    def gen_map(self):
         with open("json/map.txt", "r") as file:
             map_list = file.readlines()
-        print("Map:")
-        for line in map_list:
+        return map_list
+
+    def show_map(self):
+        print(game_text["map_text"])
+        for line in self.map_list:
             print(line)
+
+    def update_map(self):
+        self.map_list = self.gen_map()
+        #get the map key from the current room
+        current_key = game.player.current_room.map_key
+        #print(f"map updated: {current_key}")
+
+        for index, line in enumerate(self.map_list):
+            if current_key in line:
+                try:
+                    idx = line.index(game.player.current_room.name)
+                except ValueError:
+                    if "Bus Events" in line:
+                        idx = line.index("Bus Events")
+                    elif "Car Events" in line:
+                        idx = line.index("Car Events")
+                    else:
+                        idx = line.index("Coffee Shop")
+                updated_line = line[:idx] + ">> " + line[idx:]
+                line = updated_line
+                self.map_list[index] = updated_line
+        
 
 class Player:
     def __init__(self, name):
@@ -119,32 +149,36 @@ class Player:
         #print(noun, "noun")
         #print(f"current room: {self.current_room.name}") 
         #print(f"current room options: {self.current_room.options}")
-        #print(game.locations[noun])
+        #print(f"game locations with this noun: {game.locations[noun]}")
+
         if noun.lower() in self.current_room.options:
-            if self.current_room.required_item:
+            #if self.current_room.required_item:
+            required_item_loc = self.current_room.options.get(noun.lower())
+            
+            #if game.locations[noun].required_item:
+            if game.locations[required_item_loc[0]].required_item:
                 #check your inventory to see if the required item exists, need to loop throught the inventory list
                 check_req = False
                 for item in self.inventory:
-                    check_req = item.name == self.current_room.required_item
+                    check_req = item.name == game.locations[noun].required_item
                     if check_req == True:
-                        print("Leave the loop")
                         break
 
                 if check_req == True:
                     new_loc = self.current_room.options.get(noun.lower())
-                    #self.advance_time()
+                    print(f"new loc {new_loc}")
                     random_room = random.sample(new_loc, 1)
                     self.current_room = game.locations[random_room[0]]
                     self.advance_time()
                 else:
-                    print(f"Oh no! You left your {self.current_room.required_item} at home. Please quit and restart to get this item.")
+                    item_err = game_text["no_item"].format(no_item=game.locations[noun].required_item)
+                    print(item_err)
             else:
                 new_loc = self.current_room.options.get(noun.lower())
+                
                 #grab a random location from the room options sub-array
                 random_room = random.sample(new_loc, 1)
 
-                #ACTUAL CODE TO UNCOMMENT BELOW WHEN THE ABOVE WORKS
-                #self.advance_time()
                 self.current_room = game.locations[random_room[0]]
                 self.advance_time()
         else:
@@ -153,13 +187,9 @@ class Player:
     def look_around(self):
         create_window()
         print(f"\n-----CURRENT LOCATION: {self.current_room.name}-----")
-        #print("\n")
-        #print(f"Time: {game.game_time}")
-        #print(self.current_room.info())
         if hasattr(self.current_room, 'description'):
             print("\n")
             print(self.current_room.description,"\n")
-           #self.display_status() 
 
             #Dynamically print all items in a room
             if len(self.current_room.items) > 0:
@@ -169,16 +199,13 @@ class Player:
 
             print("\n")
             self.display_status()
-            #check for required item
-            """ if self.current_room.required_item != "":
-                print(f"required item: {self.current_room.required_item}")
-            else:
-                print("No required item for this room") """
+            game.game_map.update_map()
         else:
             print(self.current_room.message,"\n")
             random_response = random.sample(self.current_room.random_response, 1)
             print(random_response[0], "\n")  
             self.display_status()
+            game.game_map.update_map()
         create_window()
 
     def take_item(self, item_name):
@@ -215,15 +242,10 @@ class Player:
                 print(item.name)
 
     def talk_npc(self, noun):
-        #THIS CODE SHOULD ONLY DISPLAY THE NPC DIALOGUE
         if noun.lower() in self.current_room.options:
             new_loc = self.current_room.options.get(noun.lower())
-            #self.current_room = game.locations[new_loc]
 
             random_room = random.sample(new_loc, 1)
-            #DELETE LATER
-            #print(f"new loc = {new_loc}")
-            #print(f"random room = {random_room}")
             self.current_room = game.locations[random_room[0]]
         else:
             print(f"You can't talk with {noun} here.")
@@ -236,7 +258,7 @@ class Player:
         else:
             self.current_time +=  self.current_room.delay
             print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
-        if self.current_time >= 540:
+        if self.current_time > 540: #changed this from >= to allow for making it to DRW by 9 on the dot
             print(game_text['late'])
             sys.exit()
 
@@ -254,7 +276,7 @@ class Game:
         self.player = None
         self.load_game_data(locations_file, items_file)
         self.load_npc(npc_file)
-        #self.game_time= "7:30"
+        self.game_map = None
 
     def load_item_data(self, items_file, item_name):
         with open(items_file, "r") as items_file:
@@ -267,7 +289,7 @@ class Game:
             for index, loc_info in enumerate(locations_data["locations"]):
 
                 #create the location object
-                location = Location(loc_info["name"], loc_info["description"],loc_info["required-item"],loc_info["delay"])
+                location = Location(loc_info["name"], loc_info["description"],loc_info["required-item"],loc_info["delay"],loc_info["map-key"])
                 for opt_act, opt_dest in loc_info["options"].items():
                     location.add_option(opt_act, opt_dest)
 
@@ -287,7 +309,7 @@ class Game:
             npc_data = json.load(npc_file)
             for npc_name, npc_info in npc_data.items():
                 #create new NPC object
-                new_npc = NPC(npc_name, npc_info["message"],npc_info["required-item"])
+                new_npc = NPC(npc_name, npc_info["message"],npc_info["required-item"],npc_info["map-key"])
                 new_npc.random_response = npc_info["random_response"]
 
                 #add NPC dialogue exit options
@@ -358,11 +380,8 @@ class Game:
     def handle_buy(self, noun):
         print(f"Handling BUY command for {noun}")
         # Implement 'TAKE' logic here
-        self.player.talk_npc(noun)
+        self.player.move(noun.title())
 
-
-
-    #IS THIS FUNCTION USED? ASK DEREK
     def increment_time(self):
         current_hour, current_minute = map(int, self.game_time.split(':'))
         current_minute += 10
@@ -378,7 +397,7 @@ class Game:
         starting_location = 'Home'
         self.player = Player("Player Name")
         self.player.current_room = self.locations[starting_location]
-        game_map = Map()
+        self.game_map = Map()
         #test_loc = list(self.locations.keys())
         #print(f"List of locations {test_loc}")
         
@@ -406,7 +425,7 @@ class Game:
             elif command == "time":
                 self.player.display_status()
             elif command in ["map", "show map"]:
-                game_map.show_map()
+                self.game_map.show_map()
             else:
                 self.parse_command(command)
 
