@@ -2,6 +2,7 @@ import os
 import json
 import random
 import sys
+import pygame 
 
 #paths for file dependencies
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -97,6 +98,15 @@ class NPC:
 
     def add_req_item(self, item):
         self.required_item.append(item)
+
+class Map:
+    @staticmethod
+    def show_map():
+        with open("json/map.txt", "r") as file:
+            map_list = file.readlines()
+        print("Map:")
+        for line in map_list:
+            print(line)
 
 class Player:
     def __init__(self, name):
@@ -443,9 +453,10 @@ class Game:
                 self.handle_inventory()
             elif command == "time":
                 self.player.display_status()
+            elif command in ["map", "show map"]:
+                game_map.show_map()
             else:
                 self.parse_command(command)
-
 
     def save_game(self, filename='save_game.json'):
         data = {
@@ -460,28 +471,27 @@ class Game:
     def load_game(self):
         with open('save_game.json', 'r') as f:
             data = json.load(f)
-
-       # player.current_time = data['current_time']
-       # player.current_room = game.locations[data['current_room']]
-       #for item_name in data['inventory']:
-       #     item_info = game.load_item_data(game.items_file, item_name)
-       #     if item_info:
-       #         item = Item(item_name, item_info["description"])
-       #         player.inventory.append(item)
         self.is_new_game = False
         self.save_data = data
         print(data)
+        
+#SOUND FUNCTIONALITY BELOW
+def sound():                
+   sound_file_path = "json/soundtest.mp3"
+   pygame.mixer.init()
+   pygame.mixer.music.load(sound_file_path)
+   pygame.mixer.music.play() 
 
-   # def save_game(self):
-   #     self.player.save_game()
-
-   # def load_game(self):
-   #     self.player = Player.load_game(self, filename='save_game.json')
-
+def toggle_sound():
+    global sound_enabled
+    sound_enabled = not sound_enabled
 
 if __name__ == "__main__":
-    clear_screen()
-    while True:
+        clear_screen()
+        pygame.mixer.init()
+        sound()
+    
+while True:
         print_ascii(title_file)
         game_text = convert_json()
         print(game_text['intro'])

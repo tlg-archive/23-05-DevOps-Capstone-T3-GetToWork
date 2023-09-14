@@ -1,0 +1,23 @@
+                -----------Home---------
+               /                         \
+              /                           \
+             Car                         Bus ---> Bus Driver
+              |                           |              |
+              v                           v              |
+           Highway                       Sit Seat <------|
+              |                             |
+              v                             v
+         Car Events                    Bus Events
+              |                           |
+              v                           v
+       Find Parking                    Downtown
+        /        \                   /          \
+        |         |                  |          |
+        v         v                  v          v
+      Close      Far             Person    Coffee Shop
+        \         \                  /          /
+         \          \               /          /
+            -----------------------------------
+                           |
+                           v              
+                          DRW
