@@ -428,7 +428,14 @@ class Game:
             starting_location = self.save_data['current_room']
             self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
-            self.game_time = self.save_data['current_time']
+
+            for item_name in self.save_data['inventory']:
+                item_info = self.load_item_data(self.items_file, item_name)
+                if item_info:
+                    item = Item(item_name, item_info["description"])
+                    self.player.inventory.append(item)
+
+            self.player.current_time = self.save_data['current_time']
         
         while True:
             #FOR TROUBLESHOOTING, REMOVE LATER
