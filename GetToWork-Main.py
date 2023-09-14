@@ -2,6 +2,10 @@ import os
 import json
 import random
 import sys
+import pygame 
+sound_enabled = True
+sound_enabled = False
+pygame.mixer.init()
 
 #paths for file dependencies
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -268,6 +272,32 @@ class Player:
         print(f'CURRENT TIME: {hours:02d}:{minutes:02d}am')
         self.inventory_list()
 
+    def save_game(self, filename='save_game.json'):
+        data = {
+            'name': self.name,
+            'inventory': [item.name for item in self.inventory],
+            'current_room': self.current_room.name,
+            'current_time': self.current_time
+        }
+        with open(filename, 'w') as f:
+            json.dump(data, f)
+
+    @classmethod    
+    def load_game(cls, game, filename):
+        with open(filename, 'r') as f:
+            data = json.load(f)
+
+        player = cls(data['name'])
+        player.current_time = data['current_time']
+        player.current_room = game.locations[data['current_room']]
+        for item_name in data['inventory']:
+            item_info = game.load_item_data(game.items_file, item_name)
+            if item_info:
+                item = Item(item_name, item_info["description"])
+                player.inventory.append(item)
+        return player
+
+
 class Game:
     def __init__(self, locations_file, items_file, npc_file):
         self.locations = {}
@@ -277,6 +307,11 @@ class Game:
         self.load_game_data(locations_file, items_file)
         self.load_npc(npc_file)
         self.game_map = None
+        #self.game_time= "7:30"
+        self.items_file = items_file
+        self.game_data = None
+        self.is_new_game = True
+        self.save_data = None
 
     def load_item_data(self, items_file, item_name):
         with open(items_file, "r") as items_file:
@@ -322,8 +357,18 @@ class Game:
         verb = command_words[0]
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
 
+        if verb == 'save':
+            self.save_game()
+            print("Game saved!")
+            return
+
+        if verb == 'load':
+            self.load_game()
+            print("Game loaded!")
+            return
+
         synonyms = {
-            'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
+            'take': ['take', 'grab', 'get', 'retrieve', 'snatch','pickup'],
             'use': ['use','drop'],
             'drive': ['drive','find'],
             'board': ['board', 'catch','stay','sit','ride', 'go','stay','head'],
@@ -394,12 +439,25 @@ class Game:
             self.game_time = "00:" + self.game_time.split(':')[1]
 
     def start_game(self):
-        starting_location = 'Home'
-        self.player = Player("Player Name")
-        self.player.current_room = self.locations[starting_location]
-        self.game_map = Map()
-        #test_loc = list(self.locations.keys())
-        #print(f"List of locations {test_loc}")
+        #print(f"Save data object {list(self.save_data.keys())}.")
+        if self.is_new_game == True:
+            starting_location = 'Home'
+            self.player = Player("Player Name")
+            self.player.current_room = self.locations[starting_location]
+            #test_loc = list(self.locations.keys())
+            #print(f"List of locations {test_loc}")
+        elif self.is_new_game == False:
+            starting_location = self.save_data['current_room']
+            self.player = Player("Player Name")
+            self.player.current_room = self.locations[starting_location]
+
+            for item_name in self.save_data['inventory']:
+                item_info = self.load_item_data(self.items_file, item_name)
+                if item_info:
+                    item = Item(item_name, item_info["description"])
+                    self.player.inventory.append(item)
+
+            self.player.current_time = self.save_data['current_time']
         
         while True:
             #FOR TROUBLESHOOTING, REMOVE LATER
@@ -425,22 +483,72 @@ class Game:
             elif command == "time":
                 self.player.display_status()
             elif command in ["map", "show map"]:
-                self.game_map.show_map()
+                game_map.show_map()
+            elif command in ["toggle sound"]:
+                toggle_sound() #toggle sound on/off
+                print("sound is", "on" if sound_enabled else "off") 
             else:
                 self.parse_command(command)
 
+    def save_game(self, filename='save_game.json'):
+        data = {
+            'name': self.player.name,
+            'inventory': [item.name for item in self.player.inventory],
+            'current_room': self.player.current_room.name,
+            'current_time': self.player.current_time
+        }
+        with open(filename, 'w') as f:
+            json.dump(data, f)
+
+    def load_game(self):
+        with open('save_game.json', 'r') as f:
+            data = json.load(f)
+        self.is_new_game = False
+        self.save_data = data
+        print(data)
+        
+#SOUND FUNCTIONALITY BELOW
+def sound():                
+   sound_file_path = "json/soundtest.mp3"
+   pygame.mixer.init()
+   pygame.mixer.music.load(sound_file_path)
+   pygame.mixer.music.set_volume(0.5)
+   pygame.mixer.music.play(-1)
+
+def toggle_sound():
+    global sound_enabled
+    sound_enabled = not sound_enabled
+    if sound_enabled:
+        pygame.mixer.music.unpause()
+    else:
+        pygame.mixer.music.pause()    
 
 if __name__ == "__main__":
-    clear_screen()
-    while True:
+        clear_screen()
+        pygame.mixer.init()
+        sound()
+        sound_enabled = True
+    
+while True:
         print_ascii(title_file)
         game_text = convert_json()
         print(game_text['intro'])
+        print("Type 'Load' to load a saved game.")
         choice = input(">> ").strip().lower()
 
         if choice in ["start", "new game", "start new game"]:
             game = Game(location_file,item_file,npc_file)
             game.start_game()
+
+        elif choice == "load":
+            game = Game(location_file, item_file, npc_file)
+            try:
+                game.load_game()
+                print("Game loaded!")
+                game.start_game()
+            except FileNotFoundError:
+                print("No saved game found. Please start a new game.")       
+
         elif choice in ["quit", "exit"]:
             print("Thanks for playing!")
             break
