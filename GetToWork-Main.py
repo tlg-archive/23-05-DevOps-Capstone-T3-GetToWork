@@ -441,12 +441,14 @@ class Game:
     def start_game(self):
         #print(f"Save data object {list(self.save_data.keys())}.")
         if self.is_new_game == True:
+            self.game_map = Map()
             starting_location = 'Home'
             self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
             #test_loc = list(self.locations.keys())
             #print(f"List of locations {test_loc}")
         elif self.is_new_game == False:
+            self.game_map = Map()
             starting_location = self.save_data['current_room']
             self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
@@ -483,7 +485,7 @@ class Game:
             elif command == "time":
                 self.player.display_status()
             elif command in ["map", "show map"]:
-                game_map.show_map()
+                self.game_map.show_map()
             elif command in ["toggle sound"]:
                 toggle_sound() #toggle sound on/off
                 print("sound is", "on" if sound_enabled else "off") 
