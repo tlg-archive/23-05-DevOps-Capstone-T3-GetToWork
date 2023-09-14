@@ -343,7 +343,7 @@ class Game:
             return
 
         synonyms = {
-            'take': ['take', 'grab', 'get', 'retrieve', 'snatch'],
+            'take': ['take', 'grab', 'get', 'retrieve', 'snatch','pickup'],
             'use': ['use','drop'],
             'drive': ['drive','find'],
             'board': ['board', 'catch','stay','sit','ride', 'go','stay','head'],
