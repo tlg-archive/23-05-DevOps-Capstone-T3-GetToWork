@@ -274,6 +274,8 @@ class Game:
         #self.game_time= "7:30"
         self.items_file = items_file
         self.game_data = None
+        self.is_new_game = True
+        self.save_data = None
 
 
     def load_item_data(self, items_file, item_name):
@@ -405,11 +407,18 @@ class Game:
             self.game_time = "00:" + self.game_time.split(':')[1]
 
     def start_game(self):
-        starting_location = 'Home'
-        self.player = Player("Player Name")
-        self.player.current_room = self.locations[starting_location]
-        #test_loc = list(self.locations.keys())
-        #print(f"List of locations {test_loc}")
+        #print(f"Save data object {list(self.save_data.keys())}.")
+        if self.is_new_game == True:
+            starting_location = 'Home'
+            self.player = Player("Player Name")
+            self.player.current_room = self.locations[starting_location]
+            #test_loc = list(self.locations.keys())
+            #print(f"List of locations {test_loc}")
+        elif self.is_new_game == False:
+            starting_location = self.save_data['current_room']
+            self.player = Player("Player Name")
+            self.player.current_room = self.locations[starting_location]
+            self.game_time = self.save_data['current_time']
         
         while True:
             #FOR TROUBLESHOOTING, REMOVE LATER
@@ -440,28 +449,28 @@ class Game:
 
     def save_game(self, filename='save_game.json'):
         data = {
-            'name': self.name,
-            'inventory': [item.name for item in self.inventory],
-            'current_room': self.current_room.name,
-            'current_time': self.current_time
+            'name': self.player.name,
+            'inventory': [item.name for item in self.player.inventory],
+            'current_room': self.player.current_room.name,
+            'current_time': self.player.current_time
         }
         with open(filename, 'w') as f:
             json.dump(data, f)
 
-    @classmethod    
-    def load_game(cls, game, filename):
-        with open(filename, 'r') as f:
+    def load_game(self):
+        with open('save_game.json', 'r') as f:
             data = json.load(f)
 
-        player = cls(data['name'])
-        player.current_time = data['current_time']
-        player.current_room = game.locations[data['current_room']]
-        for item_name in data['inventory']:
-            item_info = game.load_item_data(game.items_file, item_name)
-            if item_info:
-                item = Item(item_name, item_info["description"])
-                player.inventory.append(item)
-        return player
+       # player.current_time = data['current_time']
+       # player.current_room = game.locations[data['current_room']]
+       #for item_name in data['inventory']:
+       #     item_info = game.load_item_data(game.items_file, item_name)
+       #     if item_info:
+       #         item = Item(item_name, item_info["description"])
+       #         player.inventory.append(item)
+        self.is_new_game = False
+        self.save_data = data
+        print(data)
 
    # def save_game(self):
    #     self.player.save_game()
