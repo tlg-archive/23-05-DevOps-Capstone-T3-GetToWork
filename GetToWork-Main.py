@@ -3,9 +3,9 @@ import json
 import random
 import sys
 import pygame 
-sound_enabled = True
-sound_enabled = False
-pygame.mixer.init()
+""" sound_enabled = True
+sound_enabled = False """
+#pygame.mixer.init()
 
 #paths for file dependencies
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -546,6 +546,9 @@ class Game:
             elif command == "sfx volume down":
                 sfx_volume_down()
                 print(f"SFX Volume decreased to {round(current_sfx_volume * 100)}%")
+            elif command == "toggle sfx":
+                toggle_fx()
+                print("sfx","on" if sfx_enabled else "off") 
             else:
                 self.parse_command(command)
 
@@ -567,29 +570,40 @@ class Game:
         print(data)
         
 #SOUND FUNCTIONALITY BELOW
+pygame.mixer.init()
+music_channel = pygame.mixer.Channel(0)
+sfx_channel = pygame.mixer.Channel(1)
+
 current_volume = 0.4
 current_sfx_volume = 0.6
+
 def sound(sound_file):                
-   sound_file_path = sound_file #"json/soundtest.mp3"
    pygame.mixer.init()
-   pygame.mixer.music.load(sound_file_path)
-   pygame.mixer.music.set_volume(0.4)
-   pygame.mixer.music.play(-1)
+   background_music = pygame.mixer.Sound(sound_file)
+   music_channel.play(background_music, loops=-1)  # -1 loops indefinitely
+   music_channel.set_volume(current_volume)
 
 #PLAYS THE SOUND EFFECT SFX - USED IN Player.take_item()
 def sfx_sound(sound_file):
- if  sound_enabled:
-    sound_effect = pygame.mixer.Sound(sound_file)
-    sound_effect.set_volume(current_sfx_volume)
-    sound_effect.play() 
+    if not sfx_enabled:
+        return
+
+    sfx_music = pygame.mixer.Sound(sound_file)
+    sfx_channel.play(sfx_music)  # -1 loops indefinitely
+    sfx_channel.set_volume(current_sfx_volume)
 
 def toggle_sound():
     global sound_enabled
     sound_enabled = not sound_enabled
+    print("I work", sound_enabled)
     if sound_enabled:
-        pygame.mixer.music.unpause()
+        music_channel.unpause()
     else:
-        pygame.mixer.music.pause() 
+        music_channel.pause() 
+
+def toggle_fx():
+    global sfx_enabled
+    sfx_enabled = not sfx_enabled         
    
 VOLUME_INCREMENT = 0.1
 
@@ -598,32 +612,35 @@ def volume_up():
     current_volume += VOLUME_INCREMENT
     if current_volume > 1:
         current_volume = 1
-    pygame.mixer.music.set_volume(current_volume)
+    music_channel.set_volume(current_volume)
 
 def volume_down():
     global current_volume
     current_volume -= VOLUME_INCREMENT
     if current_volume < 0:
         current_volume = 0
-    pygame.mixer.music.set_volume(current_volume)
+    music_channel.set_volume(current_volume)
 
 def sfx_volume_up():
     global current_sfx_volume
     current_sfx_volume += VOLUME_INCREMENT
     if current_sfx_volume > 1:
         current_sfx_volume = 1
+    sfx_channel.set_volume(current_volume)
 
 def sfx_volume_down():
     global current_sfx_volume
     current_sfx_volume -= VOLUME_INCREMENT
     if current_sfx_volume < 0:
         current_sfx_volume = 0
+    sfx_channel.set_volume(current_volume)
 
 
 if __name__ == "__main__":
         clear_screen()
-        pygame.mixer.init()
+        #pygame.mixer.init()
         sound_enabled = True
+        sfx_enabled = True
     
 while True:
         sound("sfx/soundtest.mp3")
