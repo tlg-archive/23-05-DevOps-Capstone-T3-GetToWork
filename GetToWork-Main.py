@@ -602,10 +602,10 @@ def volume_down():
 if __name__ == "__main__":
         clear_screen()
         pygame.mixer.init()
-        sound("sfx/soundtest.mp3")
         sound_enabled = True
     
 while True:
+        sound("sfx/soundtest.mp3")
         print_ascii(title_file)
         game_text = convert_json()
         print(game_text['intro'])
