@@ -70,6 +70,8 @@ class Location:
         self.required_item = req_item
         self.delay = loc_delay
         self.map_key = map_key
+        #self.sfx = sfx
+        #self.sfx = {}
 
     def add_option(self, action, loc):
         self.options[action] = loc
@@ -140,13 +142,13 @@ class Map:
                 line = updated_line
                 self.map_list[index] = updated_line
         
-
 class Player:
     def __init__(self, name):
         self.name = name
         self.inventory = []
         self.current_room = None
         self.current_time= 450
+
 
     def move(self, noun):
         #these print statements show the current room and exit options
@@ -174,6 +176,7 @@ class Player:
                     random_room = random.sample(new_loc, 1)
                     self.current_room = game.locations[random_room[0]]
                     self.advance_time()
+                    self.play_sound(self.current_room.name)
                 else:
                     item_err = game_text["no_item"].format(no_item=game.locations[noun].required_item)
                     print(item_err)
@@ -185,10 +188,37 @@ class Player:
 
                 self.current_room = game.locations[random_room[0]]
                 self.advance_time()
+                self.play_sound(self.current_room.name)
         else:
             print("You can't go that way.")
 
+    def play_sound(self, new_location):
+        global current_location
+        current_location = self.current_room.name
+
+
+        loc_sfx = game.location_music[new_location]
+        print(f"loc_sxf: {loc_sfx}")
+
+        print(f"new location: {new_location}")
+        print(f"previous set location: {current_location}")
+
+        if loc_sfx != "":
+                #ONLY PLAY THE SOUND BELOW THE CURRENT ROOM HAS NOT CHANGED
+                sound(loc_sfx)
+        
+
+        """ if location != self.current_room.name:
+            # Location has changed, update the current_location and change music
+            current_location = location
+            loc_sfx = game.locations[self.current_room.name].sfx
+            if loc_sfx != "":
+                #ONLY PLAY THE SOUND BELOW THE CURRENT ROOM HAS NOT CHANGED
+                sound(loc_sfx) """
+
+
     def look_around(self):
+        #print(f"current sfx for the below location: {game.locations[self.current_room.name].sfx}")
         create_window()
         print(f"\n-----CURRENT LOCATION: {self.current_room.name}-----")
         if hasattr(self.current_room, 'description'):
@@ -204,6 +234,11 @@ class Player:
             print("\n")
             self.display_status()
             game.game_map.update_map()
+            #self.play_sound(self.current_room.name)
+            """ loc_sfx = game.locations[self.current_room.name].sfx
+            if loc_sfx != "":
+                #ONLY PLAY THE SOUND BELOW THE CURRENT ROOM HAS NOT CHANGED
+                sound(loc_sfx) """
         else:
             print(self.current_room.message,"\n")
             random_response = random.sample(self.current_room.random_response, 1)
@@ -218,6 +253,7 @@ class Player:
                 self.inventory.append(item)
                 self.current_room.items.remove(item)
                 print(f"You take the {item_name}.")
+                sfx_sound("sfx/get_item.mp3")
                 return
         print(f"There's no {item_name} here.")
 
@@ -301,13 +337,13 @@ class Player:
 class Game:
     def __init__(self, locations_file, items_file, npc_file):
         self.locations = {}
+        self.location_music = {}
         self.items = []
         self.npcs = {}
         self.player = None
         self.load_game_data(locations_file, items_file)
         self.load_npc(npc_file)
         self.game_map = None
-        #self.game_time= "7:30"
         self.items_file = items_file
         self.game_data = None
         self.is_new_game = True
@@ -318,6 +354,9 @@ class Game:
             items_data = json.load(items_file)
             return items_data.get(item_name)
 
+    """ def add_sfx(self, location, sound):
+        self.sfx_dict[location] = sound """
+
     def load_game_data(self, locations_file, items_file):
         with open(locations_file, "r") as loc_file:
             locations_data = json.load(loc_file)
@@ -327,6 +366,10 @@ class Game:
                 location = Location(loc_info["name"], loc_info["description"],loc_info["required-item"],loc_info["delay"],loc_info["map-key"])
                 for opt_act, opt_dest in loc_info["options"].items():
                     location.add_option(opt_act, opt_dest)
+
+                #add music playlist dictionary
+                #self.add_sfx(loc_info["name"], loc_info["sfx"])
+                self.location_music[loc_info["name"]] = loc_info["sfx"]
 
                 #adding items to the location items list
                 for item_name in loc_info["items"]:
@@ -445,6 +488,7 @@ class Game:
             starting_location = 'Home'
             self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
+            self.player.play_sound(starting_location)
             #test_loc = list(self.locations.keys())
             #print(f"List of locations {test_loc}")
         elif self.is_new_game == False:
@@ -452,6 +496,7 @@ class Game:
             starting_location = self.save_data['current_room']
             self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
+            self.player.play_sound(starting_location)
 
             for item_name in self.save_data['inventory']:
                 item_info = self.load_item_data(self.items_file, item_name)
@@ -516,13 +561,19 @@ class Game:
         print(data)
         
 #SOUND FUNCTIONALITY BELOW
-current_volume = 0.5
-def sound():                
-   sound_file_path = "json/soundtest.mp3"
+current_volume = 0.4
+def sound(sound_file):                
+   sound_file_path = sound_file #"json/soundtest.mp3"
    pygame.mixer.init()
    pygame.mixer.music.load(sound_file_path)
-   pygame.mixer.music.set_volume(0.5)
+   pygame.mixer.music.set_volume(0.4)
    pygame.mixer.music.play(-1)
+
+#PLAYS THE SOUND EFFECT SFX - USED IN Player.take_item()
+def sfx_sound(sound_file):
+    sound_effect = pygame.mixer.Sound(sound_file)
+    sound_effect.set_volume(0.6)
+    sound_effect.play() 
 
 def toggle_sound():
     global sound_enabled
@@ -551,7 +602,7 @@ def volume_down():
 if __name__ == "__main__":
         clear_screen()
         pygame.mixer.init()
-        sound()
+        sound("sfx/soundtest.mp3")
         sound_enabled = True
     
 while True:

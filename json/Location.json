@@ -10,7 +10,8 @@
       "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your CAR or GO on the BUS?", 
       "items": ["keys", "money", "bus card", "phone"],
       "required-item": "",
-      "map-key" : "[H]"
+      "map-key" : "[H]",
+      "sfx": "sfx/home2.mp3"
     }, 
     { 
       "name": "Bus", 
@@ -22,7 +23,8 @@
         "bus driver": ["Bus Driver"], 
         "seat": ["Seat"]
       },
-      "map-key" : "[B]"
+      "map-key" : "[B]",
+      "sfx": "sfx/bus.mp3"
     },
     { 
       "name": "Seat", 
@@ -34,7 +36,8 @@
         "bellcord": ["Wrong Stop"], 
         "bus": ["Bus Stop 2"]
       },
-      "map-key" : "[S]"
+      "map-key" : "[S]",
+      "sfx": "sfx/ride_bus.mp3"
     },
     { 
       "name": "Bus Stop 2", 
@@ -46,7 +49,8 @@
         "bellcord": ["Downtown"], 
         "bus": ["Bus Stop 3"]
       },
-      "map-key" : "[BE]"
+      "map-key" : "[BE]",
+      "sfx": "sfx/ride_bus.mp3"
     },
     { 
       "name": "Bus Stop 3", 
@@ -58,7 +62,8 @@
         "bellcord": ["Wrong Stop"], 
         "bus": ["Wrong Stop"]
       },
-      "map-key" : "[BE]"
+      "map-key" : "[BE]",
+      "sfx": "sfx/ride_bus.mp3"
     },
     {
       "name": "Wrong Stop",
@@ -69,7 +74,8 @@
       "options": { 
         "downtown": ["Downtown"]
       },
-      "map-key" : "[BE]"
+      "map-key" : "[BE]",
+      "sfx": "sfx/city.mp3"
     },
     { 
       "name": "Downtown", 
@@ -81,7 +87,8 @@
         "coffee shop": ["Coffee Shop"],
         "person": ["Person"]
       },
-      "map-key" : "[D]"
+      "map-key" : "[D]",
+      "sfx": "sfx/city.mp3"
     },
     { 
       "name": "Coffee Shop", 
@@ -92,7 +99,8 @@
       "options": { 
         "coffee": ["Coffee Event Good", "Coffee Event Bad"]
       },
-      "map-key" : "[CS]"
+      "map-key" : "[CS]",
+      "sfx": "sfx/coffee.mp3"
     },
     { 
       "name": "Coffee Event Good", 
@@ -104,7 +112,8 @@
         "drw": ["DRW"],
         "work": ["DRW"]
       },
-      "map-key" : "[CS]"
+      "map-key" : "[CS]",
+      "sfx": "sfx/coffee.mp3"
     },
     { 
       "name": "Coffee Event Bad", 
@@ -116,7 +125,8 @@
         "drw": ["DRW"],
         "work": ["DRW"]
       },
-      "map-key" : "[CS]"
+      "map-key" : "[CS]",
+      "sfx": "sfx/coffee.mp3"
     },
     { 
       "name": "Car", 
@@ -127,7 +137,8 @@
       "options": { 
         "highway": ["Highway"]
       },
-      "map-key" : "[C]"
+      "map-key" : "[C]",
+      "sfx": "sfx/car.mp3"
     },
     { 
       "name": "Highway", 
@@ -139,7 +150,8 @@
         "current lane": ["Normal Drive", "Construction Event"],
         "right lane": ["Normal Drive", "Construction Event"]
       },
-      "map-key" : "[HW]"
+      "map-key" : "[HW]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Normal Drive", 
@@ -151,7 +163,8 @@
         "current lane": ["Normal Drive 2", "Traffic Event"],
         "right lane": ["Normal Drive 2", "Traffic Event"]
       },
-      "map-key" : "[CE]"
+      "map-key" : "[CE]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Normal Drive 2", 
@@ -163,7 +176,8 @@
         "current lane": ["Normal Drive 3", "Accident Event"],
         "right lane": ["Normal Drive 3", "Accident Event"]
       },
-      "map-key" : "[CE]"
+      "map-key" : "[CE]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Normal Drive 3", 
@@ -175,7 +189,8 @@
         "parking": ["Find Parking"],
         "downtown": ["Find Parking"]
       },
-      "map-key" : "[CE]"
+      "map-key" : "[CE]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Construction Event", 
@@ -187,7 +202,8 @@
         "current lane": ["Normal Drive 2", "Traffic Event"],
         "right lane": ["Normal Drive 2", "Traffic Event"]
       },
-      "map-key" : "[CE]"
+      "map-key" : "[CE]",
+      "sfx": "sfx/construction.mp3"
     },
     { 
       "name": "Traffic Event", 
@@ -199,7 +215,8 @@
         "current lane": ["Normal Drive 3", "Accident Event"],
         "right lane": ["Normal Drive 3", "Accident Event"]
       },
-      "map-key" : "[CE]"
+      "map-key" : "[CE]",
+      "sfx": "sfx/traffic.mp3"
     },
     { 
       "name": "Accident Event", 
@@ -211,7 +228,8 @@
         "parking": ["Find Parking"],
         "downtown": ["Find Parking"]
       },
-      "map-key" : "[CE]"
+      "map-key" : "[CE]",
+      "sfx": "sfx/accident.mp3"
     },
     { 
       "name": "Find Parking", 
@@ -223,7 +241,8 @@
         "close": ["Close"], 
         "far": ["Far"]
       },
-      "map-key" : "[FP]"
+      "map-key" : "[FP]",
+      "sfx": "sfx/city.mp3"
     },
     { 
       "name": "Close", 
@@ -235,7 +254,8 @@
         "drw": ["DRW"],
         "work": ["DRW"]
       },
-      "map-key" : "[CL]"
+      "map-key" : "[CL]",
+      "sfx": "sfx/parking2.mp3"
     },
     { 
       "name": "Far", 
@@ -247,7 +267,8 @@
         "drw": ["DRW"],
         "work": ["DRW"]
       },
-      "map-key" : "[F]"
+      "map-key" : "[F]",
+      "sfx": "sfx/parking2.mp3"
     },
     { 
       "name": "DRW", 
@@ -258,29 +279,8 @@
       "options": { 
         "Coffee": ["DRW Lose"]
       },
-      "map-key" : "[DRW]"
-    },
-    { 
-      "name": "On time", 
-      "description": "Arriving on time at DRW building, relief washes over you. Ready for a promising first day", 
-      "items": [], 
-      "delay":0,
-      "required-item": "",
-      "options": { 
-        "Coffee Hand": ["DRW WIN"]
-      },
-      "map-key" : "[DRW]"
-    },
-    { 
-      "name": "Late", 
-      "description": "Late at DRW building, dread replaces relief on your first day", 
-      "items": [], 
-      "delay":0,
-      "required-item": "",
-      "options": { 
-        "Coffee": ["DRW Lose"]
-      },
-      "map-key" : "[DRW]"
+      "map-key" : "[DRW]",
+      "sfx": "sfx/game_win.mp3"
     }
   ] 
 }
