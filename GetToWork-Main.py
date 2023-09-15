@@ -571,6 +571,7 @@ def sound(sound_file):
 
 #PLAYS THE SOUND EFFECT SFX - USED IN Player.take_item()
 def sfx_sound(sound_file):
+ if  sound_enabled:
     sound_effect = pygame.mixer.Sound(sound_file)
     sound_effect.set_volume(0.6)
     sound_effect.play() 
