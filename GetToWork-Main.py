@@ -539,7 +539,13 @@ class Game:
                 print(f"Volume increased to {round(current_volume * 100)}%")
             elif command == "volume down":
                 volume_down()
-                print(f"Volume decreased to {round(current_volume * 100)}%") 
+                print(f"Volume decreased to {round(current_volume * 100)}%")
+            elif command == "sfx volume up":
+                sfx_volume_up()
+                print(f"SFX Volume increased to {round(current_sfx_volume * 100)}%")
+            elif command == "sfx volume down":
+                sfx_volume_down()
+                print(f"SFX Volume decreased to {round(current_sfx_volume * 100)}%")
             else:
                 self.parse_command(command)
 
@@ -562,6 +568,7 @@ class Game:
         
 #SOUND FUNCTIONALITY BELOW
 current_volume = 0.4
+current_sfx_volume = 0.6
 def sound(sound_file):                
    sound_file_path = sound_file #"json/soundtest.mp3"
    pygame.mixer.init()
@@ -572,7 +579,7 @@ def sound(sound_file):
 #PLAYS THE SOUND EFFECT SFX - USED IN Player.take_item()
 def sfx_sound(sound_file):
     sound_effect = pygame.mixer.Sound(sound_file)
-    sound_effect.set_volume(0.6)
+    sound_effect.set_volume(current_sfx_volume)
     sound_effect.play() 
 
 def toggle_sound():
@@ -598,6 +605,19 @@ def volume_down():
     if current_volume < 0:
         current_volume = 0
     pygame.mixer.music.set_volume(current_volume)
+
+def sfx_volume_up():
+    global current_sfx_volume
+    current_sfx_volume += VOLUME_INCREMENT
+    if current_sfx_volume > 1:
+        current_sfx_volume = 1
+
+def sfx_volume_down():
+    global current_sfx_volume
+    current_sfx_volume -= VOLUME_INCREMENT
+    if current_sfx_volume < 0:
+        current_sfx_volume = 0
+
 
 if __name__ == "__main__":
         clear_screen()
