@@ -3,7 +3,7 @@
 
 block_cipher = None
 
-add_datas=[('./json/*.json' , './' 'json'), ('./json/*.txt' , './' 'json')]
+add_datas=[('./json/*.json' , './' 'json'), ('./json/*.txt' , './' 'json'), ('./sfx/*.mp3' , './' 'sfx')]
 
 a = Analysis(
     ['GetToWork-Main.py'],

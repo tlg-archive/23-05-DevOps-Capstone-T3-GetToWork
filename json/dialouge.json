@@ -1,14 +1,12 @@
 {
     "Bus Driver": {
-        "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"",
-        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\n[You decide to GO find a SEAT and and start to worry as the bus starts moving.]",
-        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we get to Bus Stop 2. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to GO find a SEAT and relax as the bus starts moving."
+        "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get off at to get there?\"",
+        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\nYou decide to GO find a SEAT and and start to worry as the bus starts moving.",
+        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the bellcord when we get to Bus Stop 2. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to GO find a SEAT and relax as the bus starts moving."
         ],
         "required-item": "bus card",
         "options": 
             {
-                "___comment___": "/* needs to go to bus stop locations */",
-                "response": "SIT in seat and ride the bus",
                 "seat": ["Seat"]
             },
             "map-key" : "[BD]"
@@ -20,8 +18,6 @@
         "required-item": "",
         "options": 
             {
-                "___comment___": "/* needs to go to bus stop locations */",
-                "response": "Head to work",
                 "drw": ["DRW"] 
             },
             "map-key" : "Person"
