@@ -276,7 +276,7 @@ class Player:
         else:
             self.current_time +=  self.current_room.delay
             #print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
-            print(game_text["delay_mess"].format(delay=self.current_room.delay))
+            #print(game_text["delay_mess"].format(delay=self.current_room.delay))
         if self.current_time > 540: #changed this from >= to allow for making it to DRW by 9 on the dot
             print(game_text['late'])
             sys.exit()
@@ -370,6 +370,9 @@ class Game:
 
     def parse_command(self, command):
         command_words = command.split(' ')
+        if len(command_words) == 1:
+            print(game_text["need_noun"])
+            return 
         verb = command_words[0]
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
 
@@ -550,7 +553,8 @@ def sound(sound_file):
     song_name_list = sound_file.split('/')
     array_len = len(song_name_list)
 
-    sound_file_path = os.path.join(script_dir, 'sfx', song_name_list[array_len-1])
+    script_dirs = os.path.dirname(os.path.realpath(__file__))
+    sound_file_path = os.path.join(script_dirs, 'sfx', song_name_list[array_len-1])
     #print(f"sound file path: {sound_file_path}")
     #print(f"sound file: {sound_file}")           
     pygame.mixer.init()
@@ -620,11 +624,11 @@ while True:
         print(game_text['intro'])
         choice = input(">> ").strip().lower()
 
-        if choice in ["start", "new game", "start new game"]:
+        if choice in ["start", "new game", "start new game", "start game"]:
             game = Game(location_file,item_file,npc_file)
             game.start_game()
 
-        elif choice == "load":
+        elif choice in ["load", "load game"]:
             game = Game(location_file, item_file, npc_file)
             try:
                 game.load_game()
