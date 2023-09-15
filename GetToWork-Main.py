@@ -546,6 +546,9 @@ class Game:
             elif command == "sfx volume down":
                 sfx_volume_down()
                 print(f"SFX Volume decreased to {round(current_sfx_volume * 100)}%")
+            elif command == "toggle sfx":
+                toggle_fx()
+                print("sfx","on" if sfx_enabled else "off") 
             else:
                 self.parse_command(command)
 
@@ -578,7 +581,7 @@ def sound(sound_file):
 
 #PLAYS THE SOUND EFFECT SFX - USED IN Player.take_item()
 def sfx_sound(sound_file):
- if  sound_enabled:
+    global sound_effect
     sound_effect = pygame.mixer.Sound(sound_file)
     sound_effect.set_volume(current_sfx_volume)
     sound_effect.play() 
@@ -590,6 +593,14 @@ def toggle_sound():
         pygame.mixer.music.unpause()
     else:
         pygame.mixer.music.pause() 
+
+def toggle_fx():
+    global sfx_enabled
+    sfx_enabled = not sfx_enabled
+    if sfx_enabled:
+        sound_effect.unpause
+    else:
+        sound_effect.pause()            
    
 VOLUME_INCREMENT = 0.1
 
