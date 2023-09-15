@@ -3,9 +3,6 @@ import json
 import random
 import sys
 import pygame 
-""" sound_enabled = True
-sound_enabled = False """
-#pygame.mixer.init()
 
 #paths for file dependencies
 script_dir = os.path.dirname(os.path.realpath(__file__))
@@ -15,7 +12,9 @@ npc_file = os.path.join(script_dir, 'json', 'dialouge.json')
 text_file = os.path.join(script_dir, 'json', 'game-text.json')
 item_file = os.path.join(script_dir, 'json', 'items.json')
 location_file = os.path.join(script_dir, 'json', 'Location.json')
-
+item_sound_file = os.path.join(script_dir, 'sfx', 'get_item.mp3')
+bg_music_file = os.path.join(script_dir, 'sfx', 'soundtest.mp3')
+map_file = os.path.join(script_dir, 'json', 'map.txt')
 
 # Helper functions
 def create_window():
@@ -50,7 +49,9 @@ def display_description(object_to_look):
             return
 
     # If the object_to_look isn't found
-    print(f"Cannot find information about {object_to_look}.")
+    #print(f"Cannot find information about {object_to_look}.")
+    item_err = game_text["no_find_item"].format(object_to_look=object_to_look)
+    print(item_err)
 
 class Item:
     def __init__(self, name, description):
@@ -70,14 +71,9 @@ class Location:
         self.required_item = req_item
         self.delay = loc_delay
         self.map_key = map_key
-        #self.sfx = sfx
-        #self.sfx = {}
 
     def add_option(self, action, loc):
         self.options[action] = loc
-
-    """ def add_delay(self, action, loc):
-        self.delay = loc_delay """
 
     def add_item(self, item):
         self.items.append(item)
@@ -112,7 +108,7 @@ class Map:
         self.map_list = self.gen_map()
 
     def gen_map(self):
-        with open("json/map.txt", "r") as file:
+        with open(map_file, "r") as file:
             map_list = file.readlines()
         return map_list
 
@@ -125,7 +121,6 @@ class Map:
         self.map_list = self.gen_map()
         #get the map key from the current room
         current_key = game.player.current_room.map_key
-        #print(f"map updated: {current_key}")
 
         for index, line in enumerate(self.map_list):
             if current_key in line:
@@ -151,17 +146,9 @@ class Player:
 
 
     def move(self, noun):
-        #these print statements show the current room and exit options
-        #print(noun, "noun")
-        #print(f"current room: {self.current_room.name}") 
-        #print(f"current room options: {self.current_room.options}")
-        #print(f"game locations with this noun: {game.locations[noun]}")
-
         if noun.lower() in self.current_room.options:
-            #if self.current_room.required_item:
             required_item_loc = self.current_room.options.get(noun.lower())
             
-            #if game.locations[noun].required_item:
             if game.locations[required_item_loc[0]].required_item:
                 #check your inventory to see if the required item exists, need to loop throught the inventory list
                 check_req = False
@@ -172,7 +159,6 @@ class Player:
 
                 if check_req == True:
                     new_loc = self.current_room.options.get(noun.lower())
-                    print(f"new loc {new_loc}")
                     random_room = random.sample(new_loc, 1)
                     self.current_room = game.locations[random_room[0]]
                     self.advance_time()
@@ -190,55 +176,40 @@ class Player:
                 self.advance_time()
                 self.play_sound(self.current_room.name)
         else:
-            print("You can't go that way.")
+            print(game_text["no_move"])
+            #print("You can't go that way.")
 
     def play_sound(self, new_location):
         global current_location
         current_location = self.current_room.name
-
-
         loc_sfx = game.location_music[new_location]
-        print(f"loc_sxf: {loc_sfx}")
-
-        print(f"new location: {new_location}")
-        print(f"previous set location: {current_location}")
 
         if loc_sfx != "":
                 #ONLY PLAY THE SOUND BELOW THE CURRENT ROOM HAS NOT CHANGED
                 sound(loc_sfx)
-        
-
-        """ if location != self.current_room.name:
-            # Location has changed, update the current_location and change music
-            current_location = location
-            loc_sfx = game.locations[self.current_room.name].sfx
-            if loc_sfx != "":
-                #ONLY PLAY THE SOUND BELOW THE CURRENT ROOM HAS NOT CHANGED
-                sound(loc_sfx) """
 
 
     def look_around(self):
-        #print(f"current sfx for the below location: {game.locations[self.current_room.name].sfx}")
         create_window()
-        print(f"\n-----CURRENT LOCATION: {self.current_room.name}-----")
+        #print(f"\n-----CURRENT LOCATION: {self.current_room.name}-----")
+
+        item_err = game_text["current_location"].format(location=self.current_room.name)
+        print(item_err)
+
         if hasattr(self.current_room, 'description'):
             print("\n")
             print(self.current_room.description,"\n")
 
             #Dynamically print all items in a room
             if len(self.current_room.items) > 0:
-                print(f"-----ITEMS IN THIS ROOM-----")
+                #print(f"-----ITEMS IN THIS ROOM-----")
+                print(game_text["items"])
                 for item in self.current_room.items:
                     print(item.name)
 
             print("\n")
             self.display_status()
             game.game_map.update_map()
-            #self.play_sound(self.current_room.name)
-            """ loc_sfx = game.locations[self.current_room.name].sfx
-            if loc_sfx != "":
-                #ONLY PLAY THE SOUND BELOW THE CURRENT ROOM HAS NOT CHANGED
-                sound(loc_sfx) """
         else:
             print(self.current_room.message,"\n")
             random_response = random.sample(self.current_room.random_response, 1)
@@ -252,32 +223,39 @@ class Player:
             if item.name == item_name:
                 self.inventory.append(item)
                 self.current_room.items.remove(item)
-                print(f"You take the {item_name}.")
-                sfx_sound("sfx/get_item.mp3")
+                #print(f"You take the {item_name}.")
+
+                item_err = game_text["grab_item"].format(item_name=item_name)
+                print(item_err)
+
+
+                sfx_sound(item_sound_file)
                 return
-        print(f"There's no {item_name} here.")
+        #print(f"There's no {item_name} here.")
+
+        item_err = game_text["item_none"].format(item_name=item_name)
+        print(item_err)
 
     def use_item(self, noun):
         #removes item from your inventory, adds it to the current location item list
-        print(f"use item {noun}")
-        #print(f"item list in room: {self.current_room.items}") #IS A CLASS/OBJECT LOOP THROUGH IT?
         if len(self.inventory) > 0: 
             for item in self.inventory:
-                print(item, "item")
-                print(self.inventory, "inventory") 
+                #print(item, "item")
+                #print(self.inventory, "inventory") 
                 if item.name == noun:
-                    print("I WORK")
                     self.inventory.remove(item)
                     self.current_room.items.append(item)
-                    print(f"You take used the {item.name} in {self.current_room}.")
+                    #print(f"You take used the {item.name} in {self.current_room}.")
+                    print(game_text["use_item"].format(item_name=item.name,current_room=self.current_room.name))
         else:
-            print("You have no items to use!")
+            #print("You have no items to use!")
+            print(game_text["no_use"])
 
     def inventory_list(self):
         if not self.inventory:
             print(game_text["empty"])
         else:
-            print("Inventory:")
+            print(game_text["inventory"])
             for item in self.inventory:
                 print(item.name)
 
@@ -288,23 +266,24 @@ class Player:
             random_room = random.sample(new_loc, 1)
             self.current_room = game.locations[random_room[0]]
         else:
-            print(f"You can't talk with {noun} here.")
+            
+            #print(f"You can't talk with {noun} here.")
+            print(game_text["no_npc"].format(noun=noun))
 
     def advance_time(self, minutes=10):
-        #print(f"current room for advance time troubleshooting: {self.current_room.name}")
-        #print(f"current room delay: {self.current_room.delay}")
         if self.current_room.delay == 0:
             self.current_time +=  minutes
         else:
             self.current_time +=  self.current_room.delay
-            print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
+            #print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
+            print(game_text["delay_mess"].format(delay=self.current_room.delay))
         if self.current_time > 540: #changed this from >= to allow for making it to DRW by 9 on the dot
             print(game_text['late'])
             sys.exit()
 
     def display_status(self):
         hours, minutes = divmod(self.current_time, 60)
-        print("-----PLAYER STATUS-----")
+        print(game_text["player_status"])
         print(f'CURRENT TIME: {hours:02d}:{minutes:02d}am')
         self.inventory_list()
 
@@ -333,7 +312,6 @@ class Player:
                 player.inventory.append(item)
         return player
 
-
 class Game:
     def __init__(self, locations_file, items_file, npc_file):
         self.locations = {}
@@ -354,9 +332,6 @@ class Game:
             items_data = json.load(items_file)
             return items_data.get(item_name)
 
-    """ def add_sfx(self, location, sound):
-        self.sfx_dict[location] = sound """
-
     def load_game_data(self, locations_file, items_file):
         with open(locations_file, "r") as loc_file:
             locations_data = json.load(loc_file)
@@ -367,8 +342,6 @@ class Game:
                 for opt_act, opt_dest in loc_info["options"].items():
                     location.add_option(opt_act, opt_dest)
 
-                #add music playlist dictionary
-                #self.add_sfx(loc_info["name"], loc_info["sfx"])
                 self.location_music[loc_info["name"]] = loc_info["sfx"]
 
                 #adding items to the location items list
@@ -402,12 +375,12 @@ class Game:
 
         if verb == 'save':
             self.save_game()
-            print("Game saved!")
+            print(game_text["save_game"])
             return
 
         if verb == 'load':
             self.load_game()
-            print("Game loaded!")
+            print(game_text["load_game"])
             return
 
         synonyms = {
@@ -416,12 +389,11 @@ class Game:
             'drive': ['drive','find'],
             'board': ['board', 'catch','stay','sit','ride', 'go','stay','head'],
             'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
-            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate'],
+            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate', 'ask'],
             'pull': ['pull', 'yank', 'tug', 'grab'],
             'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
         }
         
-
         for key, values in synonyms.items():
             if verb in values:
                 method_name= f"handle_{key}"
@@ -433,40 +405,40 @@ class Game:
         print(game_text["invalid"])
 
     def handle_take(self, noun):
-        print(f"Handling TAKE command for {noun}")
+        #print(f"Handling TAKE command for {noun}")
         self.player.take_item(noun)
 
     def handle_use(self, noun):
-        print(f"Handling USE command for {noun}")
+        #print(f"Handling USE command for {noun}")
         self.player.use_item(noun)
 
     def handle_drive(self, noun):
-        print(f"Handling DRIVE command for {noun}")
+        #print(f"Handling DRIVE command for {noun}")
         # Implement 'DRIVE' logic here
         self.player.move(noun.title())
 
     def handle_board(self, noun):
-        print(f"Handling BOARD command for {noun}")
+        #print(f"Handling BOARD command for {noun}")
         self.player.move(noun.title())
 
     def handle_pull(self, noun):
-        print(f"Handling PULL command for {noun}")
+        #print(f"Handling PULL command for {noun}")
         self.player.move(noun.title())
 
     def handle_look(self, noun):
-        print(f"Handling LOOK command for {noun}")
+        #print(f"Handling LOOK command for {noun}")
         if noun:
             display_description(noun)
         else:
-            print("What do you want to look at?")
+            print(game_text["look"])
 
     def handle_talk(self, noun):
-        print(f"Handling TALK command for {noun}")
+        #print(f"Handling TALK command for {noun}")
         # Implement 'TAKE' logic here
         self.player.talk_npc(noun)
 
     def handle_buy(self, noun):
-        print(f"Handling BUY command for {noun}")
+        #print(f"Handling BUY command for {noun}")
         # Implement 'TAKE' logic here
         self.player.move(noun.title())
 
@@ -482,15 +454,12 @@ class Game:
             self.game_time = "00:" + self.game_time.split(':')[1]
 
     def start_game(self):
-        #print(f"Save data object {list(self.save_data.keys())}.")
         if self.is_new_game == True:
             self.game_map = Map()
             starting_location = 'Home'
             self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
             self.player.play_sound(starting_location)
-            #test_loc = list(self.locations.keys())
-            #print(f"List of locations {test_loc}")
         elif self.is_new_game == False:
             self.game_map = Map()
             starting_location = self.save_data['current_room']
@@ -507,10 +476,6 @@ class Game:
             self.player.current_time = self.save_data['current_time']
         
         while True:
-            #FOR TROUBLESHOOTING, REMOVE LATER
-            #print(f"current room options: {self.player.current_room.options}")
-
-            #actual code
             self.player.look_around()
             command = input(">> ").strip().lower()
             if not command:
@@ -532,20 +497,24 @@ class Game:
             elif command in ["map", "show map"]:
                 self.game_map.show_map()
             elif command in ["toggle sound"]:
-                toggle_sound() #toggle sound on/off
+                toggle_sound()
                 print("sound is", "on" if sound_enabled else "off")
             elif command == "volume up":
                 volume_up()
-                print(f"Volume increased to {round(current_volume * 100)}%")
+                new_vol = round(current_volume * 100)
+                print(game_text["vol_up"].format(current_volume=new_vol))
             elif command == "volume down":
                 volume_down()
-                print(f"Volume decreased to {round(current_volume * 100)}%")
+                new_vol = round(current_volume * 100)
+                print(game_text["vol_down"].format(current_volume=new_vol))
             elif command == "sfx volume up":
                 sfx_volume_up()
-                print(f"SFX Volume increased to {round(current_sfx_volume * 100)}%")
+                sfx_vol = round(current_sfx_volume * 100)
+                print(game_text["vol_up"].format(current_volume=sfx_vol))
             elif command == "sfx volume down":
                 sfx_volume_down()
-                print(f"SFX Volume decreased to {round(current_sfx_volume * 100)}%")
+                sfx_vol = round(current_sfx_volume * 100)
+                print(game_text["vol_up"].format(current_volume=sfx_vol))
             elif command == "toggle sfx":
                 toggle_fx()
                 print("sfx","on" if sfx_enabled else "off") 
@@ -567,7 +536,6 @@ class Game:
             data = json.load(f)
         self.is_new_game = False
         self.save_data = data
-        print(data)
         
 #SOUND FUNCTIONALITY BELOW
 pygame.mixer.init()
@@ -577,17 +545,23 @@ sfx_channel = pygame.mixer.Channel(1)
 current_volume = 0.4
 current_sfx_volume = 0.6
 
-def sound(sound_file):                
-   pygame.mixer.init()
-   background_music = pygame.mixer.Sound(sound_file)
-   music_channel.play(background_music, loops=-1)  # -1 loops indefinitely
-   music_channel.set_volume(current_volume)
+def sound(sound_file):
+    #print(sound_file.split('/'))
+    song_name_list = sound_file.split('/')
+    array_len = len(song_name_list)
+
+    sound_file_path = os.path.join(script_dir, 'sfx', song_name_list[array_len-1])
+    #print(f"sound file path: {sound_file_path}")
+    #print(f"sound file: {sound_file}")           
+    pygame.mixer.init()
+    background_music = pygame.mixer.Sound(sound_file_path) #sound_file formerly
+    music_channel.play(background_music, loops=-1)  # -1 loops indefinitely
+    music_channel.set_volume(current_volume)
 
 #PLAYS THE SOUND EFFECT SFX - USED IN Player.take_item()
 def sfx_sound(sound_file):
     if not sfx_enabled:
         return
-
     sfx_music = pygame.mixer.Sound(sound_file)
     sfx_channel.play(sfx_music)  # -1 loops indefinitely
     sfx_channel.set_volume(current_sfx_volume)
@@ -595,7 +569,6 @@ def sfx_sound(sound_file):
 def toggle_sound():
     global sound_enabled
     sound_enabled = not sound_enabled
-    print("I work", sound_enabled)
     if sound_enabled:
         music_channel.unpause()
     else:
@@ -606,7 +579,6 @@ def toggle_fx():
     sfx_enabled = not sfx_enabled         
    
 VOLUME_INCREMENT = 0.1
-
 def volume_up():
     global current_volume
     current_volume += VOLUME_INCREMENT
@@ -638,16 +610,14 @@ def sfx_volume_down():
 
 if __name__ == "__main__":
         clear_screen()
-        #pygame.mixer.init()
         sound_enabled = True
         sfx_enabled = True
     
 while True:
-        sound("sfx/soundtest.mp3")
+        sound(bg_music_file)
         print_ascii(title_file)
         game_text = convert_json()
         print(game_text['intro'])
-        print("Type 'Load' to load a saved game.")
         choice = input(">> ").strip().lower()
 
         if choice in ["start", "new game", "start new game"]:
@@ -658,14 +628,13 @@ while True:
             game = Game(location_file, item_file, npc_file)
             try:
                 game.load_game()
-                print("Game loaded!")
+                print(game_text["load_game"])
                 game.start_game()
             except FileNotFoundError:
-                print("No saved game found. Please start a new game.")       
+                print(game_text["no_save"])       
 
         elif choice in ["quit", "exit"]:
-            print("Thanks for playing!")
+            print(game_text["thanks"])
             break
         else:
             print(game_text['error'])
-
