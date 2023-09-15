@@ -7,7 +7,7 @@
         "bus": ["Bus"] 
       }, 
       "delay":0,
-      "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your CAR or GO on the BUS?", 
+      "description": "Dawn breaks as you stand in your living room, the anticipation palpable. It's your first day of work, you need to make it there before 9:00AM \nYou better get going now. Will you drive your CAR or GO to the BUS?", 
       "items": ["keys", "money", "bus card", "phone"],
       "required-item": "",
       "map-key" : "[H]",
@@ -41,7 +41,7 @@
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to PULL when the moment feels right. \nOr do you stay on the BUS and keep riding towards the next stop?", 
+      "description": "You are near the second stop, your gaze quickly settles on the bellcord by the windows. It's more than just a cord; it's your gateway, your hope of reaching the correct stop for work. \nYour hand hovers near the BELLCORD, ready to PULL when the moment feels right. \nOr do you stay on the BUS and keep riding towards the next stop?", 
       "items": [],
       "delay":5,
       "required-item": "", 
@@ -54,7 +54,7 @@
     },
     { 
       "name": "Bus Stop 3", 
-      "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to PULL when the moment feels right. \nOr do you stay on the BUS and keep riding towards the next stop?", 
+      "description": "You are near the third stop, the bellcord stretching along the windows draws your eye without delay. In its simplicity lies your route out, your beacon for finding the right stop for work. \nYour hand hovers near the BELLCORD, ready to PULL when the moment feels right. \nOr do you stay on the BUS and keep riding towards the next stop?", 
       "items": [],
       "delay":5,
       "required-item": "", 
@@ -67,7 +67,7 @@
     },
     {
       "name": "Wrong Stop",
-      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: by an extra 25 minutes.\nHEAD DOWNTOWN", 
+      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop. You wander for a bit until you see familiar buildings. \nDELAYED: by an extra 25 minutes.\nHEAD DOWNTOWN", 
       "items": [],
       "delay":35,
       "required-item": "",
@@ -92,7 +92,7 @@
     },
     { 
       "name": "Coffee Shop", 
-      "description": "At a cozy coffee shop, a latte sets a positive tone for your first day. \nYou decide BUY some COFFEE before stopping into work.", 
+      "description": "At a cozy coffee shop, a latte sets a positive tone for your first day. \nYou decide to BUY some COFFEE before stopping into work.", 
       "items": ["coffee"],
       "delay":0,
       "required-item": "money", 
@@ -104,7 +104,7 @@
     },
     { 
       "name": "Coffee Event Good", 
-      "description": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some instructions down on your receipt for you to follow, thankfully, you seem to be close by. \nYou sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way to the DRW building", 
+      "description": "You used the last of your money to buy coffee to help prep you for the day. You ask the barista if they know the way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nYou sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way towards the DRW building", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -117,7 +117,7 @@
     },
     { 
       "name": "Coffee Event Bad", 
-      "description": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some instructions down on your receipt for you to follow, thankfully, you seem to be close by. \nThe coffee was nasty, and you dropped the receipt the barista gave you with instructions to the DRW Building. Thankfully you sorta remembered the way to go, but it'll take a biiiiittt longer than expected to find the DRW building.\nDelay by 10 minutes", 
+      "description": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nThe coffee was awul, and you accidentally dropped the receipt the barista gave you with directions to the DRW Building. Thankfully you sort of remember the way to go, but it'll take a little longer than expected to find the DRW building.\nDelay by 10 minutes", 
       "items": [],
       "delay":10,
       "required-item": "", 
@@ -130,7 +130,7 @@
     },
     { 
       "name": "Car", 
-      "description": "Inside car. You deciede to hop on the HIGHWAY this time to try to get to work quickly", 
+      "description": "Inside your car. You decide to hop on the HIGHWAY to try to get to work quickly", 
       "items": [], 
       "delay":0,
       "required-item": "keys",
@@ -142,7 +142,7 @@
     },
     { 
       "name": "Highway", 
-      "description": "On the highway. Traffic doesnt seem too bad, but the lane to your right seems to be going a bit faster.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "On the highway. Traffic doesnt seem too bad, but the lane to your right seems to be going a bit faster.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [], 
       "delay":0,
       "required-item": "",
@@ -155,7 +155,7 @@
     },
     { 
       "name": "Normal Drive", 
-      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Surpisingly, the highway seems clear at this point. Your drive is going smoothly.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -168,7 +168,7 @@
     },
     { 
       "name": "Normal Drive 2", 
-      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Unexpectedly, the highway stretches out clear ahead. Your journey is unfolding without a hitch.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -181,7 +181,7 @@
     },
     { 
       "name": "Normal Drive 3", 
-      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nTime to head into Downtown to find PARKING", 
+      "description": "To your surprise, the highway lays open and unobstructed. The drive is progressing seamlessly.\nTime to GO DOWNTOWN to find PARKING", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -194,7 +194,7 @@
     },
     { 
       "name": "Construction Event", 
-      "description": "Construction on the highway delays your commute by 20 minutes on your first day.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Construction on the highway delays your commute by 20 minutes.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [],
       "required-item": "",
       "delay":20, 
@@ -207,7 +207,7 @@
     },
     { 
       "name": "Traffic Event", 
-      "description": "Highway gridlock adds a 10-minute delay to your first day at work.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Highway gridlock adds a 10-minute delay to your commute.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [], 
       "required-item": "",
       "delay":10,
@@ -220,7 +220,7 @@
     },
     { 
       "name": "Accident Event", 
-      "description": "Accident ahead. Expect a 20-minute delay, likely to make you late. \nBut at least you're close to DOWNTOWN and can start to find PARKING soon.", 
+      "description": "Accident ahead. Expect a 20-minute delay, likely to make you late. \nAt least you're close to DOWNTOWN and can GO find PARKING soon.", 
       "items": [], 
       "required-item": "",
       "delay":20,
@@ -233,7 +233,7 @@
     },
     { 
       "name": "Find Parking", 
-      "description": " There are many options for parking downtown. \nYou can park CLOSE by the DRW Building if you have some money. \nThere is also free parking FAR away from DRW, and you have to spend around 10 minutes walking back to the building. \nWill you go to the CLOSE parking or FAR parking?", 
+      "description": " There are many options for parking downtown. \nYou can park CLOSE to the DRW Building if you have enough money. \nThere is also free parking FAR away from DRW, but you will have to spend about 10 extra minutes walking back to the building. \nWill you GO to the CLOSE parking or FAR parking?", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -246,7 +246,7 @@
     },
     { 
       "name": "Close", 
-      "description": "Parked nearby, but pricey, took all the pocket money you had on you. Walk to first day, hoping it's worth it. HEAD TO DRW", 
+      "description": "You expensively park nearby, draining your pocket change. Hoping it's a worthy investment, with first-day jitters, you hurry to DRW. HEAD TO DRW", 
       "items": [], 
       "delay":0,
       "required-item": "money",
@@ -259,7 +259,7 @@
     },
     { 
       "name": "Far", 
-      "description": "Free parking far away. Rushing to the office, first-day urgency. HEAD TO DRW", 
+      "description": "You snag a distant free parking spot about 10 minutes away. With first-day jitters, you hurry to DRW. HEAD TO DRW", 
       "items": [], 
       "delay":10,
       "required-item": "",
@@ -272,7 +272,7 @@
     },
     { 
       "name": "DRW", 
-      "description": "You made it to work on time. Hooray!", 
+      "description": "Victory is yours! Despite all challenges, you've navigated your way and arrived on time for your very first day of work. Nothing could deter your determination. With optimism fueling each step, you stride into the office tall and confident. As colleagues take note, it's clear: today and every day, you're destined to make an impression!", 
       "items": [], 
       "delay":0,
       "required-item": "",

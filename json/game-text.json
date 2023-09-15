@@ -3,7 +3,7 @@
     "error": "Invalid choice. Please enter one of the the commands below to progress.",
     "quit": "NOTICE: YOU ARE QUITTING THE GAME TO THE TITLE SCREEN.\nAre you sure you want to quit? \nYes\nNo",
     "help":"Below is a list of available commands for this game:\n\nGO ----> Move to a different location. USAGE: GO [Place]\nGRAB --> Take an item and add to your inventory. USAGE: TAKE [Item]\nTALK --> Initiate converation with an NPC. USAGE: TALK [Person]\nPULL --> In the Bus Route, use PULL to stop the bus. USAGE: PULL Bellcord\nBUY ---> In the Bus Route, use BUY to buy an item. USAGE: BUY [Item]\nMAP ---> Display the game map and your current location. USAGE: MAP or SHOW MAP\nTOGGLE SOUND -> Turn game sound on or off\nHELP --> Display this help text.\nQUIT --> Exit the game.",
-    "late": "OH NO! Its 9:00AM! Unfortanely, you're late for work. Start over and see if you can make it to work on time.",
+    "late": "OH NO! Its 9:00AM! Unfortunately, you've fallen short. Arriving late on your very first day is a setback that casts a shadow over your start. This isn't the impression you aimed for, and the weight of disappointment is heavy. Start over and see if you can make it to work on time.",
     "invalid":"INVALID COMMAND. Type 'Help' for more information.",
     "empty": "Your inventory is EMPTY.",
     "current_time": "CURRENT TIME: {hours:02d}:{minutes:02d}am",
