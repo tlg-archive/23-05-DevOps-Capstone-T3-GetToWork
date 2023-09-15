@@ -1,38 +1,25 @@
 {
     "Bus Driver": {
-        "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get there?\"",
-        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\n[You decide to go find a SEAT and and start to worry as the bus starts moving.]",
-        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the cord when we get to Bus Stop 2. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to go find a SEAT and relax as the bus starts moving."
+        "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get off at to get there?\"",
+        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\nYou decide to GO find a SEAT and and start to worry as the bus starts moving.",
+        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the bellcord when we get to Bus Stop 2. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to GO find a SEAT and relax as the bus starts moving."
         ],
         "required-item": "bus card",
         "options": 
             {
-                "___comment___": "/* needs to go to bus stop locations */",
-                "response": "SIT in seat and ride the bus",
-                "seat": ["Seat" ]
-            }
+                "seat": ["Seat"]
+            },
+            "map-key" : "[BD]"
     },
     "Person": {
-        "message": "Spotting a passerby who looks like they might know the area, you muster the courage to ask the Person and ask:\"I'm trying to go to the DRW Building. Do you happen to know how get there?\"",
-        "random_response": ["You spot a passerby and muster the courage to ask for directions. \"Excuse me, do you know the way to DRW?\" The person glances up, shrugs, and mutters, \"Not really sure,\" before walking away, leaving you just as lost as before.",
-        "The person smiles and says, \"Absolutely! Just go two blocks down this street, take a left, and you'll see the DRW building right there. Can't miss it.\" Their concise directions lift your spirits. For the first time all morning, you feel a strong sense of relief and gratitude. With renewed optimism, you think you might just make it to your first day at work on time after all."],
+        "message": "Spotting a local who looks like they may be familiar with the area, you lock eyes with them, gathering your confidence to inquire about the way to DRW. You ask:\"I'm trying to go to the DRW Building. Do you happen to know how get there?\"",
+        "random_response": ["The person glances up, shrugs, and mutters, \"I'm not really sure,\" before walking away, leaving you just as lost as before. HEAD toward DRW",
+        "The person smiles and says, \"Absolutely! Just go two blocks down this street, take a left, and you'll see the DRW building right there. You can't miss it!\" Their concise directions lift your spirits. For the first time all morning, you feel a strong sense of relief and gratitude. With a spark of hope, you feel you might just arrive on time for your first day after all. GO to DRW"],
         "required-item": "",
         "options": 
             {
-                "___comment___": "/* needs to go to bus stop locations */",
-                "response": "Head to work",
                 "drw": ["DRW"] 
-            }
-    },
-    "Coffee Event": {
-        "message": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some instructions down on your receipt for you to follow, thankfully, you seem to be close by.",
-        "random_response": ["You sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way to the DRW building",
-        "The coffee was nasty, and you dropped the receipt the barista gave you with instructions to the DRW Building. Thankfully you sorta remembered the way to go, but it'll take a biiiiittt longer than expected to find the DRW building."],
-        "required-item": "",
-        "options": 
-            {
-                "response": "Head to work",
-                "drw": ["DRW"] 
-            }
+            },
+            "map-key" : "Person"
     }
 }

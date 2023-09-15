@@ -7,234 +7,280 @@
         "bus": ["Bus"] 
       }, 
       "delay":0,
-      "description": "Player starts off in the living room standing. You need to make it to work before 9:00AM \nYou need to head to work now. Will you drive your CAR or take the BUS?", 
+      "description": "Dawn breaks as you stand in your living room, the anticipation palpable. It's your first day of work, you need to make it there before 9:00AM. \nYou better get going now. Will you drive your CAR or GO to the BUS?", 
       "items": ["keys", "money", "bus card", "phone"],
-      "required-item": ""
+      "required-item": "",
+      "map-key" : "[H]",
+      "sfx": "sfx/home2.mp3"
     }, 
     { 
       "name": "Bus", 
-      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. \nDo you want to ask the BUS DRIVER for directions to DRW or head to your SEAT?", 
+      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. There's also an open seat to near the front. \nDo you want to ASK the BUS DRIVER for directions to DRW or GO to your SEAT?", 
       "items": [],
-      "delay":0,
+      "delay":5,
       "required-item": "bus card",
       "options": { 
         "bus driver": ["Bus Driver"], 
         "seat": ["Seat"]
-      }
+      },
+      "map-key" : "[B]",
+      "sfx": "sfx/bus.mp3"
     },
     { 
       "name": "Seat", 
-      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right. \nOr do you stay and keep riding towards BUS STOP 2?", 
+      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS?", 
       "items": [],
-      "delay":0,
+      "delay":15,
       "required-item": "", 
       "options": { 
         "bellcord": ["Wrong Stop"], 
         "bus": ["Bus Stop 2"]
-      }
+      },
+      "map-key" : "[S]",
+      "sfx": "sfx/ride_bus.mp3"
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "You are near the second stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right. \nOr do you stay and keep riding towards BUS STOP 3?", 
+      "description": "You are near the second stop, your gaze quickly settles on the bellcord by the windows. It's more than just a cord; it's your gateway, your hope of reaching the correct stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS??", 
       "items": [],
-      "delay":0,
+      "delay":10,
       "required-item": "", 
       "options": { 
         "bellcord": ["Downtown"], 
         "bus": ["Bus Stop 3"]
-      }
+      },
+      "map-key" : "[BE]",
+      "sfx": "sfx/ride_bus.mp3"
     },
     { 
       "name": "Bus Stop 3", 
-      "description": "You are near the third stop, eyes immediately drawn to the pull cord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the BELLCORD, ready to pull when the moment feels right.\nOr will you keep riding the BUS?", 
+      "description": "You are near the third stop, the bellcord stretching along the windows draws your eye without delay. In its simplicity lies your route out, your beacon for finding the right stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS?", 
       "items": [],
-      "delay":0,
+      "delay":10,
       "required-item": "", 
       "options": { 
         "bellcord": ["Wrong Stop"], 
         "bus": ["Wrong Stop"]
-      }
+      },
+      "map-key" : "[BE]",
+      "sfx": "sfx/ride_bus.mp3"
     },
     {
       "name": "Wrong Stop",
-      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off on the wrong stop You wander for a bit until you see familiar buildings. \nDELAYED: 15 minutes.\nHEAD DOWNTOWN", 
+      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off at the wrong stop. You wander for a bit until you see familiar buildings. \nDELAYED: by an extra 35 minutes.\nHEAD DOWNTOWN", 
       "items": [],
-      "delay":25,
+      "delay":35,
       "required-item": "",
       "options": { 
         "downtown": ["Downtown"]
-      }
+      },
+      "map-key" : "[BE]",
+      "sfx": "sfx/city.mp3"
     },
     { 
       "name": "Downtown", 
-      "description": "A bustling Chicago skyline with the Willis Tower, as you rush through busy streets on your first day, hoping to arrive on time. \n You can ask the PERSON across the street for directions to DRW or stop at a COFFEE SHOP and grab something quick to drink?", 
+      "description": "A bustling Chicago skyline with the Sears Tower, as you rush through busy streets on your first day, hoping to arrive on time. \nYou can ASK the PERSON across the street for directions to DRW or stop at a COFFEE SHOP and grab something quick to drink.", 
       "items": [],
       "delay":0,
       "required-item": "", 
       "options": {
         "coffee shop": ["Coffee Shop"],
         "person": ["Person"]
-      }
+      },
+      "map-key" : "[D]",
+      "sfx": "sfx/city.mp3"
     },
     { 
       "name": "Coffee Shop", 
-      "description": "At a cozy coffee shop, a latte sets a positive tone for your first day. \nYou decide BUY some COFFEE before stopping into work.", 
+      "description": "You stop at a cozy coffee shop, hoping that buying a latte will set a positive tone for your first day. \nYou decide to BUY some COFFEE before stopping into work.", 
       "items": ["coffee"],
       "delay":0,
       "required-item": "money", 
       "options": { 
-        "coffee": ["Coffee Event"]
-      }
+        "coffee": ["Coffee Event Good", "Coffee Event Bad"]
+      },
+      "map-key" : "[CS]",
+      "sfx": "sfx/coffee.mp3"
+    },
+    { 
+      "name": "Coffee Event Good", 
+      "description": "You used the last of your money to buy coffee to help prep you for the day. You ask the barista if they know the way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nYou sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way towards to work. \nHEAD TO DRW.", 
+      "items": [],
+      "delay":0,
+      "required-item": "", 
+      "options": { 
+        "drw": ["DRW"],
+        "work": ["DRW"]
+      },
+      "map-key" : "[CS]",
+      "sfx": "sfx/coffee.mp3"
+    },
+    { 
+      "name": "Coffee Event Bad", 
+      "description": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nThe coffee was awful, and you accidentally dropped the receipt the barista gave you with directions on it. Thankfully, you sort of remember the way to go, but it takes you about 10 minutes longer than expected to find the way to work. \nHEAD TO DRW.", 
+      "items": [],
+      "delay":10,
+      "required-item": "", 
+      "options": { 
+        "drw": ["DRW"],
+        "work": ["DRW"]
+      },
+      "map-key" : "[CS]",
+      "sfx": "sfx/coffee.mp3"
     },
     { 
       "name": "Car", 
-      "description": "Inside car. You deciede to hop on the HIGHWAY this time to try to get to work quickly", 
+      "description": "Inside your car. You decide to GO to the HIGHWAY to try to get to work quickly.", 
       "items": [], 
       "delay":0,
       "required-item": "keys",
       "options": { 
         "highway": ["Highway"]
-      }
+      },
+      "map-key" : "[C]",
+      "sfx": "sfx/car.mp3"
     },
     { 
       "name": "Highway", 
-      "description": "On the highway. Traffic doesnt seem too bad, but the lane to your right seems to be going a bit faster.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "On the highway. Traffic doesnt seem too bad, but the lane to your right seems to be going a bit faster.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [], 
       "delay":0,
       "required-item": "",
       "options": { 
         "current lane": ["Normal Drive", "Construction Event"],
         "right lane": ["Normal Drive", "Construction Event"]
-      }
+      },
+      "map-key" : "[HW]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Normal Drive", 
-      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Surpisingly, the highway seems clear at this point. Your drive is going smoothly.\nWill you stay in your CURRENT LANE, or go to the RIGHT LANE?", 
       "items": [],
       "delay":0,
       "required-item": "", 
       "options": { 
         "current lane": ["Normal Drive 2", "Traffic Event"],
         "right lane": ["Normal Drive 2", "Traffic Event"]
-      }
+      },
+      "map-key" : "[CE]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Normal Drive 2", 
-      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Unexpectedly, the highway stretches out clear ahead. Your journey is unfolding without a hitch.\nWill you stay in your CURRENT LANE, or go to the RIGHT LANE?", 
       "items": [],
       "delay":0,
       "required-item": "", 
       "options": { 
         "current lane": ["Normal Drive 3", "Accident Event"],
         "right lane": ["Normal Drive 3", "Accident Event"]
-      }
+      },
+      "map-key" : "[CE]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Normal Drive 3", 
-      "description": "Suprisingly, the highway seems clear at this part. Your drive is going normally.\nTime to head into Downtown to find PARKING", 
+      "description": "To your surprise, the highway lays open and unobstructed. The drive is progressing seamlessly.\nTime to GO DOWNTOWN to find PARKING", 
       "items": [],
       "delay":0,
       "required-item": "", 
       "options": { 
         "parking": ["Find Parking"],
         "downtown": ["Find Parking"]
-      }
+      },
+      "map-key" : "[CE]",
+      "sfx": "sfx/driving.mp3"
     },
     { 
       "name": "Construction Event", 
-      "description": "Construction on the highway delays your commute by 20 minutes on your first day.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Construction on the highway delays your commute by 20 minutes.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
       "items": [],
       "required-item": "",
       "delay":20, 
       "options": { 
         "current lane": ["Normal Drive 2", "Traffic Event"],
         "right lane": ["Normal Drive 2", "Traffic Event"]
-      }
+      },
+      "map-key" : "[CE]",
+      "sfx": "sfx/construction.mp3"
     },
     { 
       "name": "Traffic Event", 
-      "description": "Highway gridlock adds a 15-minute delay to your first day at work.\nWill you stay in this CURRENT LANE, or switch to the RIGHT LANE?", 
+      "description": "Highway gridlock adds a 10-minute delay to your commute.\nWill you stay in your CURRENT LANE, or switch to the RIGHT LANE?", 
+      "items": [], 
+      "required-item": "",
+      "delay":10,
+      "options": { 
+        "current lane": ["Normal Drive 3", "Accident Event"],
+        "right lane": ["Normal Drive 3", "Accident Event"]
+      },
+      "map-key" : "[CE]",
+      "sfx": "sfx/traffic.mp3"
+    },
+    { 
+      "name": "Accident Event", 
+      "description": "Accident ahead. Expect a 20-minute delay, likely to make you late. \nAt least you're close to DOWNTOWN and can GO find PARKING soon.", 
       "items": [], 
       "required-item": "",
       "delay":20,
       "options": { 
-        "current lane": ["Normal Drive 3", "Accident Event"],
-        "right lane": ["Normal Drive 3", "Accident Event"]
-      }
-    },
-    { 
-      "name": "Accident Event", 
-      "description": "Accident ahead. Expect a 15-minute delay, likely to make you late. \nBut at least you're close to DOWNTOWN and can start to find PARKING soon.", 
-      "items": [], 
-      "required-item": "",
-      "delay":30,
-      "options": { 
         "parking": ["Find Parking"],
         "downtown": ["Find Parking"]
-      }
+      },
+      "map-key" : "[CE]",
+      "sfx": "sfx/accident.mp3"
     },
     { 
       "name": "Find Parking", 
-      "description": "Park close pay, Park far walk. There are many options for parking downtown. You can park CLOSE for more, and get to work faster, or park FAR for cheap, but spend more time walking to the DRW building. \nWill you find CLOSE parking or FAR parking?", 
+      "description": "There are many options for parking downtown. \nYou can park CLOSE to the DRW Building if you have enough money. \nThere is also free parking FAR away from DRW, but you will have to spend about 10 extra minutes walking back to the building. \nWill you GO to the CLOSE parking or FAR parking?", 
       "items": [],
       "delay":0,
       "required-item": "", 
       "options": { 
-        "close": ["Parking Close"], 
-        "far": ["Parking Far"]
-      }
+        "close": ["Close"], 
+        "far": ["Far"]
+      },
+      "map-key" : "[FP]",
+      "sfx": "sfx/city.mp3"
     },
     { 
-      "name": "Parking Close", 
-      "description": "Parked nearby, but pricey. Walk to first day, hoping it's worth it. HEAD TO DRW", 
+      "name": "Close", 
+      "description": "You expensively park nearby, draining your pocket change. Hoping it's a worthy investment, with first-day jitters, you hurry to DRW. HEAD TO DRW", 
       "items": [], 
       "delay":0,
       "required-item": "money",
       "options": { 
         "drw": ["DRW"],
         "work": ["DRW"]
-      }
+      },
+      "map-key" : "[CL]",
+      "sfx": "sfx/parking2.mp3"
     },
     { 
-      "name": "Parking Far", 
-      "description": "Affordable parking far away. Rushing to the office, first-day urgency", 
+      "name": "Far", 
+      "description": "You snag a distant free parking spot about 10 minutes away. With first-day jitters, you hurry to DRW. HEAD TO DRW", 
       "items": [], 
-      "delay":15,
-      "required-item": "money",
+      "delay":10,
+      "required-item": "",
       "options": { 
         "drw": ["DRW"],
         "work": ["DRW"]
-      }
+      },
+      "map-key" : "[F]",
+      "sfx": "sfx/parking2.mp3"
     },
     { 
       "name": "DRW", 
-      "description": "You made it to work on time. Hooray!", 
+      "description": "Victory is yours! Despite all challenges, you've navigated your way and arrived on time for your very first day of work. Nothing could deter your determination. With optimism fueling each step, you stride into the office tall and confident. As colleagues take note, it's clear: today and every day, you're destined to make an impression!", 
       "items": [], 
       "delay":0,
       "required-item": "",
       "options": { 
         "Coffee": ["DRW Lose"]
-      }
-    },
-    { 
-      "name": "On time", 
-      "description": "Arriving on time at DRW building, relief washes over you. Ready for a promising first day", 
-      "items": [], 
-      "delay":0,
-      "required-item": "",
-      "options": { 
-        "Coffee Hand": ["DRW WIN"]
-      }
-    },
-    { 
-      "name": "Late", 
-      "description": "Late at DRW building, dread replaces relief on your first day", 
-      "items": [], 
-      "delay":0,
-      "required-item": "",
-      "options": { 
-        "Coffee": ["DRW Lose"]
-      }
+      },
+      "map-key" : "[DRW]",
+      "sfx": "sfx/game_win.mp3"
     }
   ] 
 }

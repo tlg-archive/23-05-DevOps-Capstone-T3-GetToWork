@@ -3,8 +3,7 @@
     "name": "keys",
     "description": "keys to your car",
     "location": [
-      "Home",
-      "Car"
+      "Home"
     ]
   },
   "money": {

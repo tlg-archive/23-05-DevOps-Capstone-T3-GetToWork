@@ -1,0 +1,25 @@
+                 ------    Home[H]   ------
+                /                         \
+               /                           \
+             Car[C]                       Bus[B] ---> Bus Driver[BD]
+              |                               |                |
+              v                               v                |
+           Highway[HW]                       Seat[S]  <---------|
+              |                                |
+              |                                |
+              v                                |
+        Car Events[CE]                         v 
+              |                          Bus Events[BE]
+              |                                |
+              v                                v
+       Find Parking[FP]                    Downtown[D]
+        /            \                   /             \
+        |             |                  |              |
+        v             v                  v              v
+      Close[CL]      Far[F]           Person[P]    Coffee Shop[CS]
+        \              \                  /          /
+         \              \                /          /
+            --------------------------------------
+                           |
+                           v              
+                          DRW[DRW]
