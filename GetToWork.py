@@ -387,14 +387,11 @@ class Game:
             return
 
         synonyms = {
-            'take': ['take', 'grab', 'get', 'retrieve', 'snatch','pickup'],
-            'use': ['use','drop'],
-            'drive': ['drive','find'],
-            'board': ['board', 'catch','stay','sit','ride', 'go','stay','head'],
+            'take': ['take', 'grab', 'get', 'retrieve', 'snatch','pickup', 'buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
+            'use': ['use','drop', 'pull', 'yank', 'tug', 'grab'],
+            'move': ['board', "move", 'catch','stay','sit','ride', 'go','stay','head', 'drive','find'],
             'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
-            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate', 'ask'],
-            'pull': ['pull', 'yank', 'tug', 'grab'],
-            'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
+            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate', 'ask']
         }
         
         for key, values in synonyms.items():
@@ -410,23 +407,28 @@ class Game:
     def handle_take(self, noun):
         #print(f"Handling TAKE command for {noun}")
         self.player.take_item(noun)
+        self.player.move(noun.title())
 
     def handle_use(self, noun):
         #print(f"Handling USE command for {noun}")
         self.player.use_item(noun)
+        self.player.move(noun.title())
 
-    def handle_drive(self, noun):
+    def handle_move(self, noun):
         #print(f"Handling DRIVE command for {noun}")
         # Implement 'DRIVE' logic here
         self.player.move(noun.title())
+        
 
-    def handle_board(self, noun):
+   # def handle_board(self, noun):
         #print(f"Handling BOARD command for {noun}")
-        self.player.move(noun.title())
+       # self.player.move(noun.title())
+        
 
-    def handle_pull(self, noun):
+    #def handle_pull(self, noun):
         #print(f"Handling PULL command for {noun}")
-        self.player.move(noun.title())
+    #   self.player.move(noun.title())
+     #  self.player.use_item(noun)
 
     def handle_look(self, noun):
         #print(f"Handling LOOK command for {noun}")
@@ -440,10 +442,11 @@ class Game:
         # Implement 'TAKE' logic here
         self.player.talk_npc(noun)
 
-    def handle_buy(self, noun):
+    #def handle_buy(self, noun):
         #print(f"Handling BUY command for {noun}")
         # Implement 'TAKE' logic here
-        self.player.move(noun.title())
+    #    self.player.move(noun.title())
+    #    self.player.take_item(noun)
 
     def increment_time(self):
         current_hour, current_minute = map(int, self.game_time.split(':'))
@@ -616,29 +619,28 @@ if __name__ == "__main__":
         clear_screen()
         sound_enabled = True
         sfx_enabled = True
-    
-while True:
-        sound(bg_music_file)
-        print_ascii(title_file)
-        game_text = convert_json()
-        print(game_text['intro'])
-        choice = input(">> ").strip().lower()
+        while True:
+                sound(bg_music_file)
+                print_ascii(title_file)
+                game_text = convert_json()
+                print(game_text['intro'])
+                choice = input(">> ").strip().lower()
 
-        if choice in ["start", "new game", "start new game", "start game"]:
-            game = Game(location_file,item_file,npc_file)
-            game.start_game()
+                if choice in ["start", "new game", "start new game", "start game"]:
+                    game = Game(location_file,item_file,npc_file)
+                    game.start_game()
 
-        elif choice in ["load", "load game"]:
-            game = Game(location_file, item_file, npc_file)
-            try:
-                game.load_game()
-                print(game_text["load_game"])
-                game.start_game()
-            except FileNotFoundError:
-                print(game_text["no_save"])       
+                elif choice in ["load", "load game"]:
+                    game = Game(location_file, item_file, npc_file)
+                    try:
+                        game.load_game()
+                        print(game_text["load_game"])
+                        game.start_game()
+                    except FileNotFoundError:
+                        print(game_text["no_save"])       
 
-        elif choice in ["quit", "exit"]:
-            print(game_text["thanks"])
-            break
-        else:
-            print(game_text['error'])
+                elif choice in ["quit", "exit"]:
+                    print(game_text["thanks"])
+                    break
+                else:
+                    print(game_text['error'])
