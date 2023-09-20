@@ -180,13 +180,15 @@ class Game:
         if self.is_new_game == True:
             self.game_map = Map(self.map_file)
             starting_location = 'Home'
-            self.player = Player("Player Name")
+            if not debug:
+                self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
             self.player.play_sound(starting_location, self, self.sound_manager)
         elif self.is_new_game == False:
             self.game_map = Map(self.map_file)
             starting_location = self.save_data['current_room']
-            self.player = Player("Player Name")
+            if not debug:
+                self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
             self.player.play_sound(starting_location, self, self.sound_manager)
 
@@ -197,7 +199,7 @@ class Game:
                     self.player.inventory.append(item)
 
             self.player.current_time = self.save_data['current_time']
-            
+
         iterations = 0
 
         while not debug or iterations < iterations_limit:
@@ -213,6 +215,7 @@ class Game:
                     self.clear_screen()
                     break
                 elif exit_command in ['no']:
+                    print(exit_command)
                     continue
             elif command in ["help", "info", "commands", "hint", "assist"]:
                 print(game_text['help'])
@@ -236,11 +239,11 @@ class Game:
             elif command == "sfx volume up":
                 self.sound_manager.sfx_volume_up()
                 sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
-                print(game_text["vol_up"].format(current_volume=sfx_vol))
+                print(game_text["sfx_up"].format(current_volume=sfx_vol))
             elif command == "sfx volume down":
                 self.sound_manager.sfx_volume_down()
                 sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
-                print(game_text["vol_up"].format(current_volume=sfx_vol))
+                print(game_text["sfx_down"].format(current_volume=sfx_vol))
             elif command == "toggle sfx":
                 self.sound_manager.toggle_fx()
                 print("sfx","on" if self.sound_manager.sfx_enabled else "off") 
@@ -257,8 +260,8 @@ class Game:
         with open(filename, 'w') as f:
             json.dump(data, f)
 
-    def load_game(self):
-        with open('save_game.json', 'r') as f:
+    def load_game(self, filename='save_game.json'):
+        with open(filename, 'r') as f:
             data = json.load(f)
         self.is_new_game = False
         self.save_data = data

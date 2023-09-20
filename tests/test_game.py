@@ -13,10 +13,33 @@ from app.player import Player
 
 # Define a Protocol for a mock SoundManager
 class MockSoundManager(Protocol):
+    sound_enabled: bool = False
+    current_volume: float = 0.5
+    sfx_enabled: bool = False
+    current_sfx_volume: float = 0.5
+
     def sound(self, sfx: str) -> None:
         pass
 
     def sfx_sound(self, sfx_file: str) -> None:
+        pass
+
+    def toggle_sound(self) -> None:
+        pass
+
+    def volume_up(self) -> None:
+        return self.current_volume
+
+    def volume_down(self) -> None:
+        return self.current_volume
+
+    def sfx_volume_up(self) -> None:
+        return self.current_sfx_volume
+
+    def sfx_volume_down(self) -> None:
+        return self.current_sfx_volume
+
+    def toggle_fx(self) -> None:
         pass
 
 @pytest.fixture
@@ -29,13 +52,19 @@ def items():
     return result_items
 
 @pytest.fixture
-def game():
-    script_dir = os.path.dirname(os.path.realpath(__file__))
+def script_dir():
+    return os.path.dirname(os.path.realpath(__file__))
+
+@pytest.fixture
+def game(script_dir):
     game = Game(script_dir)
     game.npc_file = os.path.join(script_dir, 'test_npcs.json')
     game.load_npc()
+    game.map_file = os.path.join(script_dir, 'test_map.txt')
     game.item_file = os.path.join(script_dir, 'test_items.json')
     game.location_file = os.path.join(script_dir, 'test_locations_for_game_test.json')
+    with open(os.path.join(script_dir, 'test_save.json')) as save_file:
+        game.save_data = json.load(save_file)
     return game
 
 # Define a fixture to load the game_text JSON file
@@ -50,7 +79,7 @@ def mock_sound_manager():
 
 # Test cases for the Game class
 
-def test_game_init(game: Game):
+def test_game_init(game: Game, script_dir):
     assert isinstance(game, Game)
     assert isinstance(game.locations, dict)
     assert isinstance(game.location_music, dict)
@@ -60,7 +89,9 @@ def test_game_init(game: Game):
     assert game.game_map is None
     assert game.game_data is None
     assert game.is_new_game is True
-    assert game.save_data is None
+    with open(os.path.join(script_dir, 'test_save.json')) as save_file:
+        data = json.load(save_file)
+    assert game.save_data == data
     assert game.sound_manager
     assert game.game_time == '00:00'
 
@@ -425,7 +456,7 @@ def test_start_game_new_game_quit_command_2(game: Game, game_text: dict[str, str
     game.sound_manager = mock_sound_manager
     game.is_new_game = True
     mocker.patch.object(game.player, 'look_around')
-    mocker.patch('builtins.input', side_effect=['quit', 'yes'])
+    mocker.patch('builtins.input', side_effect=['quit', 'no'])
 
     # Redirect stdout for capturing printed output
     mock_window_size = MagicMock()
@@ -439,7 +470,7 @@ def test_start_game_new_game_quit_command_2(game: Game, game_text: dict[str, str
 
     # Check if 'quit' was printed as a prompt
     assert 'quit' in mock_stdout.getvalue()
-    assert 
+    assert  'no' in mock_stdout.getvalue()
 
 
 def test_start_game_new_game_no_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
@@ -511,3 +542,322 @@ def test_start_game_new_game_inventory_command(game: Game, game_text: dict[str, 
             game.start_game(game_text, debug=True, iterations_limit=1)
 
     assert 'Your inventory is' in mock_stdout.getvalue().strip()
+
+def test_start_game_new_game_time_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game.player, 'display_status')
+    mocker.patch('builtins.input', side_effect=['time'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.player.display_status.assert_called_with(game_text)
+
+
+def test_start_game_new_game_map_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch('builtins.input', side_effect=['map'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    assert game_text['map_text'] in mock_stdout.getvalue().strip()
+    
+
+def test_start_game_new_game_toggle_sound_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager: MockSoundManager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game.sound_manager, 'toggle_sound')
+    mocker.patch('builtins.input', side_effect=['toggle sound'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.sound_manager.toggle_sound.assert_called()
+
+def test_start_game_new_game_toggle_volume_up_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager: MockSoundManager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game.sound_manager, 'volume_up')
+    mocker.patch('builtins.input', side_effect=['volume up'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+    current_volume = round(game.sound_manager.current_volume * 100)
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.sound_manager.volume_up.assert_called()
+    assert game_text['vol_up'].format(current_volume=current_volume) in mock_stdout.getvalue().strip()
+    
+
+def test_start_game_new_game_toggle_volume_down_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager: MockSoundManager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game.sound_manager, 'volume_down')
+    mocker.patch('builtins.input', side_effect=['volume down'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+    current_volume = round(game.sound_manager.current_volume * 100)
+
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.sound_manager.volume_down.assert_called()
+    assert game_text['vol_down'].format(current_volume=current_volume) in mock_stdout.getvalue().strip()
+
+
+def test_start_game_new_game_toggle_sfx_down_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager: MockSoundManager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game.sound_manager, 'sfx_volume_down')
+    mocker.patch('builtins.input', side_effect=['sfx volume down'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+    current_volume = round(game.sound_manager.current_sfx_volume * 100)
+
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.sound_manager.sfx_volume_down.assert_called()
+    assert game_text['sfx_down'].format(current_volume=current_volume) in mock_stdout.getvalue().strip()
+    
+def test_start_game_new_game_toggle_sfx_up_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager: MockSoundManager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game.sound_manager, 'sfx_volume_up')
+    mocker.patch('builtins.input', side_effect=['sfx volume up'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+    current_volume = round(game.sound_manager.current_sfx_volume * 100)
+
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.sound_manager.sfx_volume_up.assert_called()
+    assert game_text['sfx_up'].format(current_volume=current_volume) in mock_stdout.getvalue().strip()
+     
+
+def test_start_game_new_game_toggle_sfx_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager: MockSoundManager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game.sound_manager, 'toggle_fx')
+    mocker.patch('builtins.input', side_effect=['toggle sfx'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.sound_manager.toggle_fx.assert_called()
+
+
+def test_start_game_new_game_parse_command(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager: MockSoundManager = mock_sound_manager
+    game.is_new_game = True
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch.object(game, 'create_window')
+    mocker.patch.object(game, 'parse_command')
+    mocker.patch('builtins.input', side_effect=['move north'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=1)
+
+    game.parse_command.assert_called_with('move north'.strip().lower(), game_text)
+
+
+def test_start_game_load_game(game: Game, game_text: dict[str, str], mocker, mock_sound_manager):
+    # Mock the player, sound_manager, and user input
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.inventory = []
+    game.sound_manager = mock_sound_manager
+    game.is_new_game = False
+    mocker.patch.object(game.player, 'look_around')
+    mocker.patch('builtins.input', side_effect=['quit', 'yes'])
+
+    # Redirect stdout for capturing printed output
+    mock_window_size = MagicMock()
+    mock_window_size.columns = 80
+    mock_window_size.rows = 24
+
+    with patch('os.get_terminal_size', return_value=mock_window_size):  # Change the values as needed
+        # Redirect stdout for capturing printed output
+        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+            game.start_game(game_text, debug=True, iterations_limit=0)
+
+def test_save_game(game: Game, mocker, script_dir):
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.current_room = game.locations['room_a']
+    game.player.inventory = []
+    game.player.current_time = 0
+    game.save_game(os.path.join(script_dir, 'test_saving_game.json'))
+
+    with open(os.path.join(script_dir, 'test_saving_game.json'), 'r') as f:
+        data = json.load(f)
+    
+    assert data['name'] == game.player.name
+    assert data['current_room'] == game.player.current_room.name
+    for item in data['inventory']:
+        assert item in game.player.inventory
+    assert data['current_time'] == game.player.current_time
+    os.remove(os.path.join(script_dir, 'test_saving_game.json'))
+
+def test_load_game(game: Game, mocker, script_dir):
+    game.player = Player('Test Player')
+    game.load_game_data()
+    game.player.current_room = game.locations['room_a']
+    game.player.inventory = []
+    game.player.current_time = 0
+    game.load_game(os.path.join(script_dir, 'test_save.json'))
+
+    with open(os.path.join(script_dir, 'test_save.json'), 'r') as f:
+        data = json.load(f)
+    
+    assert data == game.save_data
+
+
+def test_display_item_description(game: Game, game_text: dict[str, str], items: dict[str, Item], capsys):
+    game.load_game_data()
+
+    # Test displaying the description of a mock item
+    object_to_look = 'key_a'
+    expected_output = items['key_a'].description
+    game.display_description(object_to_look, game_text)
+
+    captured = capsys.readouterr()
+    assert expected_output in captured.out.strip()
+
+def test_display_location_description(game: Game, game_text: dict[str, str], items: dict[str, Item], capsys):
+    game.load_game_data()
+
+    # Test displaying the description of a mock item
+    object_to_look = 'room_a'
+    expected_output = game.locations['room_a'].description
+    game.display_description(object_to_look, game_text)
+
+    captured = capsys.readouterr()
+    assert expected_output in captured.out.strip()
+
+
+def test_display_invalid_description(game: Game, game_text: dict[str, str], items: dict[str, Item], capsys):
+    game.load_game_data()
+
+    # Test displaying the description of a mock item
+    object_to_look = 'invalid_object'
+    expected_output = game_text["no_find_item"].format(object_to_look=object_to_look) 
+    game.display_description(object_to_look, game_text)
+
+    captured = capsys.readouterr()
+    assert expected_output in captured.out.strip()
