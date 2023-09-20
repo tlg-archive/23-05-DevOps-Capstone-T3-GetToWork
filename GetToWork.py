@@ -613,11 +613,10 @@ def sfx_volume_down():
 
 
 if __name__ == "__main__":
-        clear_screen()
-        sound_enabled = True
-        sfx_enabled = True
-    
-while True:
+    clear_screen()
+    sound_enabled = True
+    sfx_enabled = True
+    while True:
         sound(bg_music_file)
         print_ascii(title_file)
         game_text = convert_json()

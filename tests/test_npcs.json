@@ -1,0 +1,15 @@
+{
+    "guard": {
+        "message": "Wait, I know you. You're making a mod for Skyrim, aren't you?",
+        "random_response": [
+            "I used to be an adventurer like you, but then I took an arrow to the knee",
+            "Woah, easy there, I'm just a friendly NPC",
+            "My brother is out there fighting dragons, and what do I get? Guard duty."],
+        "required-item": "",
+        "options": 
+            {
+                "room_c": ["room_c"] 
+            },
+            "map-key" : "[G]"
+    }
+}
