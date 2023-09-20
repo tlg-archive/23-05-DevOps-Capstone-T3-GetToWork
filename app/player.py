@@ -17,7 +17,7 @@ class Location(Protocol):
     random_response: list[str]
 
 class Map(Protocol):
-    def update_map(self):
+    def update_map(self, game):
         pass
 
 class Game(Protocol):
@@ -97,7 +97,7 @@ class Player:
 
             print("\n")
             self.display_status(game_text)
-            game.game_map.update_map()
+            game.game_map.update_map(game)
         else:
             print(self.current_room.message,"\n")
             random_response = random.sample(self.current_room.random_response, 1)

@@ -12,5 +12,12 @@
       "location": [
         "Room_B"
       ]
+    },
+    "key_c": {
+      "name": "key_c",
+      "description": "key to room C",
+      "location": [
+        "Room_B"
+      ]
     }
   }
