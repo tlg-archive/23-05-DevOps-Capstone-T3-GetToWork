@@ -1,0 +1,16 @@
+{
+    "key_a": {
+      "name": "key_a",
+      "description": "key to room A",
+      "location": [
+        "Room_A"
+      ]
+    },
+    "key_b": {
+      "name": "key_b",
+      "description": "key to room B",
+      "location": [
+        "Room_B"
+      ]
+    }
+  }

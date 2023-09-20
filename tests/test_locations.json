@@ -1,0 +1,43 @@
+
+[ 
+    { 
+        "name": "room_a", 
+        "options": { 
+            "room_b": ["room_b"], 
+            "room_c": ["room_c"] 
+        }, 
+        "delay":0,
+        "description": "You are in room_a. You can go to room_b or room_c.", 
+        "items": ["key_a", "key_b"],
+        "required-item": "key_a",
+        "map-key" : "[A]",
+        "sfx": "sfx/home2.mp3"
+    }, 
+    { 
+        "name": "room_b", 
+        "description": "You are in room_b. You can go to room_a.", 
+        "items": [],
+        "delay":5,
+        "required-item": "key_b",
+        "options": { 
+            "room_a": ["room_a"]
+        },
+        "map-key" : "[B]",
+        "sfx": "sfx/bus.mp3"
+    },
+    {
+        "name": "room_c",
+        "description": "You are in room_c. You can go to room_a.",
+        "items": [],
+        "delay":5,
+        "required-item": "",
+        "options": {
+            "room_a": ["room_a"],
+            "guard": ["guard"]
+
+        },
+        "map-key" : "[C]",
+        "sfx": "sfx/bus.mp3"
+    }
+] 
+
