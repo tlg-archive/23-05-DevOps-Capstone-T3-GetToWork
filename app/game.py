@@ -23,6 +23,7 @@ class Game:
         self.save_data = None
         self.sound_manager = SoundManager()
         self.game_time ='00:00'
+        self.script_dir = script_dir
         self.title_file = os.path.join(script_dir, 'json', 'title.txt')
         self.npc_file = os.path.join(script_dir, 'json', 'dialouge.json')
         self.text_file = os.path.join(script_dir, 'json', 'game-text.json')
@@ -113,12 +114,12 @@ class Game:
                 methods = {
                     'handle_take': {'method': self.handle_take, 'args': [noun, self.item_sound_file, game_text]},
                     'handle_use': {'method': self.handle_use, 'args': [noun, game_text]},
-                    'handle_drive': {'method': self.handle_drive, 'args': [noun, game_text, self.item_sound_file]},
-                    'handle_board': {'method': self.handle_board, 'args': [noun, game_text, self.item_sound_file]},
+                    'handle_drive': {'method': self.handle_drive, 'args': [noun, game_text]},
+                    'handle_board': {'method': self.handle_board, 'args': [noun, game_text]},
                     'handle_look': {'method': self.handle_look, 'args': [noun, game_text]},
                     'handle_talk': {'method': self.handle_talk, 'args': [noun, game_text]},
-                    'handle_pull': {'method': self.handle_pull, 'args': [noun, game_text, self.item_sound_file]},
-                    'handle_buy': {'method': self.handle_buy, 'args': [noun, game_text, self.item_sound_file]},
+                    'handle_pull': {'method': self.handle_pull, 'args': [noun, game_text]},
+                    'handle_buy': {'method': self.handle_buy, 'args': [noun, game_text]},
                 }
                 call = methods.get(method_name, None)
 
@@ -206,6 +207,7 @@ class Game:
             iterations += 1
             self.player.look_around(self.get_self(), game_text)
             command = input(">> ").strip().lower()
+            print(command)
             if not command:
                 continue
             if command == "quit":
