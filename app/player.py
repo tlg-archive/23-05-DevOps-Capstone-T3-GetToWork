@@ -50,7 +50,7 @@ class Player:
             possible_locations = self.current_room.options.get(noun.lower())
             if game.locations[possible_locations[0]].required_item:
                 item_names = [item.name for item in self.inventory]
-                if game.locations[noun].required_item.name in item_names:
+                if game.locations[noun].required_item in item_names:
                     random_room = random.sample(possible_locations, 1)
                     self.current_room = game.locations[random_room[0]]
                     self.advance_time(game_text)
@@ -74,7 +74,7 @@ class Player:
 
         if loc_sfx != "":
                 #ONLY PLAY THE SOUND BELOW THE CURRENT ROOM HAS NOT CHANGED
-                sound_manager.sound(loc_sfx)
+                sound_manager.sound(loc_sfx, game.script_dir)
 
 
     def look_around(self, game: Game, game_text: dict[str, str]):
@@ -103,7 +103,7 @@ class Player:
             random_response = random.sample(self.current_room.random_response, 1)
             print(random_response[0], "\n")  
             self.display_status(game_text)
-            game.game_map.update_map()
+            game.game_map.update_map(game)
         game.create_window()
 
     def take_item(self, item_name, item_sound_file, game_text: dict[str, str], sound_manager: SoundManager):

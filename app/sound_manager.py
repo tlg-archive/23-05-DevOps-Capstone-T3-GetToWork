@@ -18,12 +18,11 @@ class SoundManager:
     def volume_increment(self):
         return self._volume_increment
 
-    def sound(self, sound_file):
+    def sound(self, sound_file, script_dirs):
         #print(sound_file.split('/'))
         song_name_list = sound_file.split('/')
         array_len = len(song_name_list)
 
-        script_dirs = os.path.dirname(os.path.realpath(__file__))
         sound_file_path = os.path.join(script_dirs, 'sfx', song_name_list[array_len-1])
         
         background_music = pygame.mixer.Sound(sound_file_path) #sound_file formerly
