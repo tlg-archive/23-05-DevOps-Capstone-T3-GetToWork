@@ -3,10 +3,10 @@
 
 block_cipher = None
 
-add_datas=[('./json/*.json' , './' 'json'), ('./json/*.txt' , './' 'json'), ('./sfx/*.mp3' , './' 'sfx')]
+add_datas=[('./app/*.py' , './' 'app'), ('./json/*.json' , './' 'json'), ('./json/*.txt' , './' 'json'), ('./sfx/*.mp3' , './' 'sfx')]
 
 a = Analysis(
-    ['GetToWork-Main.py'],
+    ['GetToWork.py'],
     pathex=[],
     binaries=[],
     datas=add_datas,
