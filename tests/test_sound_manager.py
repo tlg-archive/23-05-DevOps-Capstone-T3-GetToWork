@@ -1,3 +1,4 @@
+import os
 from typing import Protocol
 import pytest
 from unittest import mock
@@ -41,7 +42,7 @@ def sound_manager():
 
 def test_sound(sound_manager):
     with mock.patch('pygame.mixer.Sound', return_value=mock.MagicMock(filename='test_music.wav', spec=Sound)):
-        sound_manager.sound('test_music.wav')
+        sound_manager.sound('test_music.wav', os.path.realpath('./tests'))
         assert sound_manager.music_channel.played_sound.filename == 'test_music.wav'
         assert sound_manager.music_channel.volume == sound_manager.current_volume
 

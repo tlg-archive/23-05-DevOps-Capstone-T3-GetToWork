@@ -156,7 +156,7 @@ def test_parse_command_handle_drive(game: Game, game_text: dict[str, str], mock_
 
     # Test valid 'drive' command
     game.parse_command("drive car", game_text)
-    game.handle_drive.assert_called_with("car", game_text, game.item_sound_file)
+    game.handle_drive.assert_called_with("car", game_text)
 
 
 def test_parse_command_handle_board(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
@@ -170,7 +170,7 @@ def test_parse_command_handle_board(game: Game, game_text: dict[str, str], mock_
 
     # Test valid 'board' command
     game.parse_command("board bus", game_text)
-    game.handle_board.assert_called_with("bus", game_text, game.item_sound_file)
+    game.handle_board.assert_called_with("bus", game_text)
 
 
 def test_parse_command_handle_pull(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
@@ -184,7 +184,7 @@ def test_parse_command_handle_pull(game: Game, game_text: dict[str, str], mock_s
 
     # Test valid 'pull' command
     game.parse_command("pull lever", game_text)
-    game.handle_pull.assert_called_with("lever", game_text , game.item_sound_file) 
+    game.handle_pull.assert_called_with("lever", game_text) 
 
 
 def test_parse_command_handle_look(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
@@ -226,7 +226,7 @@ def test_parse_command_handle_buy(game: Game, game_text: dict[str, str], mock_so
 
     # Test valid 'buy' command
     game.parse_command("buy item_d", game_text)
-    game.handle_buy.assert_called_with("item_d", game_text, game.item_sound_file)
+    game.handle_buy.assert_called_with("item_d", game_text)
 
 
 def test_parse_command_invalid(game: Game, game_text: dict[str, str], mock_sound_manager, capsys):

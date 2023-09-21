@@ -18,7 +18,8 @@
         "required-item": "",
         "options": 
             {
-                "drw": ["DRW"] 
+                "drw": ["DRW"],
+                "coffee shop": ["Coffee Shop"] 
             },
             "map-key" : "Person"
     }
