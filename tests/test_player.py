@@ -69,7 +69,7 @@ def locations(items):
                 resulting_location.items.append(items[item])
         required_item = location.get("required-item")
         if required_item in items:
-            resulting_location.required_item = items[required_item]
+            resulting_location.required_item = required_item
         else:
             resulting_location.required_item = None
         resulting_location.delay = location.get("delay")
@@ -83,6 +83,7 @@ def locations(items):
 @pytest.fixture
 def game(locations):
     game: Game = MagicMock(spec=Game)
+    game.script_dir = os.path.realpath("./tests")
     game.locations = locations
     game.location_music = {location.name: location.sfx for location in locations.values() if hasattr(location, "sfx")}
     game.items_file = os.path.realpath("./tests/test_items.json")
@@ -114,7 +115,7 @@ def test_move_valid_with_key(player, game, sound_manager, game_text, items):
     player.current_room = game.locations["room_a"]
     assert player.current_room.name == game.locations["room_a"].name
     player.inventory.append(items["key_b"])
-    assert player.inventory[0].name == game.locations[player.current_room.options.get('room_b')[0]].required_item.name
+    assert player.inventory[0].name == game.locations[player.current_room.options.get('room_b')[0]].required_item
 
     player.move("room_b", game, game_text, sound_manager)
     assert player.current_room.name == game.locations["room_b"].name

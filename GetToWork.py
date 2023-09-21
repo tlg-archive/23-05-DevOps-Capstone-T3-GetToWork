@@ -7,19 +7,18 @@ import pygame
 from app.game import Game 
 
 #paths for file dependencies
-script_dir = os.path.dirname(os.path.abspath(__file__))
 
-def print_ascii(fn):
-    with open(fn, 'r') as f:
-        print(''.join([line for line in f]))
+def print_ascii(file_name):
+    with open(file_name, 'r') as f:
+        print(''.join(list(f)))
 
 def convert_json(text_file):
     with open(text_file) as json_file:
         game_text = json.load(json_file)
     return game_text
 
-
-if __name__ == "__main__":
+def main():
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     game = Game(script_dir)
     game.clear_screen()
 
@@ -37,11 +36,15 @@ if __name__ == "__main__":
 
         if choice in ["start", "new game", "start new game", "start game"]:
             game = Game(script_dir)
+            game.sound_manager.sound_enabled = sound_enabled
+            game.sound_manager.sfx_enabled = sfx_enabled
             game.load_game_data()
             game.start_game(game_text)
 
         elif choice in ["load", "load game"]:
             game = Game(script_dir)
+            game.sound_manager.sound_enabled = sound_enabled
+            game.sound_manager.sfx_enabled = sfx_enabled
             game.load_game_data()
             try:
                 game.load_game()
@@ -55,3 +58,6 @@ if __name__ == "__main__":
             break
         else:
             print(game_text['error'])
+
+if __name__ == "__main__":
+    main()
