@@ -98,14 +98,11 @@ class Game:
             return
 
         synonyms = {
-            'take': ['take', 'grab', 'get', 'retrieve', 'snatch','pickup'],
-            'use': ['use','drop'],
-            'drive': ['drive','find'],
-            'board': ['board', 'catch','stay','sit','ride', 'go','stay','head'],
+            'take': ['take', 'grab', 'get', 'retrieve', 'snatch','pickup', 'buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
+            'use': ['use','drop', 'pull', 'yank', 'tug', 'grab'],
+            'move': ['board', "move", 'catch','stay','sit','ride', 'go','stay','head', 'drive','find'],
             'look': ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see'],
-            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate', 'ask'],
-            'pull': ['pull', 'yank', 'tug', 'grab'],
-            'buy': ['buy', 'purchase', 'acquire', 'obtain', 'get', 'secure'],
+            'talk': ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate', 'ask']
         }
         
         for key, values in synonyms.items():
@@ -114,12 +111,9 @@ class Game:
                 methods = {
                     'handle_take': {'method': self.handle_take, 'args': [noun, self.item_sound_file, game_text]},
                     'handle_use': {'method': self.handle_use, 'args': [noun, game_text]},
-                    'handle_drive': {'method': self.handle_drive, 'args': [noun, game_text]},
-                    'handle_board': {'method': self.handle_board, 'args': [noun, game_text]},
+                    'handle_move': {'method': self.handle_move, 'args': [noun, game_text]},
                     'handle_look': {'method': self.handle_look, 'args': [noun, game_text]},
                     'handle_talk': {'method': self.handle_talk, 'args': [noun, game_text]},
-                    'handle_pull': {'method': self.handle_pull, 'args': [noun, game_text]},
-                    'handle_buy': {'method': self.handle_buy, 'args': [noun, game_text]},
                 }
                 call = methods.get(method_name, None)
 
@@ -131,22 +125,16 @@ class Game:
     def handle_take(self, noun, item_sound_file: str, game_text: dict[str, str]):
         #print(f"Handling TAKE command for {noun}")
         self.player.take_item(noun, item_sound_file, game_text, self.sound_manager)
+        self.player.move(noun.title(), self, game_text, self.sound_manager)
 
     def handle_use(self, noun, game_text: dict[str, str]):
         #print(f"Handling USE command for {noun}")
         self.player.use_item(noun, game_text)
-
-    def handle_drive(self, noun, game_text: dict[str, str]):
+        self.player.move(noun.title(), self, game_text, self.sound_manager)
+    
+    def handle_move(self, noun, game_text: dict[str, str]):
         #print(f"Handling DRIVE command for {noun}")
         # Implement 'DRIVE' logic here
-        self.player.move(noun.title(), self, game_text, self.sound_manager)
-
-    def handle_board(self, noun, game_text: dict[str, str]):
-        #print(f"Handling BOARD command for {noun}")
-        self.player.move(noun.title(), self, game_text, self.sound_manager)
-
-    def handle_pull(self, noun, game_text: dict[str, str]):
-        #print(f"Handling PULL command for {noun}")
         self.player.move(noun.title(), self, game_text, self.sound_manager)
 
     def handle_look(self, noun, game_text: dict[str, str]):
@@ -161,10 +149,6 @@ class Game:
         # Implement 'TAKE' logic here
         self.player.talk_npc(noun, self, game_text)
 
-    def handle_buy(self, noun, game_text: dict[str, str]):
-        #print(f"Handling BUY command for {noun}")
-        # Implement 'TAKE' logic here
-        self.player.move(noun.title(), self, game_text, self.sound_manager)
 
     def increment_time(self):
         current_hour, current_minute = map(int, self.game_time.split(':'))
