@@ -1,1 +1,1 @@
-{"name": "Player Name", "inventory": [], "current_room": "Home", "current_time": 450}
+{"name": "Player Name", "inventory": ["keys", "money", "bus card", "phone"], "current_room": "Highway", "current_time": 470}
