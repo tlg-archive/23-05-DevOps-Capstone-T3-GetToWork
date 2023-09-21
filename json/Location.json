@@ -15,13 +15,14 @@
     }, 
     { 
       "name": "Bus", 
-      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. There's also an open seat to near the front. \nDo you want to ASK the BUS DRIVER for directions to DRW or GO to your SEAT?", 
+      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. There's also an open seat to near the front. \nDo you want to ASK the BUS DRIVER for directions to DRW, GO to your SEAT, or GO back HOME?", 
       "items": [],
       "delay":5,
       "required-item": "bus card",
       "options": { 
         "bus driver": ["Bus Driver"], 
-        "seat": ["Seat"]
+        "seat": ["Seat"],
+        "home": ["Home"]
       },
       "map-key" : "[B]",
       "sfx": "sfx/bus.mp3"
@@ -130,12 +131,13 @@
     },
     { 
       "name": "Car", 
-      "description": "Inside your car. You decide to GO to the HIGHWAY to try to get to work quickly.", 
+      "description": "Inside your car. You can GO to the HIGHWAY to try to get to work quickly, or GO back inside you HOME.", 
       "items": [], 
       "delay":0,
       "required-item": "keys",
       "options": { 
-        "highway": ["Highway"]
+        "highway": ["Highway"],
+        "home": ["Home"]
       },
       "map-key" : "[C]",
       "sfx": "sfx/car.mp3"
@@ -246,26 +248,28 @@
     },
     { 
       "name": "Close", 
-      "description": "You expensively park nearby, draining your pocket change. Hoping it's a worthy investment, with first-day jitters, you hurry to DRW. HEAD TO DRW", 
+      "description": "You expensively park nearby, draining your pocket change. Hoping it's a worthy investment, with first-day jitters, you can hurry to DRW or GO to the COFFEE SHOP on the way. HEAD TO DRW", 
       "items": [], 
       "delay":0,
       "required-item": "money",
       "options": { 
         "drw": ["DRW"],
-        "work": ["DRW"]
+        "work": ["DRW"],
+        "coffee shop": ["Coffee Shop"]
       },
       "map-key" : "[CL]",
       "sfx": "sfx/parking2.mp3"
     },
     { 
       "name": "Far", 
-      "description": "You snag a distant free parking spot about 10 minutes away. With first-day jitters, you hurry to DRW. HEAD TO DRW", 
+      "description": "You snag a distant free parking spot about 10 minutes away. With first-day jitters, you can hurry to DRW or GO to the COFFEE SHOP on the way. HEAD TO DRW", 
       "items": [], 
       "delay":10,
       "required-item": "",
       "options": { 
         "drw": ["DRW"],
-        "work": ["DRW"]
+        "work": ["DRW"],
+        "coffee shop": ["Coffee Shop"]
       },
       "map-key" : "[F]",
       "sfx": "sfx/parking2.mp3"
