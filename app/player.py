@@ -49,8 +49,8 @@ class Player:
         if noun.lower() in self.current_room.options:
             possible_locations = self.current_room.options.get(noun.lower())
             if game.locations[possible_locations[0]].required_item:
-                item_names = [item.name for item in self.inventory]
-                if game.locations[noun].required_item in item_names:
+                item_names = [item.name.lower() for item in self.inventory]
+                if game.locations[noun].required_item.lower() in item_names:
                     random_room = random.sample(possible_locations, 1)
                     self.current_room = game.locations[random_room[0]]
                     self.advance_time(game_text)
@@ -101,7 +101,7 @@ class Player:
         else:
             print(self.current_room.message,"\n")
             random_response = random.sample(self.current_room.random_response, 1)
-            print(random_response[0], "\n")  
+            print(random_response[0], "\n")
             self.display_status(game_text)
             game.game_map.update_map(game)
         game.create_window()
