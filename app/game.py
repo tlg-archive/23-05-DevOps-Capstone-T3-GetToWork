@@ -207,7 +207,7 @@ class Game:
             iterations += 1
             self.player.look_around(self.get_self(), game_text)
             command = input(">> ").strip().lower()
-            print(command)
+            self.clear_screen()
             if not command:
                 continue
             if command == "quit":
@@ -248,7 +248,7 @@ class Game:
                 print(game_text["sfx_down"].format(current_volume=sfx_vol))
             elif command == "toggle sfx":
                 self.sound_manager.toggle_fx()
-                print("sfx","on" if self.sound_manager.sfx_enabled else "off") 
+                print("sfx","on" if self.sound_manager.sfx_enabled else "off")
             else:
                 self.parse_command(command, game_text)
 
