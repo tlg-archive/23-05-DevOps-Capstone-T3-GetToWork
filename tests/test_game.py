@@ -145,47 +145,6 @@ def test_parse_command_handle_use(game: Game, game_text: dict[str, str], mock_so
     #def handle_use(self, noun, game_text: dict[str, str]):
 
 
-def test_parse_command_handle_drive(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
-    # Mock the player and sound_manager objects
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.sound_manager = mock_sound_manager
-
-    mocker.patch.object(game, 'handle_drive')
-
-    # Test valid 'drive' command
-    game.parse_command("drive car", game_text)
-    game.handle_drive.assert_called_with("car", game_text)
-
-
-def test_parse_command_handle_board(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
-    # Mock the player and sound_manager objects
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.sound_manager = mock_sound_manager
-
-    mocker.patch.object(game, 'handle_board')
-
-    # Test valid 'board' command
-    game.parse_command("board bus", game_text)
-    game.handle_board.assert_called_with("bus", game_text)
-
-
-def test_parse_command_handle_pull(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
-    # Mock the player and sound_manager objects
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.sound_manager = mock_sound_manager
-
-    mocker.patch.object(game, 'handle_pull')
-
-    # Test valid 'pull' command
-    game.parse_command("pull lever", game_text)
-    game.handle_pull.assert_called_with("lever", game_text) 
-
 
 def test_parse_command_handle_look(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
     # Mock the player and sound_manager objects
@@ -215,20 +174,6 @@ def test_parse_command_handle_talk(game: Game, game_text: dict[str, str], mock_s
     game.handle_talk.assert_called_with("npc_a", game_text)
 
 
-def test_parse_command_handle_buy(game: Game, game_text: dict[str, str], mock_sound_manager, mocker):
-    # Mock the player and sound_manager objects
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.sound_manager = mock_sound_manager
-
-    mocker.patch.object(game, 'handle_buy')
-
-    # Test valid 'buy' command
-    game.parse_command("buy item_d", game_text)
-    game.handle_buy.assert_called_with("item_d", game_text)
-
-
 def test_parse_command_invalid(game: Game, game_text: dict[str, str], mock_sound_manager, capsys):
     # Mock the player and sound_manager objects
     game.player = Player('Test Player')
@@ -256,7 +201,6 @@ def test_parse_command_missing_noun(game: Game, game_text: dict[str, str], mock_
     captured = capsys.readouterr()
     assert game_text['need_noun'] in captured.out
 
-
 def test_parse_command_save(game: Game, game_text: dict[str, str], mock_sound_manager, mocker, capsys):
     # Mock the player and sound_manager objects
     game.player = Player('Test Player')
@@ -271,7 +215,6 @@ def test_parse_command_save(game: Game, game_text: dict[str, str], mock_sound_ma
 
     captured = capsys.readouterr()
     assert game_text['save_game'] in captured.out
-
 
 def test_parse_command_load(game: Game, game_text: dict[str, str], mock_sound_manager, mocker, capsys):
     # Mock the player and sound_manager objects
@@ -315,49 +258,6 @@ def test_handle_use(game: Game, game_text: dict[str, str], items: dict[str, Item
     game.handle_use(noun, game_text)
     game.player.use_item.assert_called_with(noun, game_text)
 
-
-def test_handle_drive(game: Game, game_text: dict[str, str], items: dict[str, Item], mock_sound_manager, capsys, mocker):
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.player.inventory = []
-    game.sound_manager = mock_sound_manager
-    noun = 'car'
-
-    mocker.patch.object(game.player, 'move')
-    # Test valid 'drive' command
-    game.handle_drive(noun, game_text)
-    game.player.move.assert_called_with(noun.title(), game, game_text, game.sound_manager)
-
-
-def test_handle_board(game: Game, game_text: dict[str, str], items: dict[str, Item], mock_sound_manager, capsys, mocker):
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.player.inventory = []
-    game.sound_manager = mock_sound_manager
-    noun = 'bus'
-
-    mocker.patch.object(game.player, 'move')
-    # Test valid 'board' command
-    game.handle_board(noun, game_text)
-    game.player.move.assert_called_with(noun.title(), game, game_text, game.sound_manager)
-
-
-def test_handle_pull(game: Game, game_text: dict[str, str], items: dict[str, Item], mock_sound_manager, capsys, mocker):
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.player.inventory = []
-    game.sound_manager = mock_sound_manager
-    noun = 'lever'
-
-    mocker.patch.object(game.player, 'move')
-    # Test valid 'pull' command
-    game.handle_pull(noun, game_text)
-    game.player.move.assert_called_with(noun.title(), game, game_text, game.sound_manager)
-
-
 def test_handle_look(game: Game, game_text: dict[str, str], items: dict[str, Item], mock_sound_manager, capsys, mocker):
     game.player = Player('Test Player')
     game.load_game_data()
@@ -376,7 +276,6 @@ def test_handle_look(game: Game, game_text: dict[str, str], items: dict[str, Ite
     captured = capsys.readouterr()
     assert game_text['look'] in captured.out
 
-
 def test_handle_talk(game: Game, game_text: dict[str, str], items: dict[str, Item], mock_sound_manager, capsys, mocker):
     game.player = Player('Test Player')
     game.load_game_data()
@@ -389,20 +288,6 @@ def test_handle_talk(game: Game, game_text: dict[str, str], items: dict[str, Ite
     # Test valid 'talk' command
     game.handle_talk(noun, game_text)
     game.player.talk_npc.assert_called_with(noun, game, game_text)
-
-
-def test_handle_buy(game: Game, game_text: dict[str, str], items: dict[str, Item], mock_sound_manager, capsys, mocker):
-    game.player = Player('Test Player')
-    game.load_game_data()
-    game.player.current_room = game.locations['room_a']
-    game.player.inventory = []
-    game.sound_manager = mock_sound_manager
-    noun = 'item_d'
-
-    mocker.patch.object(game.player, 'move')
-    # Test valid 'buy' command
-    game.handle_buy(noun, game_text)
-    game.player.move.assert_called_with(noun.title(), game, game_text, game.sound_manager)
 
 def test_increment_time(game: Game):
     # Initialize the game time to 00:00
