@@ -42,7 +42,7 @@
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "You are near the second stop, your gaze quickly settles on the bellcord by the windows. It's more than just a cord; it's your gateway, your hope of reaching the correct stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS??", 
+      "description": "You are near the second stop, If you remember correctly this is your stop. Your gaze quickly settles on the bellcord by the windows. It's more than just a cord; it's your gateway, your hope of reaching the correct stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS??", 
       "items": [],
       "delay":10,
       "required-item": "", 
