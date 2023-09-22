@@ -15,6 +15,7 @@ class TestPrinter(Printer):
         self.output(self.content)
         self.clear()
 
+
 def test_init_pinter() -> None:
     printer = TestPrinter(print)
     assert printer.content == ''
@@ -25,6 +26,24 @@ def test_pinter_print() -> None:
     printer = TestPrinter(print)
     printer.print('test')
     assert printer.content == 'test\n'
+
+
+def test_pinter_print_end() -> None:
+    printer = TestPrinter(print)
+    printer.print('test', end='\t')
+    assert printer.content == 'test\t'
+
+
+def test_pinter_print_args() -> None:
+    printer = TestPrinter(print)
+    printer.print('test', 'test2')
+    assert printer.content == 'test test2\n'
+
+
+def test_pinter_print_args_sep() -> None:
+    printer = TestPrinter(print)
+    printer.print('test', 'test2', sep='-')
+    assert printer.content == 'test-test2\n'
 
 
 def test_pinter_clear() -> None:
