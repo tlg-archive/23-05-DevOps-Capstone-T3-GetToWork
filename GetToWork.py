@@ -34,6 +34,14 @@ def main():
         print(game_text['intro'])
         choice = input(">> ").strip().lower()
 
+        if choice in ["toggle sound"]:
+            sound_enabled = not sound_enabled
+            game.sound_manager.sound_enabled = sound_enabled
+
+        if choice in ["toggle sfx"]:
+            sfx_enabled = not sfx_enabled
+            game.sound_manager.sfx_enabled = sfx_enabled
+
         if choice in ["start", "new game", "start new game", "start game"]:
             game = Game(script_dir)
             game.sound_manager.sound_enabled = sound_enabled
