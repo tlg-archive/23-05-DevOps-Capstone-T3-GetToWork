@@ -12,6 +12,10 @@ def hide_title(event, game_text):
     title.pack_forget()
     messagebox.showinfo("intro", game_text['intro'])
 
+def show_help():
+    """Display a help message."""
+    messagebox.showinfo("Help", "This is a help message. Replace it with your actual help text.")
+
 #tkinter.Tk(screenName="game", baseName=None, className='Tk', useTk=True, sync=False, use=None)
 root = Tk()
 
@@ -30,7 +34,12 @@ entry.pack()
 
 button = Button(root ,text="Start")
 button.pack()
+help_button = Button(root, text="Help", command=show_help)  # Bind the show_help function to the button
+help_button.pack()
+
+button.pack()
 
 root.bind('<Return>', lambda event: hide_title(event, game_text))
+
 
 root.mainloop()
