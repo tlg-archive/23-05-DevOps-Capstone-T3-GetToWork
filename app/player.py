@@ -5,6 +5,7 @@ import random
 import sys
 from typing import Protocol
 from app.item import Item
+from app.printer_interface import Printer
 from app.sound_manager import SoundManager
 
 class Location(Protocol):
@@ -49,15 +50,14 @@ class Player:
         if noun.lower() in self.current_room.options:
             possible_locations = self.current_room.options.get(noun.lower())
             if game.locations[possible_locations[0]].required_item:
-                item_names = [item.name for item in self.inventory]
-                if game.locations[noun].required_item in item_names:
+                item_names = [item.name.lower() for item in self.inventory]
+                if game.locations[noun].required_item.lower() in item_names:
                     random_room = random.sample(possible_locations, 1)
                     self.current_room = game.locations[random_room[0]]
                     self.advance_time(game_text)
                     self.play_sound(self.current_room.name, game, sound_manager)
                 else:
-                    item_err = game_text["no_item"].format(no_item=game.locations[noun].required_item)
-                    print(item_err)
+                    return game_text["no_item"].format(no_item=game.locations[noun].required_item)
             else:
                 new_loc = self.current_room.options.get(noun.lower())
                 random_room = random.sample(new_loc, 1)
@@ -66,7 +66,7 @@ class Player:
                 self.advance_time(game_text)
                 self.play_sound(self.current_room.name, game, sound_manager)
         else:
-            print(game_text["no_move"])
+            return game_text["no_move"]
             #print("You can't go that way.")
 
     def play_sound(self, new_location, game, sound_manager: SoundManager):
@@ -78,53 +78,54 @@ class Player:
 
 
     def look_around(self, game: Game, game_text: dict[str, str]):
-        game.create_window()
+        #game.create_window()
         #print(f"\n-----CURRENT LOCATION: {self.current_room.name}-----")
-
-        item_err = game_text["current_location"].format(location=self.current_room.name)
-        print(item_err)
+        result = ''
+        result += self.current_room.name + "\n"
+        result += game_text["current_location"].format(location=self.current_room.name) + "\n"
 
         if hasattr(self.current_room, 'description'):
-            print("\n")
-            print(self.current_room.description,"\n")
+            result += "\n"
+            result += self.current_room.description + "\n"
 
             #Dynamically print all items in a room
             if len(self.current_room.items) > 0:
                 #print(f"-----ITEMS IN THIS ROOM-----")
-                print(game_text["items"])
+                result += game_text["items"] + "\n"
                 for item in self.current_room.items:
-                    print(item.name)
+                    result += item.name + "\n"
 
-            print("\n")
+            result += "\n"
             self.display_status(game_text)
             game.game_map.update_map(game)
         else:
-            print(self.current_room.message,"\n")
+            result += self.current_room.message + "\n"
             random_response = random.sample(self.current_room.random_response, 1)
-            print(random_response[0], "\n")  
+            result += random_response[0] + "\n"
             self.display_status(game_text)
             game.game_map.update_map(game)
-        game.create_window()
+
+        return result
 
     def take_item(self, item_name, item_sound_file, game_text: dict[str, str], sound_manager: SoundManager):
+        result = ''
         for item in self.current_room.items:
             if item.name == item_name:
                 self.inventory.append(item)
                 self.current_room.items.remove(item)
                 #print(f"You take the {item_name}.")
 
-                item_err = game_text["grab_item"].format(item_name=item_name)
-                print(item_err)
-
+                result += game_text["grab_item"].format(item_name=item_name) + "\n"
 
                 sound_manager.sfx_sound(item_sound_file)
-                return
+                return result
         #print(f"There's no {item_name} here.")
 
-        item_err = game_text["item_none"].format(item_name=item_name)
-        print(item_err)
+        result += game_text["item_none"].format(item_name=item_name)
+        return result
 
     def use_item(self, noun, game_text: dict[str, str]):
+        result = ''
         #removes item from your inventory, adds it to the current location item list
         if len(self.inventory) > 0: 
             for item in self.inventory:
@@ -134,18 +135,21 @@ class Player:
                     self.inventory.remove(item)
                     self.current_room.items.append(item)
                     #print(f"You take used the {item.name} in {self.current_room}.")
-                    print(game_text["use_item"].format(item_name=item.name,current_room=self.current_room.name))
+                    result += game_text["use_item"].format(item_name=item.name,current_room=self.current_room.name) + "\n"
         else:
             #print("You have no items to use!")
-            print(game_text["no_use"])
+            result += game_text["no_use"]
+        return result
 
     def inventory_list(self, game_text: dict[str, str]):
+        result = ''
         if not self.inventory:
-            print(game_text["empty"])
+            result += game_text["empty"]
         else:
-            print(game_text["inventory"])
+            result += game_text["inventory"]
             for item in self.inventory:
-                print(item.name)
+                result += item.name + "\n"
+        return result
 
     def talk_npc(self, noun, game: Game, game_text: dict[str, str]):
         if noun.lower() in self.current_room.options:
@@ -154,11 +158,9 @@ class Player:
             random_room = random.sample(new_loc, 1)
             self.current_room = game.locations[random_room[0]]
         else:
-            
-            #print(f"You can't talk with {noun} here.")
-            print(game_text["no_npc"].format(noun=noun))
+            return game_text["no_npc"].format(noun=noun)
 
-    def advance_time(self, game_text: dict[str, str], minutes=10):
+    def advance_time(self, game_text: dict[str, str], minutes=10, printer: Printer = None):
         if self.current_room.delay == 0:
             self.current_time +=  minutes
         else:
@@ -166,14 +168,17 @@ class Player:
             #print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
             #print(game_text["delay_mess"].format(delay=self.current_room.delay))
         if self.current_time > 540: #changed this from >= to allow for making it to DRW by 9 on the dot
-            print(game_text['late'])
+            printer.print(game_text['late'])
+            printer.update()
             sys.exit()
 
     def display_status(self, game_text: dict[str, str]):
+        result = ''
         hours, minutes = divmod(self.current_time, 60)
-        print(game_text["player_status"])
-        print(f'CURRENT TIME: {hours:02d}:{minutes:02d}am')
-        self.inventory_list(game_text)
+        result += game_text["player_status"] + "\n"
+        result += f'CURRENT TIME: {hours:02d}:{minutes:02d}am' + "\n"
+        result += self.inventory_list(game_text)
+        return result
 
     def save_game(self, filename='save_game.json'):
         data = {
