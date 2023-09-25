@@ -1,7 +1,5 @@
 import os
-from tkinter import *
-from tkinter import messagebox
-from PIL import Image, ImageTk
+from tkinter import END, Button, Entry, Label, Tk, messagebox
 from GetToWork import convert_json
 
 from app.game import Game
@@ -34,8 +32,9 @@ def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, root,
 
 def show_help():
     """Display a help message."""
-    with open(os.path.abspath("json/help.txt"), "r") as help:
-        text = help.read()
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    with open('/'.join([script_dir, 'json/help.txt']), "r") as help_file:
+        text = help_file.read()
         messagebox.showinfo("Help", text)
 
 def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
@@ -53,12 +52,12 @@ def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
 
 
 def main():
-    root = Tk()
+    root = Tk(sync=True, screenName="Get To Work")
 
-    image = Image.open("json/title2.png")
-    photo = ImageTk.PhotoImage(image)
-    root.title(photo)
-    title = Label(root, image=photo)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    with open('/'.join([script_dir, 'json/title.txt']), 'r') as f:
+        title_ = f.read()
+    title = Label(root, text=title_, font=("Courier", 20), foreground="white", background="black")
     title.pack()
     title_text = Label(root, text="Press Enter to Start")
     title_text.pack()

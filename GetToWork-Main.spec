@@ -6,7 +6,7 @@ block_cipher = None
 add_datas=[('./app/*.py' , './' 'app'), ('./json/*.json' , './' 'json'), ('./json/*.txt' , './' 'json'), ('./sfx/*.mp3' , './' 'sfx')]
 
 a = Analysis(
-    ['GetToWork.py'],
+    ['gui.py'],
     pathex=[],
     binaries=[],
     datas=add_datas,
@@ -29,7 +29,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='GetToWork-Main',
+    name='GetToWork',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
