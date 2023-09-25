@@ -6,8 +6,9 @@ from GetToWork import convert_json
 
 from app.game import Game
 from app.label_printer import LabelPrinter
+from app.popup_window import PopupWindow
 
-def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, button, root, title, title_text):
+def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, root, title, title_text):
     """Hide the title screen."""
     title.pack_forget()
     title_text.pack_forget()
@@ -23,7 +24,6 @@ def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, butto
     result_text.pack()
     result_printer = LabelPrinter(result_text)
     entry.pack()
-    button.pack()
     game.scene_printer = scene_printer
     game.debug_printer = debug_printer
     game.result_printer = result_printer
@@ -48,6 +48,8 @@ def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
     game.scene_printer.update()
     game.result_printer.update()
 
+
+
 def main():
     root = Tk()
 
@@ -58,6 +60,7 @@ def main():
     title.pack()
     title_text = Label(root, text="Press Enter to Start")
     title_text.pack()
+    
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     game = Game(script_dir)
@@ -71,11 +74,13 @@ def main():
 
     help_button = Button(root, text="Help", command=show_help)  # Bind the show_help function to the button
     help_button.pack()
-
+    
+    popup_manager = PopupWindow(root)
     entry = Entry(root)
-    button = Button(root ,text="Start")
+    button = Button(root ,text="Options", command=lambda: popup_manager.create_popup_window(game))
+    button.pack()
 
-    root.bind('<Return>', lambda event: hide_title(event, game_text, game, entry, button, root, title, title_text))
+    root.bind('<Return>', lambda event: hide_title(event, game_text, game, entry, root, title, title_text))
 
     root.mainloop()
 
