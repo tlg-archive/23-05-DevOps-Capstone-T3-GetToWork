@@ -29,7 +29,7 @@ class SoundManager:
             self.music_channel.set_volume(self.current_volume)
 
     #PLAYS THE SOUND EFFECT SFX - USED IN Player.take_item()
-    def sfx_sound(self, sound_file: str, loop_count=-1):
+    def sfx_sound(self, sound_file: str, loop_count=1):
         if self.sfx_enabled:
             sfx_music = mixer.Sound(sound_file)
             self.sfx_channel.play(sfx_music, loops=loop_count - 1)  # -1 loops indefinitely
