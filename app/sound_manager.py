@@ -72,3 +72,19 @@ class SoundManager:
         if self.current_sfx_volume < 0:
             self.current_sfx_volume = 0
         self.sfx_channel.set_volume(self.current_volume/10)
+
+    def set_volume(self, volume: int):
+        self.current_volume = volume
+        if self.current_volume > 10:
+            self.current_volume = 10
+        elif self.current_volume < 0:
+            self.current_volume = 0
+        self.music_channel.set_volume(self.current_volume/10)
+
+    def set_sfx_volume(self, volume:int):
+        self.current_sfx_volume = volume
+        if self.current_sfx_volume > 10:
+            self.current_sfx_volume = 10
+        elif self.current_sfx_volume < 0:
+            self.current_sfx_volume = 0
+        self.sfx_channel.set_volume(self.current_sfx_volume/10)
