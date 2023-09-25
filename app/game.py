@@ -7,6 +7,7 @@ from app.location import Location
 from app.map import Map
 from app.npc import NPC
 from app.player import Player
+from app.printer_interface import Printer
 from app.sound_manager import SoundManager
 
 
@@ -33,6 +34,10 @@ class Game:
         self.bg_music_file = os.path.join(script_dir, 'sfx', 'soundtest.mp3')
         self.map_file = os.path.join(script_dir, 'json', 'map.txt')
         self.load_npc()
+        self.scene_printer: Printer = None
+        self.result_printer: Printer = None
+        self.debug_printer: Printer = None
+        self.quitting = False
 
 
     def load_item_data(self, item_name):
@@ -77,24 +82,24 @@ class Game:
                         new_npc.add_option(opt_act, opt_dest)
                     self.locations[npc_name] = new_npc
         except FileNotFoundError as err:
-            print(err)
+            self.debug_printer.print(err)
 
     def parse_command(self, command, game_text: dict[str, str]):
         command_words = command.split(' ')
         if len(command_words) == 1:
-            print(game_text["need_noun"])
+            self.result_printer.print(game_text["need_noun"])
             return 
         verb = command_words[0]
         noun = ' '.join(command_words[1:]) if len(command_words) > 1 else None
 
         if verb == 'save':
             self.save_game()
-            print(game_text["save_game"])
+            self.result_printer.print(game_text["save_game"])
             return
 
         if verb == 'load':
             self.load_game()
-            print(game_text["load_game"])
+            self.result_printer.print(game_text["load_game"])
             return
 
         synonyms = {
@@ -120,34 +125,48 @@ class Game:
                 if call and callable(call['method']):
                     call['method'](*call['args'])
                     return
-        print(game_text["invalid"])
+        self.result_printer.print(game_text["invalid"])
 
     def handle_take(self, noun, item_sound_file: str, game_text: dict[str, str]):
         #print(f"Handling TAKE command for {noun}")
-        self.player.take_item(noun, item_sound_file, game_text, self.sound_manager)
-        self.player.move(noun.title(), self, game_text, self.sound_manager)
+        text = [
+                self.player.take_item(noun, item_sound_file, game_text, self.sound_manager),
+                self.player.move(noun.title(), self, game_text, self.sound_manager)
+                ]
+        if text[1] == game_text['no_move']:
+            text.pop(1)
+        text = [entry for entry in text if entry if entry]
+        self.result_printer.print(*text)
 
     def handle_use(self, noun, game_text: dict[str, str]):
         #print(f"Handling USE command for {noun}")
-        self.player.use_item(noun, game_text)
-        self.player.move(noun.title(), self, game_text, self.sound_manager)
+        text = [
+                self.player.use_item(noun, game_text),
+                self.player.move(noun.title(), self, game_text, self.sound_manager)
+                ]
+        text = [entry for entry in text if entry if entry]
+        self.result_printer.print(*text)
     
     def handle_move(self, noun, game_text: dict[str, str]):
         #print(f"Handling DRIVE command for {noun}")
         # Implement 'DRIVE' logic here
-        self.player.move(noun.title(), self, game_text, self.sound_manager)
+        text = self.player.move(noun.title(), self, game_text, self.sound_manager)
+        if text:
+            self.result_printer.print(text)
 
     def handle_look(self, noun, game_text: dict[str, str]):
         #print(f"Handling LOOK command for {noun}")
         if noun:
             self.display_description(noun, game_text)
         else:
-            print(game_text["look"])
+            self.result_printer.print(game_text["look"])
 
     def handle_talk(self, noun, game_text: dict[str, str]):
         #print(f"Handling TALK command for {noun}")
         # Implement 'TAKE' logic here
-        self.player.talk_npc(noun, self, game_text)
+        text = self.player.talk_npc(noun, self, game_text)
+        if text:
+            self.result_printer.print(text)
 
 
     def increment_time(self):
@@ -161,7 +180,55 @@ class Game:
         if current_hour >= 24:
             self.game_time = "00:" + self.game_time.split(':')[1]
 
-    def start_game(self, game_text: dict[str, str], debug: bool = False, iterations_limit: int = 1):
+    def parse_input(self, game_text: dict[str, str], command: str, debug: bool = False, iterations_limit: int = 1):
+            if not command:
+                return 
+            if command == "quit":
+                self.quitting = True
+                self.result_printer.print(game_text['quit'])
+                self.result_printer.update()
+            elif self.quitting and command in ['yes', 'exit', 'quit']:
+                    self.clear_screen()
+                    quit()
+            elif self.quitting and command in ['no']:
+                self.result_printer.print(command)
+                self.quitting = False
+                return
+            elif command in ["help", "info", "commands", "hint", "assist"]:
+                self.result_printer.print(game_text['help'])
+                self.result_printer.update()
+            elif command in ["inventory", "pocket"]:
+                self.handle_inventory(game_text)
+            elif command == "time":
+                self.player.display_status(game_text)
+            elif command in ["map", "show map"]:
+                self.game_map.show_map(game_text)
+            elif command in ["toggle sound"]:
+                self.sound_manager.toggle_sound()
+                self.result_printer.print("sound is", "on" if self.sound_manager.sound_enabled else "off")
+            elif command == "volume up":
+                self.sound_manager.volume_up()
+                new_vol = round(self.sound_manager.current_volume * 100)
+                self.result_printer.print(game_text["vol_up"].format(current_volume=new_vol))
+            elif command == "volume down":
+                self.sound_manager.volume_down()
+                new_vol = round(self.sound_manager.current_volume * 100)
+                self.result_printer.print(game_text["vol_down"].format(current_volume=new_vol))
+            elif command == "sfx volume up":
+                self.sound_manager.sfx_volume_up()
+                sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
+                self.result_printer.print(game_text["sfx_up"].format(current_volume=sfx_vol))
+            elif command == "sfx volume down":
+                self.sound_manager.sfx_volume_down()
+                sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
+                self.result_printer.print(game_text["sfx_down"].format(current_volume=sfx_vol))
+            elif command == "toggle sfx":
+                self.sound_manager.toggle_fx()
+                self.result_printer.print("sfx","on" if self.sound_manager.sfx_enabled else "off")
+            else:
+                self.parse_command(command, game_text)
+
+    def start_game(self, debug: bool = False):
         if self.is_new_game == True:
             self.game_map = Map(self.map_file)
             starting_location = 'Home'
@@ -185,57 +252,6 @@ class Game:
 
             self.player.current_time = self.save_data['current_time']
 
-        iterations = 0
-
-        while not debug or iterations < iterations_limit:
-            iterations += 1
-            self.player.look_around(self.get_self(), game_text)
-            command = input(">> ").strip().lower()
-            self.clear_screen()
-            if not command:
-                continue
-            if command == "quit":
-                print(game_text['quit'])
-                exit_command = input("> ").lower().strip()
-                if exit_command in ['yes', 'exit', 'quit']:
-                    self.clear_screen()
-                    break
-                elif exit_command in ['no']:
-                    print(exit_command)
-                    continue
-            elif command in ["help", "info", "commands", "hint", "assist"]:
-                print(game_text['help'])
-            elif command in ["inventory", "pocket"]:
-                self.handle_inventory(game_text)
-            elif command == "time":
-                self.player.display_status(game_text)
-            elif command in ["map", "show map"]:
-                self.game_map.show_map(game_text)
-            elif command in ["toggle sound"]:
-                self.sound_manager.toggle_sound()
-                print("sound is", "on" if self.sound_manager.sound_enabled else "off")
-            elif command == "volume up":
-                self.sound_manager.volume_up()
-                new_vol = round(self.sound_manager.current_volume * 100)
-                print(game_text["vol_up"].format(current_volume=new_vol))
-            elif command == "volume down":
-                self.sound_manager.volume_down()
-                new_vol = round(self.sound_manager.current_volume * 100)
-                print(game_text["vol_down"].format(current_volume=new_vol))
-            elif command == "sfx volume up":
-                self.sound_manager.sfx_volume_up()
-                sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
-                print(game_text["sfx_up"].format(current_volume=sfx_vol))
-            elif command == "sfx volume down":
-                self.sound_manager.sfx_volume_down()
-                sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
-                print(game_text["sfx_down"].format(current_volume=sfx_vol))
-            elif command == "toggle sfx":
-                self.sound_manager.toggle_fx()
-                print("sfx","on" if self.sound_manager.sfx_enabled else "off")
-            else:
-                self.parse_command(command, game_text)
-
     def save_game(self, filename='save_game.json'):
         data = {
             'name': self.player.name,
@@ -252,14 +268,22 @@ class Game:
         self.is_new_game = False
         self.save_data = data
         
-    def create_window(self):
-        width = os.get_terminal_size().columns 
-        print('~' * width)
+    def create_window(self, width: int):
+        self.result_printer.print('~' * width)
 
 
     def clear_screen(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        self.result_printer.clear()
+        self.result_printer.update()
+        self.debug_printer.clear()
+        self.debug_printer.update()
+        self.scene_printer.clear()
+        self.scene_printer.update()
 
+    def show_location(self, game_text: dict[str, str]):
+        self.scene_printer.print(self.player.look_around(self.get_self(), game_text))
+        self.scene_printer.print(self.player.display_status(game_text))
+        self.scene_printer.update()
 
     def display_description(self, object_to_look, game_text: dict[str, str]):
         # Look in items
@@ -267,19 +291,19 @@ class Game:
             items_data = json.load(items_file)
             for item, details in items_data.items():
                 if item == object_to_look.lower():
-                    print(details['description'])
+                    self.result_printer.print(details['description'])
                     return
 
         # Look in locations
         for location, details in self.locations.items():
             if location.lower() == object_to_look.lower():
-                print(details.description)
+                self.result_printer.print(details.description)
                 return
 
         # If the object_to_look isn't found
         #print(f"Cannot find information about {object_to_look}.")
         item_err = game_text["no_find_item"].format(object_to_look=object_to_look)
-        print(item_err)
+        self.result_printer.print(item_err)
 
     def get_self(self):
         return self
