@@ -34,7 +34,9 @@ def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, root,
 
 def show_help():
     """Display a help message."""
-    messagebox.showinfo("Help", "This is a help message. Replace it with your actual help text.")
+    with open(os.path.abspath("json/help.txt"), "r") as help:
+        text = help.read()
+        messagebox.showinfo("Help", text)
 
 def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
     """Process the player's input."""

@@ -1,0 +1,11 @@
+Commands:
+take [grab, get, retrieve, snatch,pickup, buy, purchase, acquire, obtain, get, secure]
+    use command to pick up items
+move ['board', "move", 'catch','stay','sit','ride', 'go','stay','head', 'drive','find']
+    use to move player
+use ['use','drop', 'pull', 'yank', 'tug', 'grab']
+    use to use an item
+talk ['talk', 'speak', 'converse', 'chat', 'discuss', 'communicate', 'ask']
+    talk to NPCS
+look ['look', 'examine', 'inspect', 'view', 'glance', 'scan', 'check', 'observe', 'see']
+    get a description of an item
