@@ -309,8 +309,6 @@ def test_handle_talk(game: Game, game_text: dict[str, str], items: dict[str, Ite
     game.sound_manager = mock_sound_manager
     noun = 'guard'
 
-    #mocker.patch.object(game.player, 'talk_npc')
-    # Test valid 'talk' command
     game.handle_talk(noun, game_text)
     assert game.player.current_room == game.locations['guard']
     assert game.locations[noun].message in game.result_printer.content

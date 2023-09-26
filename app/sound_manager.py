@@ -47,7 +47,7 @@ class SoundManager:
         if self.sfx_enabled:
             self.sfx_channel.unpause()
         else:
-            self.sfx_channel.pause()       
+            self.sfx_channel.pause()
 
     def volume_up(self):
         self.current_volume += self._volume_increment

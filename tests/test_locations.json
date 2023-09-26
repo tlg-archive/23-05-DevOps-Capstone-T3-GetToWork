@@ -38,6 +38,16 @@
         },
         "map-key" : "[C]",
         "sfx": "sfx/bus.mp3"
+    },
+    {
+      "name": "Game Over",
+      "description": "You are late to work. You are fired. You lose.",
+      "items": [],
+      "delay":0,
+      "required-item": "",
+      "options": {},
+      "map-key" : "[GO]",
+      "sfx": "sfx/game_over.mp3"
     }
 ] 
 

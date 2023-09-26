@@ -54,7 +54,7 @@ class Player:
                 if game.locations[noun].required_item.lower() in item_names:
                     random_room = random.sample(possible_locations, 1)
                     self.current_room = game.locations[random_room[0]]
-                    self.advance_time(game_text)
+                    self.advance_time(game_text, game)
                     self.play_sound(self.current_room.name, game, sound_manager)
                 else:
                     return game_text["no_item"].format(no_item=game.locations[noun].required_item)
@@ -63,7 +63,7 @@ class Player:
                 random_room = random.sample(new_loc, 1)
 
                 self.current_room = game.locations[random_room[0]]
-                self.advance_time(game_text)
+                self.advance_time(game_text, game)
                 self.play_sound(self.current_room.name, game, sound_manager)
         else:
             return game_text["no_move"]
@@ -127,12 +127,15 @@ class Player:
     def use_item(self, noun, game_text: dict[str, str]):
         result = ''
         #removes item from your inventory, adds it to the current location item list
-        if len(self.inventory) > 0 and noun in [item.name for item in self.inventory]: 
-            item = [item for item in self.inventory if item.name == noun][0]
-            self.inventory.remove(item)
-            self.current_room.items.append(item)
-            #print(f"You take used the {item.name} in {self.current_room}.")
-            result += game_text["use_item"].format(item_name=item.name,current_room=self.current_room.name) + "\n"
+        if len(self.inventory) > 0: 
+            for item in self.inventory:
+                #print(item, "item")
+                #print(self.inventory, "inventory") 
+                if item.name == noun:
+                    self.inventory.remove(item)
+                    self.current_room.items.append(item)
+                    #print(f"You take used the {item.name} in {self.current_room}.")
+                    result += game_text["use_item"].format(item_name=item.name,current_room=self.current_room.name) + "\n"
         else:
             #print("You have no items to use!")
             result += game_text["no_use"]
@@ -158,7 +161,7 @@ class Player:
         else:
             return game_text["no_npc"].format(noun=noun)
 
-    def advance_time(self, game_text: dict[str, str], minutes=10, printer: Printer = None):
+    def advance_time(self, game_text: dict[str, str], game: Game, minutes=10):
         if self.current_room.delay == 0:
             self.current_time +=  minutes
         else:
@@ -166,9 +169,8 @@ class Player:
             #print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
             #print(game_text["delay_mess"].format(delay=self.current_room.delay))
         if self.current_time > 540: #changed this from >= to allow for making it to DRW by 9 on the dot
-            printer.print(game_text['late'])
-            printer.update()
-            quit(0)
+            game.result_printer.print(game_text['late'])
+            self.current_room = game.locations['Game Over']
 
     def display_status(self, game_text: dict[str, str]):
         result = ''
