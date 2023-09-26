@@ -127,15 +127,12 @@ class Player:
     def use_item(self, noun, game_text: dict[str, str]):
         result = ''
         #removes item from your inventory, adds it to the current location item list
-        if len(self.inventory) > 0: 
-            for item in self.inventory:
-                #print(item, "item")
-                #print(self.inventory, "inventory") 
-                if item.name == noun:
-                    self.inventory.remove(item)
-                    self.current_room.items.append(item)
-                    #print(f"You take used the {item.name} in {self.current_room}.")
-                    result += game_text["use_item"].format(item_name=item.name,current_room=self.current_room.name) + "\n"
+        if len(self.inventory) > 0 and noun in [item.name for item in self.inventory]: 
+            item = [item for item in self.inventory if item.name == noun][0]
+            self.inventory.remove(item)
+            self.current_room.items.append(item)
+            #print(f"You take used the {item.name} in {self.current_room}.")
+            result += game_text["use_item"].format(item_name=item.name,current_room=self.current_room.name) + "\n"
         else:
             #print("You have no items to use!")
             result += game_text["no_use"]
@@ -146,7 +143,7 @@ class Player:
         if not self.inventory:
             result += game_text["empty"]
         else:
-            result += game_text["inventory"]
+            result += game_text["inventory"] + "\n"
             for item in self.inventory:
                 result += item.name + "\n"
         return result
@@ -157,6 +154,7 @@ class Player:
 
             random_room = random.sample(new_loc, 1)
             self.current_room = game.locations[random_room[0]]
+            return self.current_room.message
         else:
             return game_text["no_npc"].format(noun=noun)
 
@@ -170,7 +168,7 @@ class Player:
         if self.current_time > 540: #changed this from >= to allow for making it to DRW by 9 on the dot
             printer.print(game_text['late'])
             printer.update()
-            sys.exit()
+            quit(0)
 
     def display_status(self, game_text: dict[str, str]):
         result = ''

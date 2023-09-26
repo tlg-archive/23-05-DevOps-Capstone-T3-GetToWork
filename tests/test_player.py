@@ -46,7 +46,7 @@ def locations(items):
         npcs = json.load(f)
     for npc in npcs.keys():
         npc_obj = MagicMock(spec=Location)
-        npc_obj.name = npcs[npc].get("name")
+        npc_obj.name = npc
         npc_obj.options = npcs[npc].get("options")
         required_item = npcs[npc].get("required-item")
         if required_item in items:
@@ -122,18 +122,16 @@ def test_move_valid_with_key(player, game, sound_manager, game_text, items):
 
 def test_move_invalid_noun(player, game, sound_manager, capsys, game_text):
     player.current_room = game.locations["room_a"]
-    player.move("invalid room", game, game_text, sound_manager)
-    captured = capsys.readouterr()
-    assert captured.out.strip() == game_text['no_move']
+    result = player.move("invalid room", game, game_text, sound_manager)
+    assert result == game_text['no_move']
 
 def test_move_invalid_with_key(player, game, sound_manager, game_text, capsys):
     # Mock the game object
     player.current_room = game.locations["room_b"]
     assert game.locations[player.current_room.options.get('room_a')[0]].required_item
-    player.move("room_a", game, game_text, sound_manager)
+    captured = player.move("room_a", game, game_text, sound_manager)
     assert player.current_room.name != game.locations["room_a"].name
-    captured = capsys.readouterr()
-    assert captured.out.strip() == game_text['no_item'].format(no_item=game.locations["room_a"].required_item)
+    assert captured == game_text['no_item'].format(no_item=game.locations["room_a"].required_item)
 
 
 # Define test cases for picking up items
@@ -154,10 +152,9 @@ def test_take_item_invalid(player, game, sound_manager, game_text, capsys):
     assert player.current_room.name == game.locations["room_b"].name
 
     # Try to pick up an item in an empty room
-    player.take_item("key_b", "item_pickup_sound.wav", game_text, sound_manager)
+    captured = player.take_item("key_b", "item_pickup_sound.wav", game_text, sound_manager)
 
-    captured = capsys.readouterr()
-    assert captured.out.strip() == game_text["item_none"].format(item_name="key_b")
+    assert captured == game_text["item_none"].format(item_name="key_b")
 
 # Define test cases for using items
 def test_use_item(player, game, sound_manager, game_text, items):
@@ -179,31 +176,26 @@ def test_use_item_invalid(player, game, sound_manager, game_text, capsys):
     player.current_room = game.locations["room_a"]
     assert player.current_room.name == game.locations["room_a"].name
     # Try to use an item not in the player's inventory
-    player.use_item("key_a", game_text)
-    captured = capsys.readouterr()
-    assert captured.out.strip() == game_text["no_use"]
+    captured = player.use_item("key_a", game_text)
+    
+    assert captured == game_text["no_use"]
 
 def test_inventory_list(player, capsys, game_text, items):
     # Mock the player's inventory
     player.inventory = [items["key_a"], items["key_b"]]
     # Call the inventory_list method
-    player.inventory_list(game_text)
-    # Capture the printed output
-    captured = capsys.readouterr()
+    captured = player.inventory_list(game_text)
     # Verify the output matches the expected format
     expected_output = game_text["inventory"]
     for item in player.inventory:
         expected_output += f"\n{item.name}"
-    assert captured.out.strip() == expected_output
+    assert captured.strip() == expected_output.strip()
 
 def test_inventory_empty(player, capsys, game_text, items):
     # Call the inventory_list method
-    player.inventory_list(game_text)
-    # Capture the printed output
-    captured = capsys.readouterr()
-    # Verify the output matches the expected format
+    captured = player.inventory_list(game_text)
     expected_output = game_text["empty"]
-    assert captured.out.strip() == expected_output
+    assert captured == expected_output
 
 
 # Define a test case for the advance_time method
@@ -228,10 +220,11 @@ def test_advance_time_late(player, game_text):
     # Set the player's current room delay
     player.current_room = MagicMock()
     player.current_room.delay = 200
+    printer = MagicMock()
     try:
-        player.advance_time(game_text, player.current_room.delay)
-    except SystemExit:
-        assert True
+        player.advance_time(game_text, player.current_room.delay, printer=printer)
+    except SystemExit as e:
+        assert e.code == 0
 
 
 # Define a test case for the talk_npc method
@@ -247,11 +240,9 @@ def test_talk_npc(player, game, game_text, capsys):
     assert player.current_room.name == "room_a"
 
     # Call the talk_npc method with an invalid NPC name
-    player.talk_npc("invalid_npc", game, game_text)
+    captured = player.talk_npc("invalid_npc", game, game_text)
 
-    # Verify that an error message is printed
-    captured = capsys.readouterr()
-    assert captured.out.strip() == game_text["no_npc"].format(noun="invalid_npc")
+    assert captured == game_text["no_npc"].format(noun="invalid_npc")
 
 # Define a test case for the display_status method
 def test_display_status(player, game_text, capsys):
@@ -259,13 +250,10 @@ def test_display_status(player, game_text, capsys):
     player.current_time = 480
 
     # Call the display_status method
-    player.display_status(game_text)
-
-    # Capture the printed output
-    captured = capsys.readouterr()
+    captured = player.display_status(game_text)
 
     # Verify that the output contains the current time in the expected format
-    assert "CURRENT TIME: 08:00am" in captured.out.strip()
+    assert "CURRENT TIME: 08:00am" in captured
 
 # Define a test case for the look_around method
 def test_look_around(player, game, game_text, capsys):
@@ -273,30 +261,25 @@ def test_look_around(player, game, game_text, capsys):
     player.current_room = game.locations["room_a"]
 
     # Call the look_around method
-    player.look_around(game, game_text)
-
-    # Capture the printed output
-    captured = capsys.readouterr()
+    captured = player.look_around(game, game_text)
 
     # Verify that the output contains the room description and item names
-    assert game.locations["room_a"].description in captured.out.strip()
+    assert game.locations["room_a"].description in captured
     for item in game.locations["room_a"].items:
-        assert item.name in captured.out.strip()
+        assert item.name in captured
 
 # Define a test case for the look_around method
 def test_look_around_npc(player, game, game_text, capsys):
     # Set up a mock location with description and items
+    assert game.locations["guard"].name
     player.current_room = game.locations["guard"]
-
+    assert player.current_room.name
     # Call the look_around method
-    player.look_around(game, game_text)
-
-    # Capture the printed output
-    captured = capsys.readouterr()
+    captured = player.look_around(game, game_text)
 
     # Verify that the output contains the room description and item names
-    assert game.locations["guard"].message in captured.out.strip()
-    assert any(response in captured.out.strip() for response in game.locations["guard"].random_response)
+    assert game.locations["guard"].message in captured
+    assert any(response in captured for response in game.locations["guard"].random_response)
 
 # Define a test case for the save_game method
 def test_save_game(player, game, saved_game_filename, items):
