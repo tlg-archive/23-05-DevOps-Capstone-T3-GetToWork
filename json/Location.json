@@ -15,7 +15,7 @@
     }, 
     { 
       "name": "Bus", 
-      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face. The bus driver seems approachable and ready to assist you. There's also an open seat to near the front. \nDo you want to ASK the BUS DRIVER for directions to DRW, GO to your SEAT, or GO back HOME?", 
+      "description": "You step onto the bus, and as you approach the driver, you notice a friendly smile on their face.\nThe bus driver seems approachable and ready to assist you. There's also an open seat to near the front. \nDo you want to ASK the BUS DRIVER for directions to DRW, GO to your SEAT, or GO back HOME?", 
       "items": [],
       "delay":5,
       "required-item": "bus card",
@@ -29,7 +29,7 @@
     },
     { 
       "name": "Seat", 
-      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows. That simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS?", 
+      "description": "You are near the first stop, eyes immediately drawn to the bellcord running along the windows.\nThat simple cord represents your exit strategy, your ticket to disembarking at what you hope will be the right stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS?", 
       "items": [],
       "delay":15,
       "required-item": "", 
@@ -42,7 +42,7 @@
     },
     { 
       "name": "Bus Stop 2", 
-      "description": "You are near the second stop, If you remember correctly this is your stop. Your gaze quickly settles on the bellcord by the windows. It's more than just a cord; it's your gateway, your hope of reaching the correct stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS??", 
+      "description": "You are near the second stop, If you remember correctly this is your stop.\nYour gaze quickly settles on the bellcord by the windows. It's more than just a cord; it's your gateway, your hope of reaching the correct stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS??", 
       "items": [],
       "delay":10,
       "required-item": "", 
@@ -55,7 +55,7 @@
     },
     { 
       "name": "Bus Stop 3", 
-      "description": "You are near the third stop, the bellcord stretching along the windows draws your eye without delay. In its simplicity lies your route out, your beacon for finding the right stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS?", 
+      "description": "You are near the third stop, the bellcord stretching along the windows draws your eye without delay.\nIn its simplicity lies your route out, your beacon for finding the right stop for work. \nYour hand hovers near the bellcord, ready to pull when the moment feels right. \nWill you PULL the BELLCORD or STAY on the BUS?", 
       "items": [],
       "delay":10,
       "required-item": "", 
@@ -68,7 +68,7 @@
     },
     {
       "name": "Wrong Stop",
-      "description": "You get off the bus, but you don't know where you are. You certainly are nowhere near DRW. You got off at the wrong stop. You wander for a bit until you see familiar buildings. \nDELAYED: by an extra 35 minutes.\nHEAD DOWNTOWN", 
+      "description": "You get off the bus, but you don't know where you are.\nYou certainly are nowhere near DRW. You got off at the wrong stop. You wander for a bit until you see familiar buildings. \nDELAYED: by an extra 35 minutes.\nHEAD DOWNTOWN", 
       "items": [],
       "delay":35,
       "required-item": "",
@@ -105,7 +105,7 @@
     },
     { 
       "name": "Coffee Event Good", 
-      "description": "You used the last of your money to buy coffee to help prep you for the day. You ask the barista if they know the way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nYou sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way towards to work. \nHEAD TO DRW.", 
+      "description": "You used the last of your money to buy coffee to help prep you for the day.\nYou ask the barista if they know the way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nYou sip the coffee, and its delicious, setting a positive tone for the day. You get an energy boost and brain blast, as you make your way towards to work. \nHEAD TO DRW.", 
       "items": [],
       "delay":0,
       "required-item": "", 
@@ -118,7 +118,7 @@
     },
     { 
       "name": "Coffee Event Bad", 
-      "description": "You used the last of your money to buy some coffee to help prep you for the day. You ask the barista if they know they way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nThe coffee was awful, and you accidentally dropped the receipt the barista gave you with directions on it. Thankfully, you sort of remember the way to go, but it takes you about 10 minutes longer than expected to find the way to work. \nHEAD TO DRW.", 
+      "description": "You used the last of your money to buy some coffee to help prep you for the day.\nYou ask the barista if they know they way to the DRW Building, and they do! They write some directions down on your receipt for you to follow, thankfully, you seem to be close by. \nThe coffee was awful, and you accidentally dropped the receipt the barista gave you with directions on it. Thankfully, you sort of remember the way to go, but it takes you about 10 minutes longer than expected to find the way to work. \nHEAD TO DRW.", 
       "items": [],
       "delay":10,
       "required-item": "", 
@@ -189,7 +189,7 @@
       "required-item": "", 
       "options": { 
         "parking": ["Find Parking"],
-        "downtown": ["Find Parking"]
+        "downtown": ["Downtown"]
       },
       "map-key" : "[CE]",
       "sfx": "sfx/driving.mp3"
@@ -228,7 +228,7 @@
       "delay":20,
       "options": { 
         "parking": ["Find Parking"],
-        "downtown": ["Find Parking"]
+        "downtown": ["Downtown"]
       },
       "map-key" : "[CE]",
       "sfx": "sfx/accident.mp3"
@@ -276,7 +276,7 @@
     },
     { 
       "name": "DRW", 
-      "description": "Victory is yours! Despite all challenges, you've navigated your way and arrived on time for your very first day of work. Nothing could deter your determination. With optimism fueling each step, you stride into the office tall and confident. As colleagues take note, it's clear: today and every day, you're destined to make an impression!", 
+      "description": "Victory is yours! Despite all challenges, you've navigated your way and arrived on time for your very first day of work.\nNothing could deter your determination. With optimism fueling each step, you stride into the office tall and confident. As colleagues take note, it's clear: today and every day, you're destined to make an impression!", 
       "items": [], 
       "delay":0,
       "required-item": "",
@@ -285,6 +285,16 @@
       },
       "map-key" : "[DRW]",
       "sfx": "sfx/game_win.mp3"
+    },
+    {
+      "name": "Game Over",
+      "description": "You are late to work. You are fired. You lose.",
+      "items": [],
+      "delay":0,
+      "required-item": "",
+      "options": {},
+      "map-key" : "[GO]",
+      "sfx": "sfx/game_over.mp3"
     }
   ] 
 }

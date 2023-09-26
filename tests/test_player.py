@@ -21,14 +21,11 @@ def load_game_filename(tmp_path):
     # Create a temporary directory and return the path to a saved game file
     return os.path.realpath("tests/test_load.json")
 
-
-
 # Define a fixture to load the game_text JSON file
 @pytest.fixture
 def game_text():
     with open(os.path.realpath("json/game-text.json"), "r") as file:  # Replace with the actual path to your game_text.json
         return json.load(file)
-
 
 @pytest.fixture
 def items():
@@ -88,6 +85,7 @@ def game(locations):
     game.location_music = {location.name: location.sfx for location in locations.values() if hasattr(location, "sfx")}
     game.items_file = os.path.realpath("./tests/test_items.json")
     game.game_map: Map = MagicMock(spec=Map)
+    game.result_printer = MagicMock()
     return game
 
 @pytest.fixture
@@ -199,30 +197,30 @@ def test_inventory_empty(player, capsys, game_text, items):
 
 
 # Define a test case for the advance_time method
-def test_advance_time(player, game_text):
+def test_advance_time(player: Player, game_text, game: Game):
     # Set the player's current room delay
     player.current_room = MagicMock()
     player.current_room.delay = 15
     # Call the advance_time method with a delay of 15 minutes
-    player.advance_time(game_text, minutes=15)
+    player.advance_time(game_text, game, minutes=15)
     # Verify that the current time has been updated
     assert player.current_time == 465  # 450 + 15 = 465
     # Set the player's current room delay to 0
     player.current_room.delay = 0
     # Call the advance_time method with a delay of 10 minutes
-    player.advance_time(game_text, minutes=10)
+    player.advance_time(game_text, game, minutes=10)
     # Verify that the current time has been updated
     assert player.current_time == 475  # 465 + 10 = 475
 
 
 # Define a test case for the advance_time method
-def test_advance_time_late(player, game_text):
+def test_advance_time_late(player: Player, game_text, game: Game):
     # Set the player's current room delay
     player.current_room = MagicMock()
     player.current_room.delay = 200
     printer = MagicMock()
     try:
-        player.advance_time(game_text, player.current_room.delay, printer=printer)
+        player.advance_time(game_text, game, player.current_room.delay)
     except SystemExit as e:
         assert e.code == 0
 
