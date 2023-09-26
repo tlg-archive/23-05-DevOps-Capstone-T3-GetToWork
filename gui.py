@@ -42,7 +42,6 @@ def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
     player_input = entry.get()
     entry.delete(0, END)
     game.clear_screen()
-    game.debug_printer.print(player_input)
     game.parse_input(game_text, player_input)
     game.show_location(game_text)
     game.debug_printer.update()

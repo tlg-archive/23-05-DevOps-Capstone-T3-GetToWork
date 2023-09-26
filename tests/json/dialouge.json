@@ -1,0 +1,26 @@
+{
+    "Bus Driver": {
+        "message": "You approach the Bus Driver and ask:\"I'm trying to go to the DRW Building. Do you happen to know what stop I need to get off at to get there?\"",
+        "random_response": ["\"Sorry, can't help you. Never heard of the place. Maybe you can Google it? Just take a seat, and I'll make sure you get there safely.\"\nYou decide to GO find a SEAT and and start to worry as the bus starts moving.",
+        "\"Ah, the DRW Offices! You're in luck; I know it well! Just pull the bellcord when we get to Bus Stop 2. Just take a seat, and I'll make sure you get there safely.\"\n\nYou decide to GO find a SEAT and relax as the bus starts moving."
+        ],
+        "required-item": "bus card",
+        "options": 
+            {
+                "seat": ["Seat"]
+            },
+            "map-key" : "[BD]"
+    },
+    "Person": {
+        "message": "Spotting a local who looks like they may be familiar with the area, you lock eyes with them, gathering your confidence to inquire about the way to DRW. You ask:\"I'm trying to go to the DRW Building. Do you happen to know how get there?\"",
+        "random_response": ["The person glances up, shrugs, and mutters, \"I'm not really sure,\" before walking away, leaving you just as lost as before. HEAD toward DRW",
+    "The person smiles and says, \"Absolutely! Just go two blocks down this street, take a left, and you'll see the DRW building right there. You can't miss it!\" Their concise directions lift your spirits. For the first time all morning, you feel a strong sense of relief and gratitude. With a spark of hope, you feel you might just arrive on time for your first day after all. GO to DRW, GO COFFEE SHOP."],
+        "required-item": "",
+        "options": 
+            {
+                "drw": ["DRW"],
+                "coffee shop": ["Coffee Shop"] 
+            },
+            "map-key" : "Person"
+    }
+}

@@ -66,7 +66,7 @@ class Game:
                 self.locations[loc_info["name"]] = location
     
     def handle_inventory(self, game_text: dict[str, str]):
-        self.player.inventory_list(game_text)
+        self.result_printer.print(self.player.inventory_list(game_text))
 
     def load_npc(self):
         try:
@@ -180,67 +180,64 @@ class Game:
         if current_hour >= 24:
             self.game_time = "00:" + self.game_time.split(':')[1]
 
-    def parse_input(self, game_text: dict[str, str], command: str, debug: bool = False, iterations_limit: int = 1):
-            if not command:
-                return 
-            if command == "quit":
-                self.quitting = True
-                self.result_printer.print(game_text['quit'])
-                self.result_printer.update()
-            elif self.quitting and command in ['yes', 'exit', 'quit']:
-                    self.clear_screen()
-                    quit()
-            elif self.quitting and command in ['no']:
-                self.result_printer.print(command)
-                self.quitting = False
-                return
-            elif command in ["help", "info", "commands", "hint", "assist"]:
-                self.result_printer.print(game_text['help'])
-                self.result_printer.update()
-            elif command in ["inventory", "pocket"]:
-                self.handle_inventory(game_text)
-            elif command == "time":
-                self.player.display_status(game_text)
-            elif command in ["map", "show map"]:
-                self.game_map.show_map(game_text)
-            elif command in ["toggle sound"]:
-                self.sound_manager.toggle_sound()
-                self.result_printer.print("sound is", "on" if self.sound_manager.sound_enabled else "off")
-            elif command == "volume up":
-                self.sound_manager.volume_up()
-                new_vol = round(self.sound_manager.current_volume * 100)
-                self.result_printer.print(game_text["vol_up"].format(current_volume=new_vol))
-            elif command == "volume down":
-                self.sound_manager.volume_down()
-                new_vol = round(self.sound_manager.current_volume * 100)
-                self.result_printer.print(game_text["vol_down"].format(current_volume=new_vol))
-            elif command == "sfx volume up":
-                self.sound_manager.sfx_volume_up()
-                sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
-                self.result_printer.print(game_text["sfx_up"].format(current_volume=sfx_vol))
-            elif command == "sfx volume down":
-                self.sound_manager.sfx_volume_down()
-                sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
-                self.result_printer.print(game_text["sfx_down"].format(current_volume=sfx_vol))
-            elif command == "toggle sfx":
-                self.sound_manager.toggle_fx()
-                self.result_printer.print("sfx","on" if self.sound_manager.sfx_enabled else "off")
-            else:
-                self.parse_command(command, game_text)
+    def parse_input(self, game_text: dict[str, str], command: str):
+        if not command:
+            return
+        command = command.strip().lower()
+        self.debug_printer.print(command)
+        if command == "quit":
+            self.quitting = True
+            self.result_printer.print(game_text['quit'])
+        elif self.quitting and command in ['yes', 'exit', 'quit']:
+                self.clear_screen()
+                quit(0)
+        elif self.quitting and command in ['no']:
+            self.quitting = False
+            return
+        elif command in ["help", "info", "commands", "hint", "assist"]:
+            self.result_printer.print(game_text['help'])
+        elif command in ["inventory", "pocket"]:
+            self.handle_inventory(game_text)
+        elif command == "time":
+            self.result_printer.print(self.player.display_status(game_text))
+        elif command in ["map", "show map"]:
+            self.result_printer.print(self.game_map.show_map(game_text))
+        elif command in ["toggle sound"]:
+            self.sound_manager.toggle_sound()
+            self.result_printer.print("sound is", "on" if self.sound_manager.sound_enabled else "off")
+        elif command == "volume up":
+            self.sound_manager.volume_up()
+            new_vol = round(self.sound_manager.current_volume * 100)
+            self.result_printer.print(game_text["vol_up"].format(current_volume=new_vol))
+        elif command == "volume down":
+            self.sound_manager.volume_down()
+            new_vol = round(self.sound_manager.current_volume * 100)
+            self.result_printer.print(game_text["vol_down"].format(current_volume=new_vol))
+        elif command == "sfx volume up":
+            self.sound_manager.sfx_volume_up()
+            sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
+            self.result_printer.print(game_text["sfx_up"].format(current_volume=sfx_vol))
+        elif command == "sfx volume down":
+            self.sound_manager.sfx_volume_down()
+            sfx_vol = round(self.sound_manager.current_sfx_volume * 100)
+            self.result_printer.print(game_text["sfx_down"].format(current_volume=sfx_vol))
+        elif command == "toggle sfx":
+            self.sound_manager.toggle_fx()
+            self.result_printer.print("sfx","on" if self.sound_manager.sfx_enabled else "off")
+        else:
+            self.parse_command(command, game_text)
 
-    def start_game(self, debug: bool = False):
+    def start_game(self):
         if self.is_new_game == True:
             self.game_map = Map(self.map_file)
             starting_location = 'Home'
-            if not debug:
-                self.player = Player("Player Name")
+            self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
             self.player.play_sound(starting_location, self, self.sound_manager)
         elif self.is_new_game == False:
             self.game_map = Map(self.map_file)
             starting_location = self.save_data['current_room']
-            if not debug:
-                self.player = Player("Player Name")
+            self.player = Player("Player Name")
             self.player.current_room = self.locations[starting_location]
             self.player.play_sound(starting_location, self, self.sound_manager)
 
