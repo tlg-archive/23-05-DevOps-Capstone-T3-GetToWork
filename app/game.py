@@ -37,6 +37,7 @@ class Game:
         self.scene_printer: Printer = None
         self.result_printer: Printer = None
         self.debug_printer: Printer = None
+        self.status_printer: Printer = None
         self.quitting = False
 
 
@@ -279,10 +280,12 @@ class Game:
         self.debug_printer.update()
         self.scene_printer.clear()
         self.scene_printer.update()
+        self.status_printer.clear()
+        self.status_printer.update()
 
     def show_location(self, game_text: dict[str, str]):
         self.scene_printer.print(self.player.look_around(self.get_self(), game_text))
-        self.scene_printer.print(self.player.display_status(game_text))
+        self.status_printer.print(self.player.display_status(game_text))
         self.scene_printer.update()
 
     def display_description(self, object_to_look, game_text: dict[str, str]):
