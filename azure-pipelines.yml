@@ -24,6 +24,6 @@ stages:
       displayName: Build and Publish
       inputs:
         containerRegistry: 'Team3ACRConnection'
-        repository: 'T3-GetToWork'
+        repository: 'GetToWork-James'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
