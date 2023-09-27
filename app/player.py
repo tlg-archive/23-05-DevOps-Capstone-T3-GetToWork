@@ -54,7 +54,7 @@ class Player:
                 if game.locations[noun].required_item.lower() in item_names:
                     random_room = random.sample(possible_locations, 1)
                     self.current_room = game.locations[random_room[0]]
-                    self.advance_time(game_text)
+                    self.advance_time(game_text, game)
                     self.play_sound(self.current_room.name, game, sound_manager)
                 else:
                     return game_text["no_item"].format(no_item=game.locations[noun].required_item)
@@ -63,7 +63,7 @@ class Player:
                 random_room = random.sample(new_loc, 1)
 
                 self.current_room = game.locations[random_room[0]]
-                self.advance_time(game_text)
+                self.advance_time(game_text, game)
                 self.play_sound(self.current_room.name, game, sound_manager)
         else:
             return game_text["no_move"]
@@ -146,7 +146,7 @@ class Player:
         if not self.inventory:
             result += game_text["empty"]
         else:
-            result += game_text["inventory"]
+            result += game_text["inventory"] + "\n"
             for item in self.inventory:
                 result += item.name + "\n"
         return result
@@ -157,10 +157,11 @@ class Player:
 
             random_room = random.sample(new_loc, 1)
             self.current_room = game.locations[random_room[0]]
+            return self.current_room.message
         else:
             return game_text["no_npc"].format(noun=noun)
 
-    def advance_time(self, game_text: dict[str, str], minutes=10, printer: Printer = None):
+    def advance_time(self, game_text: dict[str, str], game: Game, minutes=10):
         if self.current_room.delay == 0:
             self.current_time +=  minutes
         else:
@@ -168,9 +169,8 @@ class Player:
             #print(f"YOU ARE DELAYED BY {self.current_room.delay} EXTRA MINUTES")
             #print(game_text["delay_mess"].format(delay=self.current_room.delay))
         if self.current_time > 540: #changed this from >= to allow for making it to DRW by 9 on the dot
-            printer.print(game_text['late'])
-            printer.update()
-            sys.exit()
+            game.result_printer.print(game_text['late'])
+            self.current_room = game.locations['Game Over']
 
     def display_status(self, game_text: dict[str, str]):
         result = ''

@@ -14,7 +14,7 @@
     "Person": {
         "message": "Spotting a local who looks like they may be familiar with the area, you lock eyes with them, gathering your confidence to inquire about the way to DRW. You ask:\"I'm trying to go to the DRW Building. Do you happen to know how get there?\"",
         "random_response": ["The person glances up, shrugs, and mutters, \"I'm not really sure,\" before walking away, leaving you just as lost as before. HEAD toward DRW",
-    "The person smiles and says, \"Absolutely! Just go two blocks down this street, take a left, and you'll see the DRW building right there. You can't miss it!\" Their concise directions lift your spirits. For the first time all morning, you feel a strong sense of relief and gratitude.\nWith a spark of hope, you feel you might just arrive on time for your first day after all. GO to DRW, GO COFFEE SHOP."],
+    "The person smiles and says, \"Absolutely! Just go two blocks down this street, take a left, and you'll see the DRW building right there. You can't miss it!\" Their concise directions lift your spirits. For the first time all morning, you feel a strong sense of relief and gratitude. With a spark of hope, you feel you might just arrive on time for your first day after all. GO to DRW, GO COFFEE SHOP."],
         "required-item": "",
         "options": 
             {

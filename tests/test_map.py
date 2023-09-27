@@ -97,8 +97,7 @@ def test_gen_map(sample_map: Map, map_file: str):
 
 def test_show_map(capsys: CaptureFixture[str], sample_map: Map, game_text: Any):
     sample_map.map_list = sample_map.gen_map()  # Set some test data
-    sample_map.show_map(game_text)
-    captured = capsys.readouterr()
+    result = sample_map.show_map(game_text)
 
     for line in game_text["map_text"].split("\n"):
-        assert line.strip() in captured.out.strip()
+        assert line in result

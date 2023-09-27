@@ -1,10 +1,15 @@
+import json
 import os
-from tkinter import END, Button, Entry, Label, Tk, messagebox
-from GetToWork import convert_json
-
+from tkinter import *
+from tkinter import messagebox
 from app.game import Game
 from app.label_printer import LabelPrinter
 from app.popup_window import PopupWindow
+
+def convert_json(text_file):
+    with open(text_file) as json_file:
+        game_text = json.load(json_file)
+    return game_text
 
 def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, root, title, title_text):
     """Hide the title screen."""
@@ -12,16 +17,27 @@ def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, root,
     title_text.pack_forget()
     game.start_game()
     root.unbind('<Return>')
-    debug_text = Label(root, text="Debug Text")
-    debug_text.pack()
+    
+    paned_window = PanedWindow(root , orient='vertical', background= "black", border=5)
+    paned_window.pack()
+    debug_text = Label(root, text="Debug Text", height= 2)
+    debug_text.pack(side=TOP)
+    paned_window.add(debug_text)
     debug_printer = LabelPrinter(debug_text)
-    scene_text = Label(root, text='')
-    scene_text.pack()
+    scene_text = Label(root, text='', height=30)
+    scene_text.pack(side=TOP)
+    paned_window.add(scene_text)
     scene_printer = LabelPrinter(scene_text)
-    result_text = Label(root, text='')
-    result_text.pack()
+    status_text = Label(root, text='', height=4)
+    status_text.pack(side=TOP)
+    paned_window.add(status_text)
+    status_printer = LabelPrinter(status_text)
+    result_text = Label(root, text='', height=3)
+    result_text.pack(side=BOTTOM)
     result_printer = LabelPrinter(result_text)
+    paned_window.add(result_text)
     entry.pack()
+    game.status_printer = status_printer
     game.scene_printer = scene_printer
     game.debug_printer = debug_printer
     game.result_printer = result_printer
@@ -42,7 +58,6 @@ def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
     player_input = entry.get()
     entry.delete(0, END)
     game.clear_screen()
-    game.debug_printer.print(player_input)
     game.parse_input(game_text, player_input)
     game.show_location(game_text)
     game.debug_printer.update()
@@ -52,7 +67,7 @@ def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
 
 
 def main():
-    root = Tk(sync=True, screenName="Get To Work")
+    root = Tk(sync=True)
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     with open('/'.join([script_dir, 'json/title.txt']), 'r') as f:
@@ -61,7 +76,6 @@ def main():
     title.pack()
     title_text = Label(root, text="Press Enter to Start")
     title_text.pack()
-    
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     game = Game(script_dir)
@@ -73,12 +87,11 @@ def main():
     game.load_game_data()
     game.sound_manager.sound(game.bg_music_file, script_dir)
 
-    help_button = Button(root, text="Help", command=show_help)  # Bind the show_help function to the button
+    help_button = Button(root, text="Help", command=show_help)
     help_button.pack()
-    
     popup_manager = PopupWindow(root)
     entry = Entry(root)
-    button = Button(root ,text="Options", command=lambda: popup_manager.create_popup_window(game))
+    button = Button(root, text="Options", command=lambda: popup_manager.create_popup_window(game))
     button.pack()
 
     root.bind('<Return>', lambda event: hide_title(event, game_text, game, entry, root, title, title_text))

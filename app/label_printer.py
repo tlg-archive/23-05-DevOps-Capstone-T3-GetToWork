@@ -9,7 +9,7 @@ class LabelPrinter(Printer):
         self.content = ""
         self.label = label
 
-    def print(self, *objects: str, sep: str = ' ', end: str = '\n', file=None, flush: bool = False) -> None:
+    def print(self, *objects: list[str], sep: str = ' ', end: str = '\n', file=None, flush: bool = False) -> None:
         printed_text = sep.join(objects) + end
         self.content += printed_text
         self.update()
