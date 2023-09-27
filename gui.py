@@ -1,11 +1,15 @@
+import json
 import os
-from tkinter import END, Button, Entry, Label, Tk, messagebox
 from tkinter import *
-from GetToWork import convert_json
-
+from tkinter import messagebox
 from app.game import Game
 from app.label_printer import LabelPrinter
 from app.popup_window import PopupWindow
+
+def convert_json(text_file):
+    with open(text_file) as json_file:
+        game_text = json.load(json_file)
+    return game_text
 
 def hide_title(event, game_text: dict[str, str], game: Game, entry: Entry, root, title, title_text):
     """Hide the title screen."""
@@ -63,7 +67,7 @@ def process_input(event, game: Game, entry: Entry, game_text: dict[str, str]):
 
 
 def main():
-    root = Tk(sync=True, screenName="Get To Work")
+    root = Tk(sync=True)
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
     with open('/'.join([script_dir, 'json/title.txt']), 'r') as f:
