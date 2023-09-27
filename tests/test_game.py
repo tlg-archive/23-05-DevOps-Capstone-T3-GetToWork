@@ -63,6 +63,10 @@ def result_printer():
     return TestPrinter(print)
 
 @pytest.fixture
+def status_printer():
+    return TestPrinter(print)
+
+@pytest.fixture
 def items():
     result_items = {}
     with open(os.path.realpath("./tests/test_items.json"), 'r') as f:
@@ -76,7 +80,7 @@ def script_dir():
     return os.path.dirname(os.path.realpath(__file__))
 
 @pytest.fixture
-def game(script_dir: str, debug_printer: TestPrinter, scene_printer: TestPrinter, result_printer: TestPrinter):
+def game(script_dir: str, debug_printer: TestPrinter, scene_printer: TestPrinter, result_printer: TestPrinter, status_printer: TestPrinter):
     game = Game(script_dir)
     game.npc_file = os.path.join(script_dir, 'test_npcs.json')
     game.load_npc()
@@ -88,6 +92,7 @@ def game(script_dir: str, debug_printer: TestPrinter, scene_printer: TestPrinter
     game.debug_printer = debug_printer
     game.scene_printer = scene_printer
     game.result_printer = result_printer
+    game.status_printer = status_printer
     return game
 
 # Define a fixture to load the game_text JSON file
